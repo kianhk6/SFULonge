@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "348057913543",
+    "project_id": "sfu-lounge",
+    "storage_bucket": "sfu-lounge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348057913543:android:4f08665dfc2a264492d6e2",
+        "android_client_info": {
+          "package_name": "com.example.sfulounge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6AxYfwYf35qXX9355vWRBoWcq1ZxC94E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
