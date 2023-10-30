@@ -1,6 +1,7 @@
 package com.example.sfulounge.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -12,9 +13,11 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import com.example.sfulounge.MainActivity
 import com.example.sfulounge.databinding.ActivityLoginBinding
 
 import com.example.sfulounge.R
+import com.example.sfulounge.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         val email = binding.email
         val password = binding.password
         val login = binding.login
+        val register = binding.register
         val loading = binding.loading
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -62,6 +66,8 @@ class LoginActivity : AppCompatActivity() {
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
+            //TODO(remember to uncomment this)
+//            startActivity(Intent(this, MainActivity::class.java))
             finish()
         })
 
@@ -95,6 +101,10 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(email.text.toString(), password.text.toString())
             }
+        }
+
+        register.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 

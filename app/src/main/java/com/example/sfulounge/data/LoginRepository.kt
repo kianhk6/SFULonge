@@ -64,6 +64,13 @@ class LoginRepository(val dataSource: LoginDataSource) {
         )
     }
 
+    fun retrySendVerificationEmail(
+        onSuccess: (Result.Success<LoggedInUser>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        dataSource.retrySendVerificationEmail(onSuccess, onError)
+    }
+
     private fun setLoggedInUser(loggedInUser: LoggedInUser) {
         this.user = loggedInUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted

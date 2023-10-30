@@ -1,6 +1,7 @@
 package com.example.sfulounge.ui.register
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -14,6 +15,9 @@ import com.example.sfulounge.databinding.ActivityRegisterBinding
 import com.example.sfulounge.R
 import com.example.sfulounge.ui.login.afterTextChanged
 
+/**
+ * Register an account for the user
+ */
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var registerViewModel: RegisterViewModel
@@ -63,7 +67,8 @@ class RegisterActivity : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
-            //Complete and destroy login activity once successful
+            //Complete and destroy register activity once successful
+            startActivity(Intent(this, EmailVerificationActivity::class.java))
             finish()
         })
 

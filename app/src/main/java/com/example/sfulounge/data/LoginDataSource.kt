@@ -1,12 +1,12 @@
 package com.example.sfulounge.data
 
-import android.app.Activity
-import android.content.Context
 import android.util.Log
 import com.example.sfulounge.data.model.LoggedInUser
+import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
 import java.io.IOException
 
 /**
@@ -15,6 +15,7 @@ import java.io.IOException
 class LoginDataSource {
 
     private val auth = Firebase.auth
+    private val database = Firebase.database
 
     fun login(
         email: String,
@@ -50,14 +51,14 @@ class LoginDataSource {
                     val user = task.result.user!!
 
                     // send verification email
-                    user.sendEmailVerification()
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                onSuccess(Result.Success(LoggedInUser(user.uid, email)))
-                            } else {
-                                onError(Result.Error(IOException("Verification email failed to send")))
-                            }
-                        }
+                    sendVerificationEmail(
+                        user,
+                        onSuccess = {
+                            addUser(user.uid)
+                            onSuccess(Result.Success(LoggedInUser(user.uid, email)))
+                        },
+                        onError = onError
+                    )
                 } else {
                     Log.e("error", task.exception?.message ?: "Register failed.")
                     onError(Result.Error(IOException(task.exception)))
@@ -65,7 +66,36 @@ class LoginDataSource {
             }
     }
 
+    fun retrySendVerificationEmail(
+        onSuccess: (Result.Success<LoggedInUser>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = auth.currentUser!!
+        sendVerificationEmail(user, onSuccess, onError)
+    }
+
     fun logout() {
         auth.signOut()
+    }
+
+    private fun sendVerificationEmail(
+        user: FirebaseUser,
+        onSuccess: (Result.Success<LoggedInUser>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        user.sendEmailVerification()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!)))
+                } else {
+                    onError(Result.Error(IOException("Verification email failed to send")))
+                }
+            }
+    }
+
+    private fun addUser(userId: String) {
+        val ref = database.reference
+        ref.child("users").child(userId)
+            .setValue(User(userId = userId, isProfileInitialized = false))
     }
 }

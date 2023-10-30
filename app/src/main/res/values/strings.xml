@@ -25,6 +25,13 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!--  email verification activity  -->
+    <string name="title_email_verification">
+        Please check email to verify your account. Did not receive email?
+    </string>
+    <string name="action_resend_email">Re-send Verification Email</string>
+    <string name="verification_email_failed">Failed to send verification email</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
