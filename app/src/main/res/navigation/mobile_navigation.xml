@@ -9,17 +9,17 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.sfulounge.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/navigation_explore"
         android:name="com.example.sfulounge.ui.explore.ExploreFragment"
         android:label="@string/title_explore"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_explore" />
 
     <fragment
         android:id="@+id/navigation_chats"
         android:name="com.example.sfulounge.ui.chats.ChatsFragment"
         android:label="@string/title_chats"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_chats" />
 </navigation>

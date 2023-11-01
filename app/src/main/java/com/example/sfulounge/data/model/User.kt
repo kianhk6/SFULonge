@@ -1,12 +1,12 @@
 package com.example.sfulounge.data.model
 
 data class User(
-    val userId: String,
-    val isProfileInitialized: Boolean,
-    val firstName: String? = null,
-    val lastName: String? = null,
-    val description: String? = null,
-    val interests: List<String> = ArrayList(),
-    val depthQuestions: List<DepthInfo> = ArrayList(),
-    val photos: List<String> = ArrayList()
+    var userId: String = "",
+    var isProfileInitialized: Boolean = false,
+    var firstName: String? = null,
+    var lastName: String? = null,
+    var description: String? = null,
+    var interests: List<String> = ArrayList(),
+    var depthQuestions: List<DepthInfo> = ArrayList(),
+    var photos: List<String> = ArrayList()
 )

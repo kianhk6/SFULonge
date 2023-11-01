@@ -16,6 +16,18 @@
     <string name="invalid_password_confirm">Confirmed password must match</string>
     <string name="login_failed">"Login failed"</string>
     <string name="register_failed">"Register failed"</string>
+
+    <!--  error messages  -->
+    <string name="error_message_account_unverified">Account not email verified</string>
+    <string name="error_message_existing_account">Account with same email already exists</string>
+    <string name="error_message_verification_failed_to_send">Verification email failed to send</string>
+    <string name="error_message_unknown_reason">Oops! Something went wrong</string>
+    <string name="error_message_user_profile_failed_to_update">update user profile failed</string>
+    <string name="error_message_failed_to_get_url">failed to get download url</string>
+    <string name="error_message_upload_photo">failed to upload photo</string>
+    <string name="error_message_delete_photo">failed to delete photo</string>
+    <string name="error_message_initialize_profile">failed to initialize user profile</string>
+
     <!-- Strings related to login -->
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_setup_basic_info">SetupBasicInfoActivity</string>

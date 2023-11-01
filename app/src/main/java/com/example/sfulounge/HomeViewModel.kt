@@ -8,17 +8,29 @@ import com.example.sfulounge.data.model.User
 
 class HomeViewModel(private val repository: MainRepository) : ViewModel() {
 
-    private val _userResult = MutableLiveData<User>()
-    val userResult: LiveData<User> = _userResult
+    private val _currentUser = MutableLiveData<User>()
+    val currentUser: LiveData<User> = _currentUser
+
+    private val _userResult = MutableLiveData<UserResult>()
+    val userResult: LiveData<UserResult> = _userResult
 
     fun getUser() {
         repository.getUser(
             onSuccess = { user ->
-                _userResult.value = user
+                _currentUser.value = user
             },
-            onError = {
-
-            }
+            onError = { throw IllegalStateException("user cannot be null") }
         )
     }
+
+    fun initializeUserProfile() {
+        repository.initializeUserProfile(
+            onSuccess = { },
+            onError = { _userResult.value = UserResult(error = it.exception) }
+        )
+    }
+
+    data class UserResult(
+        val error: Int? = null
+    )
 }

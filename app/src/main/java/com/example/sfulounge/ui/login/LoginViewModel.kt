@@ -24,8 +24,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 _loginResult.value =
                     LoginResult(success = LoggedInUserView(email = result.data.email))
             },
-            onError = { _ ->
-                _loginResult.value = LoginResult(error = R.string.login_failed)
+            onError = { error ->
+                _loginResult.value = LoginResult(error = error.exception)
             }
         )
     }

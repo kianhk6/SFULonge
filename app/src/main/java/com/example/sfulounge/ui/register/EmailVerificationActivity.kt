@@ -44,7 +44,7 @@ class EmailVerificationActivity : AppCompatActivity() {
     }
 
     private fun showVerificationFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 
     private fun showVerificationEmailSent() {

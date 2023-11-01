@@ -1,6 +1,7 @@
 package com.example.sfulounge.data
 
 import android.util.Log
+import com.example.sfulounge.R
 import com.example.sfulounge.data.model.LoggedInUser
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
@@ -30,11 +31,11 @@ class LoginDataSource {
                     if (user.isEmailVerified) {
                         onSuccess(Result.Success(LoggedInUser(user.uid, email)))
                     } else {
-                        onError(Result.Error(IOException("Account not email verified")))
+                        onError(Result.Error(R.string.error_message_account_unverified))
                     }
                 } else {
                     Log.e("error", task.exception?.message ?: "Login failed.")
-                    onError(Result.Error(IOException("Login failed")))
+                    onError(Result.Error(R.string.login_failed))
                 }
             }
     }
@@ -61,7 +62,7 @@ class LoginDataSource {
                     )
                 } else {
                     Log.e("error", task.exception?.message ?: "Register failed.")
-                    onError(Result.Error(IOException(task.exception)))
+                    onError(Result.Error(R.string.error_message_existing_account))
                 }
             }
     }
@@ -88,7 +89,7 @@ class LoginDataSource {
                 if (it.isSuccessful) {
                     onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!)))
                 } else {
-                    onError(Result.Error(IOException("Verification email failed to send")))
+                    onError(Result.Error(R.string.error_message_verification_failed_to_send))
                 }
             }
     }

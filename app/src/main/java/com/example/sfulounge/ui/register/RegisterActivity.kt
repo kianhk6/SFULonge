@@ -12,7 +12,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.example.sfulounge.databinding.ActivityRegisterBinding
 
-import com.example.sfulounge.R
 import com.example.sfulounge.ui.login.afterTextChanged
 
 /**
@@ -60,7 +59,7 @@ class RegisterActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             if (regResult.error != null) {
-                showLoginFailed(regResult.error)
+                showRegisterFailed(regResult.error)
             }
             if (regResult.success != null) {
                 updateUiWithUser(regResult.success)
@@ -126,7 +125,7 @@ class RegisterActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    private fun showRegisterFailed(@StringRes errorString: Int) {
+        Toast.makeText(applicationContext, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 }
