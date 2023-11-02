@@ -18,7 +18,9 @@ data class User(
             lastName = map["lastName"] as String?,
             description = map["description"] as String?,
             interests = (map["interests"] as List<*>).map { x -> x as String },
-            depthQuestions = (map["depthQuestions"] as List<*>).map { x -> x as DepthInfo },
+            depthQuestions = (map["depthQuestions"] as List<*>).map { x ->
+                DepthInfo.fromMap((x as Map<*, *>).mapKeys { (k, _) -> k as String })
+            },
             photos = (map["photos"] as List<*>).map { x -> x as String }
         )
         fun toMap(user: User) = mapOf(
