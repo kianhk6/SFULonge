@@ -39,6 +39,11 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
+        if (loginViewModel.isLoggedIn()) {
+            onLoginSuccessful()
+            return
+        }
+
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -65,10 +70,7 @@ class LoginActivity : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
-            //Complete and destroy login activity once successful
-            //TODO(remember to uncomment this)
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            onLoginSuccessful()
         })
 
         email.afterTextChanged {
@@ -106,6 +108,13 @@ class LoginActivity : AppCompatActivity() {
         register.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+    }
+
+    private fun onLoginSuccessful() {
+        //Complete and destroy login activity once successful
+        //TODO(remember to uncomment this)
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {

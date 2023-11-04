@@ -16,6 +16,10 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    fun isLoggedIn(): Boolean {
+        return loginRepository.isLoggedIn
+    }
+
     fun login(email: String, password: String) {
         loginRepository.login(
             email,

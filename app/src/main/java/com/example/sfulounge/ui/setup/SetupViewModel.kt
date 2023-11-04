@@ -22,12 +22,15 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
 
     var firstName: String? = null
     var lastName: String? = null
-    var interests: List<String>? = null
-    var depthQuestions: List<DepthInfo>? = null
+
+    private val _photos: ArrayList<Photo> = ArrayList()
+    val photos: List<Photo> = _photos
 
     fun getUser() {
         repository.getUser(
             onSuccess = { user ->
+                firstName = user.firstName
+                lastName = user.lastName
                 _userResult.value = UserResult(user = user)
                 getPhotos(user.photos)
             },
@@ -35,13 +38,11 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
         )
     }
 
-    fun saveUser(photos: List<Photo>) {
+    fun saveUser() {
         val user = _userResult.value!!.user!!
         firstName?.let { user.firstName = it }
         lastName?.let { user.lastName = it }
-        interests?.let { user.interests = it }
-        depthQuestions?.let { user.depthQuestions = it }
-        user.photos = photos.map { photo -> photo.downloadUrl!! }
+        user.photos = _photos.map { photo -> photo.downloadUrl!! }
 
         repository.updateUser(
             user,
@@ -52,7 +53,9 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
 
     private fun getPhotos(photoUrls: List<String>) {
         for (url in photoUrls) {
-            _addPhotoResult.value = PhotoResult(photo = Photo(downloadUrl = url))
+            val photoResult = PhotoResult(photo = Photo(downloadUrl = url))
+            _photos.add(photoResult.photo!!)
+            _addPhotoResult.value = photoResult
         }
     }
 
@@ -61,8 +64,10 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
         repository.uploadPhoto(
             photo.localUri!!,
             onSuccess = {
-                _addPhotoResult.value =
+                val photoResult =
                     PhotoResult(photo = Photo(downloadUrl = it, localUri = photo.localUri))
+                _photos.add(photoResult.photo!!)
+                _addPhotoResult.value = photoResult
             },
             onError = { error ->
                 _addPhotoResult.value = PhotoResult(error = error.exception)
@@ -75,7 +80,9 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
         repository.deletePhoto(
             photo.downloadUrl!!,
             onSuccess = {
-                _deletePhotoResult.value = PhotoResult(photo = photo)
+                val photoResult = PhotoResult(photo = photo)
+                _photos.remove(photoResult.photo!!)
+                _deletePhotoResult.value = photoResult
             },
             onError = { error ->
                 _deletePhotoResult.value = PhotoResult(error = error.exception)
@@ -89,7 +96,10 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
             newPhoto.localUri!!,
             oldPhoto.downloadUrl!!,
             onSuccess = {
-                _replacePhotoResult.value = PhotoResult(photo = oldPhoto, replaced = newPhoto)
+                val photoResult = PhotoResult(photo = oldPhoto, replaced = newPhoto)
+                val idx = _photos.indexOf(photoResult.photo!!)
+                _photos[idx] = photoResult.photo
+                _replacePhotoResult.value = photoResult
             },
             onError = { error ->
                 _replacePhotoResult.value = PhotoResult(error = error.exception)

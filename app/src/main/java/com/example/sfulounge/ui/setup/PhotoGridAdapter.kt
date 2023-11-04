@@ -24,12 +24,12 @@ class PhotoGridAdapter(context: Context, data: List<Photo>)
             if (photo.localUri != null) {
                 Glide.with(context)
                     .load(photo.localUri)
-                    .centerCrop()
+//                    .centerCrop()
                     .into(image)
             } else {
                 Glide.with(context)
                     .load(photo.downloadUrl)
-                    .centerCrop()
+//                    .centerCrop()
                     .into(image)
             }
         }

@@ -27,19 +27,16 @@ import java.io.File
 class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoiceDialogListener {
 
     private lateinit var binding: ActivitySetupBasicInfoBinding
-    private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var setupViewModel: SetupViewModel
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
 
-    private var tempFileUid = 0
     private val uriPool = HashSet<Uri>()
     private var cameraTempUri: Uri? = null
 
-    private val photos: ArrayList<Photo> = ArrayList()
-
     companion object {
         const val MAX_PHOTOS_LIMIT = 5
+        const val MIN_PHOTOS_LIMIT = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,11 +50,6 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
             .get(SetupViewModel::class.java)
 
-        launcher = registerForActivityResult(StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                finish()
-            }
-        }
         cameraResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 setupViewModel.addPhoto(Photo(localUri = cameraTempUri))
@@ -70,7 +62,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
             if (result.resultCode == RESULT_OK) {
                 val uri = result.data?.data?.let { saveToRandomUri(it) }
                 if (uri != null) {
-                    setupViewModel.addPhoto(Photo(localUri = cameraTempUri))
+                    setupViewModel.addPhoto(Photo(localUri = uri))
                 }
             }
         }
@@ -79,7 +71,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         val upload = binding.upload
         val loading = binding.loading
         val photosGrid = binding.gridView
-        val photoGridAdapter = PhotoGridAdapter(this, photos)
+        val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos)
 
         var isInitialized = false
         setupViewModel.userResult.observe(this, Observer {
@@ -95,20 +87,18 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
             if (unitResult.error != null) {
                 showErrorOnSave(unitResult.error)
             } else {
-                launcher.launch(Intent(this, SetupInterestsActivity::class.java))
+                onSaveUserSuccessful()
             }
         })
         setupViewModel.addPhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
             if (photoResult.photo != null) {
-                photos.add(photoResult.photo)
                 photoGridAdapter.notifyDataSetChanged()
             }
         })
         setupViewModel.deletePhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
             if (photoResult.photo != null) {
-                photos.remove(photoResult.photo)
                 photoGridAdapter.notifyDataSetChanged()
 
                 // clean up uri if the photo is using a local uri
@@ -120,8 +110,6 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         setupViewModel.replacePhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
             if (photoResult.photo != null && photoResult.replaced != null) {
-                val idx = photos.indexOf(photoResult.photo)
-                photos[idx] = photoResult.photo
                 photoGridAdapter.notifyDataSetChanged()
 
                 // clean up uri if the photo is using a local uri
@@ -134,7 +122,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         photosGrid.adapter = photoGridAdapter
 
         upload.setOnClickListener {
-            if (photos.size < MAX_PHOTOS_LIMIT) {
+            if (setupViewModel.photos.size < MAX_PHOTOS_LIMIT) {
                 SingleChoiceDialog.newInstance(
                     "Upload photo",
                     arrayOf("Open Camera", "Select from Gallery")
@@ -145,7 +133,11 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         }
         next.setOnClickListener {
             loading.visibility = View.VISIBLE
-            setupViewModel.saveUser(photos)
+            if (setupViewModel.photos.size < MIN_PHOTOS_LIMIT) {
+                showMinPhotosLimitError()
+            } else {
+                setupViewModel.saveUser()
+            }
         }
 
         // get the current user
@@ -155,12 +147,21 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
     private fun loadUser(user: User) {
         binding.firstName.setText(user.firstName)
         binding.lastName.setText(user.lastName)
-        setupViewModel.firstName = user.firstName
-        setupViewModel.lastName = user.lastName
+    }
+
+    private fun onSaveUserSuccessful() {
+        val intent = Intent(this, SetupInterestsActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun showErrorOnSave(@StringRes errorString: Int) {
         Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showMinPhotosLimitError() {
+        Toast.makeText(this, "Number of photos < ${MIN_PHOTOS_LIMIT-1}", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun showMaxPhotosLimitReached() {
@@ -184,8 +185,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         return destUri
     }
     private fun getRandomUri(): Uri {
-        val file = File.createTempFile("$tempFileUid", ".jpg", cacheDir)
-        tempFileUid++
+        val file = File.createTempFile("img", null, cacheDir)
         val uri = FileProvider.getUriForFile(this, packageName, file)
         uriPool.add(uri)
         return uri

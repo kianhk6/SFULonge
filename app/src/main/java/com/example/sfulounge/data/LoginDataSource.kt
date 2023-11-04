@@ -17,6 +17,9 @@ class LoginDataSource {
     private val auth = Firebase.auth
     private val db = Firebase.firestore
 
+    val isLoggedIn: Boolean
+        get() = auth.currentUser != null
+
     fun login(
         email: String,
         password: String,
