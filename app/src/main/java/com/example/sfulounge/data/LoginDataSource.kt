@@ -7,8 +7,7 @@ import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
-import com.google.firebase.database.database
-import java.io.IOException
+import com.google.firebase.firestore.firestore
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -16,7 +15,7 @@ import java.io.IOException
 class LoginDataSource {
 
     private val auth = Firebase.auth
-    private val database = Firebase.database
+    private val db = Firebase.firestore
 
     fun login(
         email: String,
@@ -50,12 +49,12 @@ class LoginDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = task.result.user!!
+                    addUser(user.uid)
 
                     // send verification email
                     sendVerificationEmail(
                         user,
                         onSuccess = {
-                            addUser(user.uid)
                             onSuccess(Result.Success(LoggedInUser(user.uid, email)))
                         },
                         onError = onError
@@ -95,8 +94,9 @@ class LoginDataSource {
     }
 
     private fun addUser(userId: String) {
-        val ref = database.reference
-        ref.child("users").child(userId)
-            .setValue(User(userId = userId, isProfileInitialized = false))
+        val user = User(userId = userId, isProfileInitialized = false)
+        db.collection("users")
+            .document(userId)
+            .set(User.toMap(user))
     }
 }

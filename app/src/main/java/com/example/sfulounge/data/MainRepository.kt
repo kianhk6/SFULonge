@@ -6,54 +6,50 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.database
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
-import java.io.IOException
 import java.util.UUID
 
 class MainRepository {
 
     private val auth = Firebase.auth
-    private val database = Firebase.database
     private val storage = Firebase.storage
+    private val db = Firebase.firestore
 
     fun getUser(
         onSuccess: (User) -> Unit,
         onError: (Result.Error) -> Unit
     ) {
-        val ref = database.reference
         val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
 
-        ref.child("users").child(user.uid)
-            .addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val loggedInUser = snapshot.getValue(User::class.java)
-                        ?: throw IllegalStateException("User cannot be null")
+        db.collection("users")
+            .document(user.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    val loggedInUser = User.fromMap(document.data!!)
                     onSuccess(loggedInUser)
+                } else {
+                    throw IllegalStateException("User cannot be null")
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // handle errors
-                    Log.e("error", error.message)
-                    onError(Result.Error(R.string.error_message_unknown_reason))
-                }
-        })
+            }
+            .addOnFailureListener { error ->
+                Log.e("error", error.message ?: "failed to read from db")
+                onError(Result.Error(R.string.error_message_unknown_reason))
+            }
     }
 
     fun initializeUserProfile(
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
-        val ref = database.reference
         val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
 
-        ref.child("users").child(user.uid).child("isProfileInitialized")
-            .setValue(true)
-            .addOnCompleteListener {  task ->
+        db.collection("users")
+            .document(user.uid)
+            .update("isProfileInitialized", true)
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
                 } else {
@@ -67,12 +63,12 @@ class MainRepository {
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
-        val ref = database.reference
         val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
 
-        ref.child("users").child(user.uid)
-            .setValue(updatedUserProfile)
-            .addOnCompleteListener {  task ->
+        db.collection("users")
+            .document(user.uid)
+            .set(User.toMap(updatedUserProfile))
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
                 } else {
@@ -82,6 +78,7 @@ class MainRepository {
     }
 
     /**
+     * Uploads the photo to the firebase storage
      * onSuccess will provide the downloadUrl of the resource
      * e.g.
      * uploadPhoto(
