@@ -14,7 +14,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
         private set
 
     val isLoggedIn: Boolean
-        get() = user != null
+        get() = dataSource.isLoggedIn
 
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted

@@ -6,8 +6,8 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import java.util.UUID
 
@@ -36,6 +36,10 @@ class MainRepository {
             }
             .addOnFailureListener { error ->
                 Log.e("error", error.message ?: "failed to read from db")
+
+                // user not found error: try to recover
+                addUserOnRecovery(user.uid, onSuccess, onError)
+
                 onError(Result.Error(R.string.error_message_unknown_reason))
             }
     }
@@ -58,8 +62,9 @@ class MainRepository {
             }
     }
 
-    fun updateUser(
-        updatedUserProfile: User,
+    fun updateUserBasicInfo(
+        firstName: String?,
+        lastName: String?,
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
@@ -67,7 +72,12 @@ class MainRepository {
 
         db.collection("users")
             .document(user.uid)
-            .set(User.toMap(updatedUserProfile))
+            .update(
+                mapOf(
+                    "firstName" to firstName,
+                    "lastName" to lastName
+                )
+            )
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
@@ -98,14 +108,22 @@ class MainRepository {
 
         // first get the firebase url then upload to the firebase storage
         val node = ref.child("users/${user.uid}/photos/${photoUid}.jpg")
-        node.downloadUrl.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val url = task.result.toString()
-                uploadPhotoImpl(node, photoUri, onSuccess = { onSuccess(url) }, onError)
-            } else {
-                onError(Result.Error(R.string.error_message_failed_to_get_url))
+        node.putFile(photoUri)
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
+                }
+                node.downloadUrl
             }
-        }
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val url = task.result.toString()
+                    addPhotoUrlToUser(user.uid, url)
+                    onSuccess(url)
+                } else {
+                    onError(Result.Error(R.string.error_message_failed_to_get_url))
+                }
+            }
     }
 
     fun deletePhoto(
@@ -113,14 +131,17 @@ class MainRepository {
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
+        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
         val ref = storage.getReferenceFromUrl(downloadUrl)
-        ref.delete().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onError(Result.Error(R.string.error_message_delete_photo))
+        ref.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError(Result.Error(R.string.error_message_delete_photo))
+                }
             }
-        }
+        deletePhotoUrlFromUser(user.uid, downloadUrl)
     }
 
     fun replacePhoto(
@@ -130,21 +151,45 @@ class MainRepository {
         onError: (Result.Error) -> Unit
     ) {
         val ref = storage.getReferenceFromUrl(downloadUrl)
-        uploadPhotoImpl(ref, photoUri, onSuccess, onError)
-    }
-
-    private fun uploadPhotoImpl(
-        node: StorageReference,
-        photoUri: Uri,
-        onSuccess: () -> Unit,
-        onError: (Result.Error) -> Unit
-    ) {
-        node.putFile(photoUri)
+        ref.putFile(photoUri)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
                 } else {
                     onError(Result.Error(R.string.error_message_upload_photo))
+                }
+            }
+    }
+
+    private fun addPhotoUrlToUser(userId: String, url: String) {
+        db.collection("users")
+            .document(userId)
+            .update(
+                mapOf("photos" to FieldValue.arrayUnion(url)
+            )
+        )
+    }
+
+    private fun deletePhotoUrlFromUser(userId: String, url: String) {
+        db.collection("users")
+            .document(userId)
+            .update(mapOf("photos" to FieldValue.arrayRemove(url)))
+    }
+
+    private fun addUserOnRecovery(
+        userId: String,
+        onSuccess: (User) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = User(userId = userId, isProfileInitialized = false)
+        db.collection("users")
+            .document(userId)
+            .set(User.toMap(user))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess(user)
+                } else {
+                    onError(Result.Error(R.string.error_message_recovery))
                 }
             }
     }
