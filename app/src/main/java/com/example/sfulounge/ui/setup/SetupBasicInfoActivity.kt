@@ -6,7 +6,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -68,6 +71,8 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         }
 
         val next = binding.next
+        val firstName = binding.firstName
+        val lastName = binding.lastName
         val upload = binding.upload
         val loading = binding.loading
         val photosGrid = binding.gridView
@@ -120,6 +125,13 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         })
 
         photosGrid.adapter = photoGridAdapter
+
+        firstName.afterTextChanged {
+            setupViewModel.firstName = it
+        }
+        lastName.afterTextChanged {
+            setupViewModel.lastName = it
+        }
 
         upload.setOnClickListener {
             if (setupViewModel.photos.size < MAX_PHOTOS_LIMIT) {
@@ -222,4 +234,19 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
             deleteUri(uri)
         }
     }
+}
+
+/**
+ * Extension function to simplify setting an afterTextChanged action to EditText components.
+ */
+fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            afterTextChanged.invoke(editable.toString())
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+    })
 }

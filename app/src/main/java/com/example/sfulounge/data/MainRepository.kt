@@ -6,6 +6,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import java.util.UUID
@@ -61,8 +62,9 @@ class MainRepository {
             }
     }
 
-    fun updateUser(
-        updatedUserProfile: User,
+    fun updateUserBasicInfo(
+        firstName: String?,
+        lastName: String?,
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
@@ -70,7 +72,12 @@ class MainRepository {
 
         db.collection("users")
             .document(user.uid)
-            .set(User.toMap(updatedUserProfile))
+            .update(
+                mapOf(
+                    "firstName" to firstName,
+                    "lastName" to lastName
+                )
+            )
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
@@ -111,6 +118,7 @@ class MainRepository {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val url = task.result.toString()
+                    addPhotoUrlToUser(user.uid, url)
                     onSuccess(url)
                 } else {
                     onError(Result.Error(R.string.error_message_failed_to_get_url))
@@ -123,14 +131,17 @@ class MainRepository {
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
+        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
         val ref = storage.getReferenceFromUrl(downloadUrl)
-        ref.delete().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                onSuccess()
-            } else {
-                onError(Result.Error(R.string.error_message_delete_photo))
+        ref.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError(Result.Error(R.string.error_message_delete_photo))
+                }
             }
-        }
+        deletePhotoUrlFromUser(user.uid, downloadUrl)
     }
 
     fun replacePhoto(
@@ -148,6 +159,21 @@ class MainRepository {
                     onError(Result.Error(R.string.error_message_upload_photo))
                 }
             }
+    }
+
+    private fun addPhotoUrlToUser(userId: String, url: String) {
+        db.collection("users")
+            .document(userId)
+            .update(
+                mapOf("photos" to FieldValue.arrayUnion(url)
+            )
+        )
+    }
+
+    private fun deletePhotoUrlFromUser(userId: String, url: String) {
+        db.collection("users")
+            .document(userId)
+            .update(mapOf("photos" to FieldValue.arrayRemove(url)))
     }
 
     private fun addUserOnRecovery(

@@ -1,11 +1,9 @@
 package com.example.sfulounge.ui.setup
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sfulounge.data.MainRepository
-import com.example.sfulounge.data.model.DepthInfo
 
 class SetupViewModel(private val repository: MainRepository) : ViewModel() {
     private var _userResult = MutableLiveData<UserResult>()
@@ -39,13 +37,9 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     fun saveUser() {
-        val user = _userResult.value!!.user!!
-        firstName?.let { user.firstName = it }
-        lastName?.let { user.lastName = it }
-        user.photos = _photos.map { photo -> photo.downloadUrl!! }
-
-        repository.updateUser(
-            user,
+        repository.updateUserBasicInfo(
+            firstName,
+            lastName,
             onSuccess = { _saved.value = UnitResult() },
             onError = { _saved.value = UnitResult(error = it.exception) }
         )
