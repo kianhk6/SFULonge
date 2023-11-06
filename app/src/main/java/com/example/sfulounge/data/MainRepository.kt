@@ -3,6 +3,7 @@ package com.example.sfulounge.data
 import android.net.Uri
 import android.util.Log
 import com.example.sfulounge.R
+import com.example.sfulounge.data.model.DepthInfo
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -78,6 +79,44 @@ class MainRepository {
                     "lastName" to lastName
                 )
             )
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError(Result.Error(R.string.error_message_user_profile_failed_to_update))
+                }
+            }
+    }
+
+    fun updateUserInterests(
+        interests: List<String>,
+        onSuccess: () -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
+
+        db.collection("users")
+            .document(user.uid)
+            .update(mapOf("interests" to interests))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    onError(Result.Error(R.string.error_message_user_profile_failed_to_update))
+                }
+            }
+    }
+
+    fun updateUserDepthQuestions(
+        depthQuestions: List<DepthInfo>,
+        onSuccess: () -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
+
+        db.collection("users")
+            .document(user.uid)
+            .update(mapOf("depthQuestions" to depthQuestions))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
