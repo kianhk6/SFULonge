@@ -78,13 +78,9 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         val photosGrid = binding.gridView
         val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos)
 
-        var isInitialized = false
         setupViewModel.userResult.observe(this, Observer {
             val userResult = it ?: return@Observer
-            if (!isInitialized) {
-                loadUser(userResult.user!!)
-                isInitialized = true
-            }
+            loadUser(userResult.user!!)
         })
         setupViewModel.saved.observe(this, Observer {
             val unitResult = it ?: return@Observer
@@ -144,10 +140,12 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
             }
         }
         next.setOnClickListener {
-            loading.visibility = View.VISIBLE
             if (setupViewModel.photos.size < MIN_PHOTOS_LIMIT) {
                 showMinPhotosLimitError()
+            } else if (setupViewModel.photos.size > MAX_PHOTOS_LIMIT) {
+                showMaxPhotosLimitReached()
             } else {
+                loading.visibility = View.VISIBLE
                 setupViewModel.saveUser()
             }
         }
@@ -172,12 +170,12 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
     }
 
     private fun showMinPhotosLimitError() {
-        Toast.makeText(this, "Number of photos < ${MIN_PHOTOS_LIMIT-1}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Number of photos < $MIN_PHOTOS_LIMIT", Toast.LENGTH_SHORT)
             .show()
     }
 
     private fun showMaxPhotosLimitReached() {
-        Toast.makeText(this, "Number of photos > ${MAX_PHOTOS_LIMIT-1}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Number of photos > $MAX_PHOTOS_LIMIT", Toast.LENGTH_SHORT)
             .show()
     }
 

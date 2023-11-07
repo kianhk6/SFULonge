@@ -67,6 +67,10 @@ class SetupInterestsActivity : AppCompatActivity() {
         InterestItem(tag = "Environmental Conservation")
     )
 
+    companion object {
+        private const val MAX_INTERESTS_LIMIT = 4
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -96,7 +100,16 @@ class SetupInterestsActivity : AppCompatActivity() {
         listView.adapter = interestListAdapter
 
         next.setOnClickListener {
-            interestsViewModel.save(interests)
+            val numInterests = interests.fold(0) { acc, item ->
+                return@fold if (item.isSelected) acc + 1 else acc
+            }
+            if (numInterests > MAX_INTERESTS_LIMIT) {
+                showMaxInterestsLimitError()
+            } else if (numInterests == 0) {
+                showMinInterestsLimitError()
+            } else {
+                interestsViewModel.save(interests)
+            }
         }
 
         interestsViewModel.getUser()
@@ -116,6 +129,16 @@ class SetupInterestsActivity : AppCompatActivity() {
         val intent = Intent(this, SetupDepthQuestionsActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun showMaxInterestsLimitError() {
+        Toast.makeText(this, "Number of interests < $MAX_INTERESTS_LIMIT", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun showMinInterestsLimitError() {
+        Toast.makeText(this, "Number of interests cannot be 0", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun showErrorOnSave(@StringRes errorString: Int) {

@@ -15,12 +15,14 @@ class DepthQuestionListAdapter(context: Context, private val data: Array<DepthQu
 {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.interests_list_view_item, parent, false)
+            .inflate(R.layout.depth_questions_list_view_item, parent, false)
 
         val input = view.findViewById<EditText>(R.id.input)
         input.afterTextChanged {
             data[position].answer = it
         }
+        input.setText(data[position].answer)
+        input.visibility = if (data[position].isSelected) View.VISIBLE else View.GONE
 
         val checkBox = view.findViewById<CheckBox>(R.id.check)
         checkBox.isChecked = data[position].isSelected

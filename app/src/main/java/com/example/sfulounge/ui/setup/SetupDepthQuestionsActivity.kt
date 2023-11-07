@@ -1,20 +1,14 @@
 package com.example.sfulounge.ui.setup
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.sfulounge.MainActivity
-import com.example.sfulounge.R
 import com.example.sfulounge.data.model.DepthInfo
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupDepthQuestionsBinding
-import com.example.sfulounge.databinding.ActivitySetupInterestsBinding
 
 class SetupDepthQuestionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySetupDepthQuestionsBinding
@@ -41,6 +35,10 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
         DepthQuestionItem(question = "If you could spend a day with any fictional character, who would it be, and what would you do together?"),
         DepthQuestionItem(question = "What's your spirit animal, and what do you think it says about you?")
     )
+
+    companion object {
+        private const val MAX_DEPTH_QUESTIONS = 3
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +69,16 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
         listView.adapter = depthQuestionListAdapter
 
         next.setOnClickListener {
-            depthQuestionsViewModel.save(depthQuestions)
+            val numQuestions = depthQuestions.fold(0) { acc, item ->
+                return@fold if (item.isSelected) acc + 1 else acc
+            }
+            if (numQuestions > MAX_DEPTH_QUESTIONS) {
+                showMaxDepthQuestionLimitError()
+            } else if (numQuestions == 0) {
+                showMinDepthQuestionLimitError()
+            } else {
+                depthQuestionsViewModel.save(depthQuestions)
+            }
         }
 
         depthQuestionsViewModel.getUser()
@@ -90,6 +97,16 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
 
     private fun onSaveUserSuccessful() {
         finish()
+    }
+
+    private fun showMinDepthQuestionLimitError() {
+        Toast.makeText(this, "Number of depth questions cannot be 0", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun showMaxDepthQuestionLimitError() {
+        Toast.makeText(this, "Number of depth questions < $MAX_DEPTH_QUESTIONS", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun showErrorOnSave(@StringRes errorString: Int) {
