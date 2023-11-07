@@ -96,6 +96,7 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
     }
 
     private fun onSaveUserSuccessful() {
+        setResult(RESULT_OK)
         finish()
     }
 

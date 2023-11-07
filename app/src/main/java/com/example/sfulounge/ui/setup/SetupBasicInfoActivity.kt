@@ -33,6 +33,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
     private lateinit var setupViewModel: SetupViewModel
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var interestsResultLauncher: ActivityResultLauncher<Intent>
 
     private val uriPool = HashSet<Uri>()
     private var cameraTempUri: Uri? = null
@@ -67,6 +68,12 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
                 if (uri != null) {
                     setupViewModel.addPhoto(Photo(localUri = uri))
                 }
+            }
+        }
+        interestsResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                setResult(RESULT_OK)
+                finish()
             }
         }
 
@@ -161,8 +168,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
 
     private fun onSaveUserSuccessful() {
         val intent = Intent(this, SetupInterestsActivity::class.java)
-        startActivity(intent)
-        finish()
+        interestsResultLauncher.launch(intent)
     }
 
     private fun showErrorOnSave(@StringRes errorString: Int) {

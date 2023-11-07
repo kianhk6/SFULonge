@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +16,7 @@ class SetupInterestsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySetupInterestsBinding
     private lateinit var interestsViewModel: InterestsViewModel
     private lateinit var interestListAdapter: InterestListAdapter
+    private lateinit var depthQuestionsResultLauncher: ActivityResultLauncher<Intent>
 
     private val interests = arrayOf(
         InterestItem(tag = "Hiking"),
@@ -93,6 +96,13 @@ class SetupInterestsActivity : AppCompatActivity() {
             }
         })
 
+        depthQuestionsResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                setResult(RESULT_OK)
+                finish()
+            }
+        }
+
         val next = binding.next
         val listView = binding.listView
         interestListAdapter = InterestListAdapter(this, interests)
@@ -127,8 +137,7 @@ class SetupInterestsActivity : AppCompatActivity() {
 
     private fun onSaveUserSuccessful() {
         val intent = Intent(this, SetupDepthQuestionsActivity::class.java)
-        startActivity(intent)
-        finish()
+        depthQuestionsResultLauncher.launch(intent)
     }
 
     private fun showMaxInterestsLimitError() {

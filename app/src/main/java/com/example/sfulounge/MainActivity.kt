@@ -45,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         setupResult = registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 homeViewModel.initializeUserProfile()
+            } else {
+                finish()
             }
         }
 
@@ -60,17 +62,23 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        homeViewModel.userResult.observe(this, Observer {
-            val userResult = it ?: return@Observer
-            if (userResult.error != null) {
-                showProfileInitializationFailed(userResult.error)
+        homeViewModel.initializationResult.observe(this, Observer {
+            val unitResult = it ?: return@Observer
+            if (unitResult.error != null) {
+                showProfileInitializationFailed(unitResult.error)
+            } else {
+                showProfileInitializationSuccess()
             }
         })
 
         homeViewModel.getUser()
     }
 
+    private fun showProfileInitializationSuccess() {
+        Toast.makeText(this, "profile initialized", Toast.LENGTH_SHORT).show()
+    }
+
     private fun showProfileInitializationFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, getString(errorString), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 }

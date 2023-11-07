@@ -10,24 +10,25 @@ import android.widget.EditText
 import android.widget.TextView
 import com.example.sfulounge.R
 
-class DepthQuestionListAdapter(context: Context, private val data: Array<DepthQuestionItem>)
+class DepthQuestionListAdapter(context: Context, data: Array<DepthQuestionItem>)
     : ArrayAdapter<DepthQuestionItem>(context, R.layout.depth_questions_list_view_item, data)
 {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context)
             .inflate(R.layout.depth_questions_list_view_item, parent, false)
 
+        val item = getItem(position)!!
         val input = view.findViewById<EditText>(R.id.input)
         input.afterTextChanged {
-            data[position].answer = it
+            item.answer = it
         }
-        input.setText(data[position].answer)
-        input.visibility = if (data[position].isSelected) View.VISIBLE else View.GONE
+        input.setText(item.answer)
+        input.visibility = if (item.isSelected) View.VISIBLE else View.GONE
 
         val checkBox = view.findViewById<CheckBox>(R.id.check)
-        checkBox.isChecked = data[position].isSelected
+        checkBox.isChecked = item.isSelected
         checkBox.setOnCheckedChangeListener { _, isChecked ->
-            data[position].isSelected = isChecked
+            item.isSelected = isChecked
             if (isChecked) {
                 input.visibility = View.VISIBLE
             } else {
@@ -35,7 +36,7 @@ class DepthQuestionListAdapter(context: Context, private val data: Array<DepthQu
             }
         }
 
-        view.findViewById<TextView>(R.id.text).text = data[position].question
+        view.findViewById<TextView>(R.id.text).text = item.question
 
         return view
     }

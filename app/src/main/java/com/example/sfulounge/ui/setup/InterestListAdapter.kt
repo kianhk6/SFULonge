@@ -9,7 +9,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.example.sfulounge.R
 
-class InterestListAdapter(context: Context, private val data: Array<InterestItem>)
+class InterestListAdapter(context: Context, data: Array<InterestItem>)
     : ArrayAdapter<InterestItem>(context, R.layout.interests_list_view_item, data) 
 {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -18,12 +18,13 @@ class InterestListAdapter(context: Context, private val data: Array<InterestItem
 
         val checkBox = view.findViewById<CheckBox>(R.id.check)
 
-        checkBox.isChecked = data[position].isSelected
+        val item = getItem(position)!!
+        checkBox.isChecked = item.isSelected
         checkBox.setOnCheckedChangeListener { _, isChecked ->
-            data[position].isSelected = isChecked
+            item.isSelected = isChecked
         }
 
-        view.findViewById<TextView>(R.id.text).text = data[position].tag
+        view.findViewById<TextView>(R.id.text).text = item.tag
         return view
     }
 }
