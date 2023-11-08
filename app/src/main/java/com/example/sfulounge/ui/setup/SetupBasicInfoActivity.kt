@@ -33,6 +33,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
     private lateinit var setupViewModel: SetupViewModel
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var interestsResultLauncher: ActivityResultLauncher<Intent>
 
     private val uriPool = HashSet<Uri>()
     private var cameraTempUri: Uri? = null
@@ -69,6 +70,12 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
                 }
             }
         }
+        interestsResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                setResult(RESULT_OK)
+                finish()
+            }
+        }
 
         val next = binding.next
         val firstName = binding.firstName
@@ -78,13 +85,9 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         val photosGrid = binding.gridView
         val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos)
 
-        var isInitialized = false
         setupViewModel.userResult.observe(this, Observer {
             val userResult = it ?: return@Observer
-            if (!isInitialized) {
-                loadUser(userResult.user!!)
-                isInitialized = true
-            }
+            loadUser(userResult.user!!)
         })
         setupViewModel.saved.observe(this, Observer {
             val unitResult = it ?: return@Observer
@@ -144,10 +147,12 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
             }
         }
         next.setOnClickListener {
-            loading.visibility = View.VISIBLE
             if (setupViewModel.photos.size < MIN_PHOTOS_LIMIT) {
                 showMinPhotosLimitError()
+            } else if (setupViewModel.photos.size > MAX_PHOTOS_LIMIT) {
+                showMaxPhotosLimitReached()
             } else {
+                loading.visibility = View.VISIBLE
                 setupViewModel.saveUser()
             }
         }
@@ -163,8 +168,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
 
     private fun onSaveUserSuccessful() {
         val intent = Intent(this, SetupInterestsActivity::class.java)
-        startActivity(intent)
-        finish()
+        interestsResultLauncher.launch(intent)
     }
 
     private fun showErrorOnSave(@StringRes errorString: Int) {
@@ -172,12 +176,12 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
     }
 
     private fun showMinPhotosLimitError() {
-        Toast.makeText(this, "Number of photos < ${MIN_PHOTOS_LIMIT-1}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Number of photos < $MIN_PHOTOS_LIMIT", Toast.LENGTH_SHORT)
             .show()
     }
 
     private fun showMaxPhotosLimitReached() {
-        Toast.makeText(this, "Number of photos > ${MAX_PHOTOS_LIMIT-1}", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Number of photos > $MAX_PHOTOS_LIMIT", Toast.LENGTH_SHORT)
             .show()
     }
 

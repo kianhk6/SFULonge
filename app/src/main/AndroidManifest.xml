@@ -28,6 +28,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.setup.SetupBasicInfoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:exported="false" />
         <activity
             android:name=".ui.register.RegisterActivity"

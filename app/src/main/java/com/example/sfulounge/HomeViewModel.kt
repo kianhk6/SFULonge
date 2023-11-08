@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.model.User
+import com.example.sfulounge.ui.setup.UnitResult
 
 class HomeViewModel(private val repository: MainRepository) : ViewModel() {
 
     private val _currentUser = MutableLiveData<User>()
     val currentUser: LiveData<User> = _currentUser
 
-    private val _userResult = MutableLiveData<UserResult>()
-    val userResult: LiveData<UserResult> = _userResult
+    private val _initializationResult = MutableLiveData<UnitResult>()
+    val initializationResult: LiveData<UnitResult> = _initializationResult
 
     fun getUser() {
         repository.getUser(
@@ -25,12 +26,8 @@ class HomeViewModel(private val repository: MainRepository) : ViewModel() {
 
     fun initializeUserProfile() {
         repository.initializeUserProfile(
-            onSuccess = { },
-            onError = { _userResult.value = UserResult(error = it.exception) }
+            onSuccess = { _initializationResult.value = UnitResult() },
+            onError = { _initializationResult.value = UnitResult(error = it.exception) }
         )
     }
-
-    data class UserResult(
-        val error: Int? = null
-    )
 }
