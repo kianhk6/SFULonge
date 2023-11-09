@@ -20,7 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/bg_signin" />
+            android:src="@drawable/bg_signin"
+            app:tint="#57272525"
+            android:tintMode="src_atop" />
 
     </FrameLayout>
 
@@ -172,8 +174,8 @@
 
     <ProgressBar
         android:id="@+id/loading"
-        android:layout_width="122dp"
-        android:layout_height="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="64dp"
         android:layout_marginBottom="64dp"
