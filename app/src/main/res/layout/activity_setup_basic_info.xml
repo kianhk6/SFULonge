@@ -9,61 +9,125 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/first_name_label"
+            android:id="@+id/name_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="First Name" />
-        <EditText
-            android:id="@+id/first_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:hint="First Name"
-            android:selectAllOnFocus="true" />
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="8dp"
+            android:text="Introduce yourself!"
+            android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/last_name_label"
+            android:id="@+id/name_disclaimer"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp"
+            android:text="Only your first name will be shown to other users!"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Last Name" />
-        <EditText
-            android:id="@+id/last_name"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="#75000000"
+            android:textColorHint="#ffffff">
+
+            <EditText
+                android:id="@+id/full_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/detail_white_outline"
+                android:hint="Full Name"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColor="#ffffff"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/gender_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:minHeight="48dp"
-            android:hint="Last Name"
-            android:imeActionLabel="Next"
-            android:imeOptions="actionDone"
-            android:selectAllOnFocus="true" />
+            android:paddingTop="50dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="8dp"
+            android:text="Your gender!"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/gender_disclaimer"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textSize="18sp"
+            android:text="You can always change your gender later and you can hide it from your profile!" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="15dp">
+
+            <RadioButton
+                android:id="@+id/rb_male"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/rb_female"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+
+            <RadioButton
+                android:id="@+id/rb_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+
+            <RadioButton
+                android:id="@+id/rb_prefer_not_to_say"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prefer not to say" />
+        </RadioGroup>
 
         <Button
-            android:id="@+id/upload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginBottom="8dp"
-            android:text="Upload photos" />
-
-        <GridView
-            android:id="@+id/grid_view"
+            android:id="@+id/btn_continue"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:stretchMode="columnWidth"
-            android:layout_weight="1"
-            android:numColumns="4" />
-
-        <Button
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Next" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="@color/button_orange"
+            android:text="@string/btn_continue"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
