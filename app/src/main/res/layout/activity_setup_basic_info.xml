@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/register_background2"
     tools:context=".ui.setup.SetupBasicInfoActivity">
 
     <LinearLayout
@@ -26,7 +27,7 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:paddingBottom="8dp"
-            android:text="Introduce yourself!"
+            android:text="What's your name?"
             android:textSize="30sp" />
 
         <TextView
@@ -117,7 +118,7 @@
         <Button
             android:id="@+id/btn_continue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
