@@ -28,6 +28,8 @@
     <string name="error_message_delete_photo">failed to delete photo</string>
     <string name="error_message_initialize_profile">failed to initialize user profile</string>
     <string name="error_message_recovery">recovery error</string>
+    <string name="error_message_get_users">failed to get users</string>
+
 
     <!-- Strings related to login -->
     <string name="title_activity_register">RegisterActivity</string>
@@ -81,4 +83,5 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="content_description_profile_picture">profile picture</string>
 </resources>
