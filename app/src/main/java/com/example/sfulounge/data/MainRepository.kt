@@ -232,4 +232,23 @@ class MainRepository {
                 }
             }
     }
+
+    fun getAllUsers(
+        onSuccess: (List<User>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { result ->
+                val usersList = result.mapNotNull { document ->
+                    document.data.let { User.fromMap(it) }
+                }
+                onSuccess(usersList)
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("MainRepository", "Error getting users: ", exception)
+                onError(Result.Error(R.string.error_message_fetch_users))
+            }
+    }
 }
