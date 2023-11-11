@@ -26,24 +26,6 @@ class MainRepository {
         DatabaseHelper.getUser(db, user.uid, onSuccess, onError)
     }
 
-    fun initializeUserProfile(
-        onSuccess: () -> Unit,
-        onError: (Result.Error) -> Unit
-    ) {
-        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
-
-        db.collection("users")
-            .document(user.uid)
-            .update("isProfileInitialized", true)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onSuccess()
-                } else {
-                    onError(Result.Error(R.string.error_message_initialize_profile))
-                }
-            }
-    }
-
     fun updateUserBasicInfo(
         firstName: String?,
         lastName: String?,
@@ -88,7 +70,7 @@ class MainRepository {
             }
     }
 
-    fun updateUserDepthQuestions(
+    fun finalizeUserDepthQuestions(
         depthQuestions: List<DepthInfo>,
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
@@ -97,7 +79,12 @@ class MainRepository {
 
         db.collection("users")
             .document(user.uid)
-            .update(mapOf("depthQuestions" to depthQuestions))
+            .update(
+                mapOf(
+                    "isProfileInitialized" to true,
+                    "depthQuestions" to depthQuestions
+                )
+            )
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
@@ -204,7 +191,7 @@ class MainRepository {
             .get()
             .addOnSuccessListener { result ->
                 val usersList = result.mapNotNull { document ->
-                    document.data.let { User.fromMap(it) }
+                    document?.toObject(User::class.java)
                 }
                 onSuccess(usersList)
 

@@ -2,6 +2,7 @@ package com.example.sfulounge.data
 
 import android.util.Log
 import com.example.sfulounge.R
+import com.example.sfulounge.data.model.LoggedInUser
 import com.example.sfulounge.data.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -17,7 +18,7 @@ object DatabaseHelper {
             .get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    val loggedInUser = User.fromMap(document.data!!)
+                    val loggedInUser =document.toObject(User::class.java)!!
                     onSuccess(loggedInUser)
                 } else {
                     throw IllegalStateException("User cannot be null")
