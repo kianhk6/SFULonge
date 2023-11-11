@@ -66,9 +66,7 @@ class RegisterActivity : AppCompatActivity() {
             }
             setResult(Activity.RESULT_OK)
 
-            //Complete and destroy register activity once successful
-            startActivity(Intent(this, EmailVerificationActivity::class.java))
-            finish()
+            onRegistrationSuccessful()
         })
 
         email.afterTextChanged {
@@ -116,6 +114,18 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * wiring to activities
+     */
+    private fun onRegistrationSuccessful() {
+        //Complete and destroy register activity once successful
+        startActivity(Intent(this, EmailVerificationActivity::class.java))
+        finish()
+    }
+
+    /**
+     * UI
+     */
     private fun updateUiWithUser(model: RegisteredUserView) {
         val displayName = model.email
         Toast.makeText(

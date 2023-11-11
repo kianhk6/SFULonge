@@ -1,13 +1,14 @@
 package com.example.sfulounge.ui.register
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.sfulounge.R
 import com.example.sfulounge.databinding.ActivityEmailVerificationBinding
+import com.example.sfulounge.ui.setup.SetupBasicInfoActivity
 
 class EmailVerificationActivity : AppCompatActivity() {
 
@@ -32,17 +33,28 @@ class EmailVerificationActivity : AppCompatActivity() {
         })
 
         val resend = binding.resendEmail
-        val login = binding.login
+        val next = binding.next
 
         resend.setOnClickListener {
             registerViewModel.retrySendVerificationEmail()
         }
 
-        login.setOnClickListener {
-            finish()
+        next.setOnClickListener {
+            onEmailVerificationSuccessful()
         }
     }
 
+    /**
+     * wiring to activities
+     */
+    private fun onEmailVerificationSuccessful() {
+        startActivity(Intent(this, SetupBasicInfoActivity::class.java))
+        finish()
+    }
+
+    /**
+     * UI
+     */
     private fun showVerificationFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, getString(errorString), Toast.LENGTH_SHORT).show()
     }

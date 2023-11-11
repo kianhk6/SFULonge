@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.data.LoginDataSource
 import com.example.sfulounge.data.LoginRepository
+import com.example.sfulounge.data.MainRepository
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
