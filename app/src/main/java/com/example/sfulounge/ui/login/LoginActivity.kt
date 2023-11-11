@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        if (loginViewModel.isLoggedIn() && false) {
+        if (loginViewModel.isLoggedIn()) {
             // auto login
             loginViewModel.getLoggedInUser()
         }
