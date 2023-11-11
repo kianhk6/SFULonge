@@ -8,15 +8,262 @@
     tools:context=".ui.setup.SetupInterestsActivity">
 
     <TextView
+        android:id="@id/textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:gravity="center"
         android:text="Interests" />
 
-    <ListView
-        android:id="@+id/list_view"
-        android:layout_weight="1"
+    <TextView
+        android:id="@+id/subtext"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        android:text="Let other's know what you're into"
+        app:layout_constraintTop_toBottomOf="@id/textview" />
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_group_choice"
+        android:layout_width="396dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subtext">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Hiking"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hiking" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Travel"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Travel" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Camping"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camping" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Running"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Running" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Biking"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Biking" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Boating"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boating" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/SkiingSnowboarding"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skiing and Snowboarding" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Cooking"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cooking" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Photography"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Photography" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Gaming"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gaming" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Reading"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reading" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Music"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Music" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ArtPainting"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Art and Painting" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Dancing"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dancing" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Writing"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Writing" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Baking"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Baking" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/DIY"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DIY and Crafting" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Gardening"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gardening" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Fashion"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fashion" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/MoviesTV"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movies and TV Shows" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/BoardGames"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Board Games" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Languages"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Languages" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/AnimeCosplay"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anime and Cosplay" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Comedy"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comedy" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Yoga"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yoga" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/TheaterPerformingArts"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Theater and Performing Arts" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/FitnessWorkout"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fitness and Workout" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/MeditationMindfulness"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Meditation and Mindfulness" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Food"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/WineBeer"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wine and Beer" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/CoffeeTea"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coffee and Tea" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Science"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Science" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/HistoryArchaeology"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History and Archaeology" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Astronomy"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Astronomy" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/ScienceFictionFantasy"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Science Fiction and Fantasy" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/Philosophy"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Philosophy" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/SocialImpactVolunteering"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Social Impact and Volunteering" />
+    </com.google.android.material.chip.ChipGroup>
 
     <Button
         android:id="@+id/next"
