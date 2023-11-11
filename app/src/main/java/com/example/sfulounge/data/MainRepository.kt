@@ -27,8 +27,8 @@ class MainRepository {
     }
 
     fun updateUserBasicInfo(
-        firstName: String?,
-        lastName: String?,
+        firstName: String,
+        gender: Int,
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
@@ -39,7 +39,7 @@ class MainRepository {
             .update(
                 mapOf(
                     "firstName" to firstName,
-                    "lastName" to lastName
+                    "gender" to gender
                 )
             )
             .addOnCompleteListener { task ->

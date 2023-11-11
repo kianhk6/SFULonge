@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -18,7 +19,9 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.MainActivity
+import com.example.sfulounge.R
 import com.example.sfulounge.Util
+import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupBasicInfoBinding
 import com.example.sfulounge.ui.components.SingleChoiceDialog
@@ -80,6 +83,7 @@ class SetupBasicInfoActivity : AppCompatActivity() {
 
         val next = binding.next
         val firstName = binding.firstName
+        val gender = binding.gender
 //        val lastName = binding.lastName
 //        val upload = binding.upload
         val loading = binding.loading
@@ -136,6 +140,15 @@ class SetupBasicInfoActivity : AppCompatActivity() {
 //        lastName.afterTextChanged {
 //            setupViewModel.lastName = it
 //        }
+        gender.onCheckedChanged {
+            setupViewModel.gender = when (it) {
+                R.id.rb_male -> Gender.MALE
+                R.id.rb_female -> Gender.FEMALE
+                R.id.rb_other -> Gender.OTHER
+                R.id.rb_prefer_not_to_say -> Gender.UNSPECIFIED
+                else -> null
+            }
+        }
 
 //        upload.setOnClickListener {
 //            if (setupViewModel.photos.size < MAX_PHOTOS_LIMIT) {
@@ -265,4 +278,10 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
+}
+
+fun RadioGroup.onCheckedChanged(afterCheckedChanged: (Int) -> Unit) {
+    this.setOnCheckedChangeListener { _, checkedId ->
+        afterCheckedChanged.invoke(checkedId)
+    }
 }
