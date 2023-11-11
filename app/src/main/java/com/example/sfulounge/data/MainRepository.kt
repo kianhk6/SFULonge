@@ -23,26 +23,7 @@ class MainRepository {
         onError: (Result.Error) -> Unit
     ) {
         val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
-
-        db.collection("users")
-            .document(user.uid)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.data != null) {
-                    val loggedInUser = User.fromMap(document.data!!)
-                    onSuccess(loggedInUser)
-                } else {
-                    throw IllegalStateException("User cannot be null")
-                }
-            }
-            .addOnFailureListener { error ->
-                Log.e("error", error.message ?: "failed to read from db")
-
-                // user not found error: try to recover
-                addUserOnRecovery(user.uid, onSuccess, onError)
-
-                onError(Result.Error(R.string.error_message_unknown_reason))
-            }
+        DatabaseHelper.getUser(db, user.uid, onSuccess, onError)
     }
 
     fun initializeUserProfile(
@@ -215,21 +196,22 @@ class MainRepository {
             .update(mapOf("photos" to FieldValue.arrayRemove(url)))
     }
 
-    private fun addUserOnRecovery(
-        userId: String,
-        onSuccess: (User) -> Unit,
+    fun getAllUsers(
+        onSuccess: (List<User>) -> Unit,
         onError: (Result.Error) -> Unit
     ) {
-        val user = User(userId = userId, isProfileInitialized = false)
         db.collection("users")
-            .document(userId)
-            .set(User.toMap(user))
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onSuccess(user)
-                } else {
-                    onError(Result.Error(R.string.error_message_recovery))
+            .get()
+            .addOnSuccessListener { result ->
+                val usersList = result.mapNotNull { document ->
+                    document.data.let { User.fromMap(it) }
                 }
+                onSuccess(usersList)
+
+            }
+            .addOnFailureListener { exception ->
+                Log.e("MainRepository", "Error getting users: ", exception)
+                onError(Result.Error(R.string.error_message_fetch_users))
             }
     }
 }

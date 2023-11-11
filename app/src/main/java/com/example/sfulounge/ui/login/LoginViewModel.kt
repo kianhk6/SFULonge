@@ -7,6 +7,7 @@ import android.util.Patterns
 import com.example.sfulounge.data.LoginRepository
 
 import com.example.sfulounge.R
+import com.example.sfulounge.data.model.LoggedInUser
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -20,13 +21,38 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         return loginRepository.isLoggedIn
     }
 
+    companion object {
+        private const val EMAIL_DOMAIN = "@sfu.ca"
+    }
+
+    fun getLoggedInUser() {
+        loginRepository.getLoggedInUser(
+            onSuccess = { result ->
+                _loginResult.value = LoginResult(
+                    success = LoggedInUser(
+                        userId = result.data.userId,
+                        email = result.data.email,
+                        userData = result.data.userData
+                    )
+                )
+            },
+            onError = { _loginResult.value = LoginResult(error = it.exception) }
+        )
+    }
+
     fun login(email: String, password: String) {
         loginRepository.login(
             email,
             password,
             onSuccess = { result ->
                 _loginResult.value =
-                    LoginResult(success = LoggedInUserView(email = result.data.email))
+                    LoginResult(
+                        success = LoggedInUser(
+                            userId = result.data.userId,
+                            email = result.data.email,
+                            userData = result.data.userData
+                        )
+                    )
             },
             onError = { error ->
                 _loginResult.value = LoginResult(error = error.exception)
@@ -46,7 +72,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     // A placeholder username validation check
     private fun isUserNameValid(username: String): Boolean {
-        return if (username.endsWith("@sfu.ca")) {
+        return if (username.endsWith(EMAIL_DOMAIN)) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
         } else {
             username.isNotBlank()

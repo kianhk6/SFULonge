@@ -83,5 +83,10 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="btn_continue">Continue</string>
+    <string name="let_s_get_started">Let\'s get started!</string>
+    <string name="the_social_hub_for_sfu_students">The Social Hub for SFU Students</string>
+    <string name="error_message_fetch_users">Unable to fetch users \n</string>
+    <string name="action_next">Next</string>
     <string name="content_description_profile_picture">profile picture</string>
 </resources>

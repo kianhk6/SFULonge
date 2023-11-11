@@ -9,15 +9,15 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import com.example.sfulounge.MainActivity
 import com.example.sfulounge.databinding.ActivityLoginBinding
 
-import com.example.sfulounge.R
+import com.example.sfulounge.data.model.LoggedInUser
 import com.example.sfulounge.ui.register.RegisterActivity
+import com.example.sfulounge.ui.setup.SetupBasicInfoActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -40,8 +40,8 @@ class LoginActivity : AppCompatActivity() {
             .get(LoginViewModel::class.java)
 
         if (loginViewModel.isLoggedIn()) {
-            onLoginSuccessful()
-            return
+            // auto login
+            loginViewModel.getLoggedInUser()
         }
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
@@ -66,10 +66,14 @@ class LoginActivity : AppCompatActivity() {
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
 
-            onLoginSuccessful()
+                val user = loginResult.success.userData
+                if (!user.isProfileInitialized) {
+                    onProfileNotInitialized()
+                } else {
+                    onLoginSuccessful()
+                }
+            }
         })
 
         email.afterTextChanged {
@@ -104,18 +108,34 @@ class LoginActivity : AppCompatActivity() {
         }
 
         register.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            onRegisterClicked()
         }
     }
 
+    /**
+     * wiring to other activities
+     */
     private fun onLoginSuccessful() {
         //Complete and destroy login activity once successful
-        //TODO(remember to uncomment this)
+        setResult(Activity.RESULT_OK)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun onRegisterClicked() {
+        startActivity(Intent(this, RegisterActivity::class.java))
+        finish()
+    }
+
+    private fun onProfileNotInitialized() {
+        startActivity(Intent(this, SetupBasicInfoActivity::class.java))
+        finish()
+    }
+
+    /**
+     * UI
+     */
+    private fun updateUiWithUser(model: LoggedInUser) {
         val displayName = model.email
         Toast.makeText(
             applicationContext,
