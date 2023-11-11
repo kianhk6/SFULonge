@@ -17,6 +17,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.MainActivity
 import com.example.sfulounge.Util
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupBasicInfoBinding
@@ -73,7 +74,7 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         interestsResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 setResult(RESULT_OK)
-                finish()
+                onReturnToHomePage()
             }
         }
 
@@ -166,11 +167,22 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         binding.lastName.setText(user.lastName)
     }
 
+    /**
+     * wiring to activities
+     */
     private fun onSaveUserSuccessful() {
         val intent = Intent(this, SetupInterestsActivity::class.java)
         interestsResultLauncher.launch(intent)
     }
 
+    private fun onReturnToHomePage() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    /**
+     * UI
+     */
     private fun showErrorOnSave(@StringRes errorString: Int) {
         Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
     }

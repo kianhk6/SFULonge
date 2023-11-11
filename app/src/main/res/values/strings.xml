@@ -10,7 +10,6 @@
     <string name="action_register">Register</string>
     <string name="action_sign_in">Log in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_password_confirm">Confirmed password must match</string>
@@ -31,7 +30,6 @@
 
     <!-- Strings related to login -->
     <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_setup_basic_info">SetupBasicInfoActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -85,4 +83,5 @@
     <string name="let_s_get_started">Let\'s get started!</string>
     <string name="the_social_hub_for_sfu_students">The Social Hub for SFU Students</string>
     <string name="error_message_fetch_users">Unable to fetch users \n</string>
+    <string name="action_next">Next</string>
 </resources>

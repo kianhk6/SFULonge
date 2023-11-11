@@ -5,5 +5,6 @@ package com.example.sfulounge.data.model
  */
 data class LoggedInUser(
     val userId: String,
-    val email: String
+    val email: String,
+    val userData: User
 )
