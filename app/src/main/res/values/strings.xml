@@ -29,6 +29,7 @@
     <string name="error_message_initialize_profile">failed to initialize user profile</string>
     <string name="error_message_recovery">recovery error</string>
     <string name="error_message_get_users">failed to get users</string>
+    <string name="error_message_create_chat_room">failed to create chat room</string>
 
 
     <!-- Strings related to login -->

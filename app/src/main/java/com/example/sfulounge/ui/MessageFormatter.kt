@@ -1,14 +1,17 @@
-package com.example.sfulounge.data
+package com.example.sfulounge.ui
 
+import android.graphics.Typeface
+import android.widget.TextView
 import com.example.sfulounge.data.model.ChatRoom
+import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 object MessageFormatter {
-    fun formatMessage(chatRoom: ChatRoom): String {
-        val message = chatRoom.mostRecentMessage
-        return if (message == null) {
+    fun displayMessage(textView: TextView, message: Message?, isMessageSeen: Boolean) {
+        textView.setTypeface(null, if (isMessageSeen) Typeface.NORMAL else Typeface.BOLD)
+        textView.text = if (message == null) {
             "Start chatting!"
         } else {
             message.text ?: "upload"

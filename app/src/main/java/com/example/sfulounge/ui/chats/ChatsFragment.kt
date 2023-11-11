@@ -2,7 +2,6 @@ package com.example.sfulounge.ui.chats
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +31,11 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
         chatsViewModel = ViewModelProvider(this, ChatsViewModelFactory())
             .get(ChatsViewModel::class.java)
 
-        val chatsListAdapter = ChatsListAdapter(chatsViewModel.preCachedUrls, this)
+        val chatsListAdapter = ChatsListAdapter(
+            chatsViewModel.userId,
+            chatsViewModel.preCachedUrls,
+            this
+        )
 
         chatsViewModel.preCachedUrls.observe(requireActivity()) {
             // only the profile picture gets updated here

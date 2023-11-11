@@ -1,6 +1,5 @@
 package com.example.sfulounge.ui.chats
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,7 @@ class ChatsViewModel(private val repository: ChatRepository)
     : ViewModel(), ChatRepository.ChatRoomListener
 {
     private val _userId: String = repository.getCurrentUserUid()
+    val userId: String = _userId
 
     private val _chatRooms: ArrayList<ChatRoom> = ArrayList()
     val chatRooms: List<ChatRoom> = _chatRooms
@@ -31,7 +31,7 @@ class ChatsViewModel(private val repository: ChatRepository)
         for (room in chatRooms) {
             if (room.roomId !in _cache) {
                 // prefetch image url in user
-                val usersIds = getUserSubset(room.members)
+                val usersIds = getUserSubset(room.members.keys)
                 repository.getUsers(
                     usersIds,
                     onComplete = { users ->
@@ -44,13 +44,14 @@ class ChatsViewModel(private val repository: ChatRepository)
                 _chatRooms.add(room)
             }
         }
+        _preCachedUrls.value = _cache
     }
 
     /**
      * out of all members in the chatroom decide which members profile pic
      * to be displayed
      */
-    private fun getUserSubset(userIds: List<String>): List<String> {
+    private fun getUserSubset(userIds: Set<String>): List<String> {
         return userIds.filter { x -> x != _userId }.take(MAX_IMAGE_DISPLAY)
     }
 
