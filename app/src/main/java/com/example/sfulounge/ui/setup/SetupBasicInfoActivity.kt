@@ -177,6 +177,15 @@ class SetupBasicInfoActivity : AppCompatActivity() {
 
     private fun loadUser(user: User) {
         binding.firstName.setText(user.firstName)
+        binding.gender.check(
+            when (user.gender) {
+                Gender.MALE -> R.id.rb_male
+                Gender.FEMALE -> R.id.rb_female
+                Gender.OTHER -> R.id.rb_other
+                Gender.UNSPECIFIED -> R.id.rb_prefer_not_to_say
+                else -> -1
+            }
+        )
 //        binding.lastName.setText(user.lastName)
     }
 
