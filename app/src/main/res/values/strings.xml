@@ -27,6 +27,9 @@
     <string name="error_message_delete_photo">failed to delete photo</string>
     <string name="error_message_initialize_profile">failed to initialize user profile</string>
     <string name="error_message_recovery">recovery error</string>
+    <string name="error_message_name_is_null">name is null</string>
+    <string name="error_message_gender_is_null">gender is null</string>
+
 
     <!-- Strings related to login -->
     <string name="title_activity_register">RegisterActivity</string>

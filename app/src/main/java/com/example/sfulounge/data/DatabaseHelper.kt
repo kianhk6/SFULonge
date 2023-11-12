@@ -17,7 +17,7 @@ object DatabaseHelper {
             .get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    val loggedInUser = User.fromMap(document.data!!)
+                    val loggedInUser = document.toObject(User::class.java)!!
                     onSuccess(loggedInUser)
                 } else {
                     throw IllegalStateException("User cannot be null")
