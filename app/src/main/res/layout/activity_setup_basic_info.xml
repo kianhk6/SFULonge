@@ -45,9 +45,9 @@
             android:paddingEnd="20dp"
             android:paddingBottom="8dp"
             android:text="What's your name?"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name_disclaimer"
@@ -68,7 +68,6 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="#75000000"
             android:textColorHint="#ffffff">
 
             <EditText
@@ -87,14 +86,14 @@
             android:id="@+id/gender_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="50dp"
             android:paddingStart="20dp"
+            android:paddingTop="50dp"
             android:paddingEnd="20dp"
             android:paddingBottom="8dp"
             android:text="Your gender!"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/gender_disclaimer"
@@ -102,61 +101,60 @@
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:textSize="18sp"
+            android:text="You can always change your gender later and you can hide it from your profile!"
             android:textColor="@color/black"
-            android:text="You can always change your gender later and you can hide it from your profile!" />
+            android:textSize="18sp" />
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingTop="15dp">
+            android:paddingTop="15dp"
+            android:paddingEnd="20dp">
 
             <RadioButton
                 android:id="@+id/rb_male"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Male" />
+                android:text="Male"
+                android:textSize="16sp" />
 
             <RadioButton
                 android:id="@+id/rb_female"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Female" />
+                android:text="Female"
+                android:textSize="16sp" />
 
             <RadioButton
                 android:id="@+id/rb_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Other" />
+                android:text="Other"
+                android:textSize="16sp" />
 
             <RadioButton
                 android:id="@+id/rb_prefer_not_to_say"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Prefer not to say" />
+                android:text="Prefer not to say"
+                android:textSize="16sp" />
         </RadioGroup>
-
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/white"
             android:clickable="true"
-            app:fabCustomSize="60dp"
-            app:borderWidth="0dp"
             android:contentDescription="next"
             android:outlineAmbientShadowColor="@color/black"
-            android:layout_gravity="end"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/baseline_keyboard_double_arrow_right_24" />
+            android:src="@drawable/baseline_keyboard_double_arrow_right_24"
+            app:borderWidth="0dp"
+            app:fabCustomSize="60dp" />
     </LinearLayout>
 
     <ProgressBar
