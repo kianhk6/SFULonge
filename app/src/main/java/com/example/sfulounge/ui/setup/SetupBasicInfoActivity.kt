@@ -46,6 +46,7 @@ class SetupBasicInfoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
         Util.checkPermissions(this)
 
@@ -171,7 +172,7 @@ class SetupBasicInfoActivity : AppCompatActivity() {
      * wiring to activities
      */
     private fun onSaveUserSuccessful() {
-        val intent = Intent(this, SetupInterestsActivity::class.java)
+        val intent = Intent(this, SetupImagesActivity::class.java)
         interestsResultLauncher.launch(intent)
     }
 
