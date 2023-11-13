@@ -57,4 +57,4 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 4. Build and run the application on an emulator or physical device.
 
 ## Support and Contact
-For support, contact sfu_longe_support@gmail.com. Join our community and make your SFU experience unforgettable!
+For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!
