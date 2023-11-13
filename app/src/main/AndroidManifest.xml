@@ -27,6 +27,9 @@
             android:name=".ui.setup.SetupInterestsActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.setup.SetupImagesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.setup.SetupBasicInfoActivity"
             android:exported="false"
             android:windowSoftInputMode="stateAlwaysHidden" />
