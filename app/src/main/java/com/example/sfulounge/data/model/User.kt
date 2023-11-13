@@ -1,15 +1,15 @@
 package com.example.sfulounge.data.model
 
 data class User(
-    var userId: String = "",
-    var isProfileInitialized: Boolean = false,
-    var firstName: String? = null,
-    var lastName: String? = null,
-    var description: String? = null,
-    var gender: Int = Gender.UNSPECIFIED,
-    var interests: List<String> = ArrayList(),
-    var depthQuestions: List<DepthInfo> = ArrayList(),
-    var photos: List<String> = ArrayList()
+    val userId: String = "",
+    val isProfileInitialized: Boolean = false,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val description: String? = null,
+    val gender: Int = Gender.UNSPECIFIED,
+    val interests: List<String> = ArrayList(),
+    val depthQuestions: List<DepthInfo> = ArrayList(),
+    val photos: List<String> = ArrayList()
 ) {
     companion object {
         fun toMap(user: User) = mapOf(
