@@ -94,7 +94,6 @@
                     android:stretchMode="columnWidth"
                     android:numColumns="2"/>
             </RelativeLayout>
-            <!--            tools:listitem="@layout/photo_grid_view_item"/>-->
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/next"
