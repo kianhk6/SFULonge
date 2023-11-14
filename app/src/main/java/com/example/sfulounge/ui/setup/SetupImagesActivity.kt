@@ -34,7 +34,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     private var cameraTempUri: Uri? = null
 
     companion object {
-        const val MAX_PHOTOS_LIMIT = 5
+        const val MAX_PHOTOS_LIMIT = 4
         const val MIN_PHOTOS_LIMIT = 2
     }
 
