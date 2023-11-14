@@ -77,7 +77,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         val upload = binding.upload
         val loading = binding.loading
         val photosGrid = binding.gridView
-        val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos)
+        val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos, setupViewModel)
 
         setupViewModel.userResult.observe(this, Observer {
             val userResult = it ?: return@Observer
