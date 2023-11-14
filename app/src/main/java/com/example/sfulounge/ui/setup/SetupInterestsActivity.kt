@@ -3,6 +3,7 @@ package com.example.sfulounge.ui.setup
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -110,27 +111,9 @@ class SetupInterestsActivity : AppCompatActivity() {
         }
 
         val next = binding.next
-//        val listView = binding.listView
-//        interestListAdapter = InterestListAdapter(this, interests)
-//
-//        listView.adapter = interestListAdapter
 
         chipGroup = findViewById(R.id.chip_group_choice)
 
-//        next.setOnClickListener {
-//            val numInterests = interests.fold(0) { acc, item ->
-//                return@fold if (item.isSelected) acc + 1 else acc
-//            }
-//            if (numInterests > MAX_INTERESTS_LIMIT) {
-//                showMaxInterestsLimitError()
-//            } else if (numInterests == 0) {
-//                showMinInterestsLimitError()
-//            } else {
-//                interestsViewModel.save(interests)
-//            }
-//        }
-//
-//        interestsViewModel.getUser()
         next.setOnClickListener {
             val selectedChips = chipGroup.checkedChipIds.map { findViewById<Chip>(it) }
             val selectedInterestItems = selectedChips.map { chip ->
