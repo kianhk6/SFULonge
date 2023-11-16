@@ -34,7 +34,7 @@ class ExploreFragment : Fragment() {
             MatchesViewModelFactory(MainRepository())
         ).get(MatchesViewModel::class.java)
 
-        waitForUsersToPropegate()
+        waitForUsersToPropagate()
 
         val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
@@ -92,12 +92,12 @@ class ExploreFragment : Fragment() {
                 matchesViewModel.getAllUsers()
                 matchesViewModel.isInitialUserFetched = false
                 // must wait for the query to be done before updating the variable
-                waitForUsersToPropegate()
+                waitForUsersToPropagate()
             }
         }
     }
 
-    private fun waitForUsersToPropegate() {
+    private fun waitForUsersToPropagate() {
         matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
             if (users.isNotEmpty() && !matchesViewModel.isInitialUserFetched) {
                 matchesViewModel.getTheFirstUser { user ->

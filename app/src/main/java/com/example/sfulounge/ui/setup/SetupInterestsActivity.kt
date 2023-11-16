@@ -110,16 +110,16 @@ class SetupInterestsActivity : AppCompatActivity() {
         listView.adapter = interestListAdapter
 
         next.setOnClickListener {
-//            val numInterests = interests.fold(0) { acc, item ->
-//                return@fold if (item.isSelected) acc + 1 else acc
-//            }
-//            if (numInterests > MAX_INTERESTS_LIMIT) {
-//                showMaxInterestsLimitError()
-//            } else if (numInterests == 0) {
-//                showMinInterestsLimitError()
-//            } else {
+            val numInterests = interests.fold(0) { acc, item ->
+                return@fold if (item.isSelected) acc + 1 else acc
+            }
+            if (numInterests > MAX_INTERESTS_LIMIT) {
+                showMaxInterestsLimitError()
+            } else if (numInterests == 0) {
+                showMinInterestsLimitError()
+            } else {
                 interestsViewModel.save(interests)
-//            }
+            }
         }
 
         interestsViewModel.getUser()
