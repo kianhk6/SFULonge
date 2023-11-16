@@ -10,10 +10,8 @@ import com.example.sfulounge.data.model.SwipeLeft
 import com.example.sfulounge.data.model.SwipeRight
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.setup.UnitResult
-import com.example.sfulounge.ui.setup.UserResult
 
 class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
-
     lateinit var current_recommended_user: User
     var isInitialUserFetched = false
     private val _currentUsers = MutableLiveData<List<User>>()
@@ -52,12 +50,15 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             // Pops the last user from the list and posts the updated list
             val userToReturn = currentList.removeLast()
             _currentUsers.postValue(currentList)
+            current_recommended_user = userToReturn
             onResult(userToReturn)
         } else {
             onResult(null)
         }
     }
-    fun popAndGetNextUser1(onResult: (User?) -> Unit) {
+
+
+    fun getTheFirstUser(onResult: (User?) -> Unit) {
         val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
         if (currentList.isNotEmpty()) {
             val userToReturn = currentList.removeLast()
@@ -69,21 +70,67 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             onResult(null)
         }
     }
-    fun addSwipeRight(userThatGotSwipedOn: String, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+
+    fun addSwipeRight(userThatGotSwipedOn: User, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         repository.getUser(
             onSuccess = { user ->
-                println(user.firstName + " swiped right on " + userThatGotSwipedOn)
-                val swipeRight = SwipeRight(user.userId, userThatGotSwipedOn)
+                println(user.firstName + " swiped right on " + userThatGotSwipedOn.userId)
+                // add the swipe regardless
+                val swipeRight = SwipeRight(user.userId, userThatGotSwipedOn.userId)
+
                 repository.addSwipeRight(swipeRight, onSuccess, onError)
 
+                // testing the matching mechanism:
+                // val swipeRight1 = SwipeRight(userThatGotSwipedOn.userId, user.userId)
+                // repository.addSwipeRight(swipeRight1, onSuccess, onError)
+
+                // Query if our liked user has already liked us, if yes create a chatroom (match)
+                println(userThatGotSwipedOn.userId + "," + user.userId)
+
+
+                repository.querySwipeRight(userThatGotSwipedOn.userId, user.userId,
+                    onSuccess = { userAlreadyLikedUs ->
+                        if (userAlreadyLikedUs != null) {
+                            println("its a match!")
+                            createChatroom(userThatGotSwipedOn, user)
+                        }
+                    },
+                    onError = {
+                        onError(throw IllegalStateException("Handle errors in querying swipe rights") )
+                    }
+                )
             },
-            onError = { throw IllegalStateException("user cannot be null") }
+            onError = {
+                // Handle user fetch error
+                onError(throw IllegalStateException("user cannot be null") )
+            }
         )
     }
+
+    private fun createChatroom(
+        userThatGotSwipedOn: User,
+        user: User
+    ) {
+        val members = listOf(userThatGotSwipedOn.userId, user.userId)
+        repository.createChatRoom(
+            members = members,
+            name = userThatGotSwipedOn.firstName + " and " + user.firstName, // You can provide a name or use 'null' for no name
+            onSuccess = {
+                // Handle success scenario, e.g., navigate to the chat room or show a success message
+                println("Chat room created successfully.")
+            },
+            onError = { error ->
+                // Handle error scenario, e.g., show an error message to the user
+                println("Error creating chat room: $error")
+            }
+        )
+    }
+
 
     fun addSwipeLeft(userThatGotSwipedOn: String, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         repository.getUser(
             onSuccess = { user ->
+                println(user.userId)
                 println(user.firstName + " swiped left on " + userThatGotSwipedOn)
                 val swipeLeft = SwipeLeft(user.userId, userThatGotSwipedOn)
                 repository.addSwipeLeft(swipeLeft, onSuccess, onError)

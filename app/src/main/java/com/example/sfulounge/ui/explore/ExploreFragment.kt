@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,8 +12,6 @@ import com.example.sfulounge.MatchesViewModel
 import com.example.sfulounge.MatchesViewModelFactory
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
-import com.example.sfulounge.data.model.User
-import com.example.sfulounge.databinding.FragmentExploreBinding
 
 
 // to do:
@@ -24,8 +21,6 @@ import com.example.sfulounge.databinding.FragmentExploreBinding
 class ExploreFragment : Fragment() {
 
     private lateinit var matchesViewModel: MatchesViewModel
-
-    //    private lateinit var current_recommended_user : User
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -39,38 +34,40 @@ class ExploreFragment : Fragment() {
             MatchesViewModelFactory(MainRepository())
         ).get(MatchesViewModel::class.java)
 
-
-
-        waitForInitialUser()
-
-        // in swipe function if all users are empty fetch again
+        waitForUsersToPropegate()
 
         val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
             // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
             println(
                 "this is from fragment: current user that got swiped on is: "
-                        + matchesViewModel.current_recommended_user
+                        + matchesViewModel.current_recommended_user.firstName
             )
             matchesViewModel.addSwipeRight(
-                matchesViewModel.current_recommended_user.userId,
+                matchesViewModel.current_recommended_user,
                 onSuccess = {
                     // Handle success, e.g., show a success message
                     Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
-                    matchesViewModel.popAndGetNextUser { user ->
-                        if (user != null) {
-                            // Display the user's details
-                            matchesViewModel.current_recommended_user = user
-                            println("User ID: ${user.userId}, Name: ${user.firstName} ${user.lastName}")
-                        } else {
-                            // as all current users have been swiped on reload users to see if we have
-                            // any new users to show
-                            matchesViewModel.getAllUsers()
-                            matchesViewModel.isInitialUserFetched = false
-                            // must wait for the query to be done before updating the variable
-                            waitForInitialUser()
-                        }
-                    }
+                    loadNextRecommendation()
+                }
+            ) { exception ->
+                // Handle error, e.g., show an error message
+                Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        val buttonSwipeLeft = view.findViewById<Button>(R.id.buttonSwipeLeft)
+        buttonSwipeLeft.setOnClickListener {
+            // Assuming 'current_recommended_user' holds the user object that got swiped on
+            val swipedOnUser = matchesViewModel.current_recommended_user
+            println("this is from fragment: current user that got swiped on is: $swipedOnUser")
+            matchesViewModel.addSwipeLeft(
+                matchesViewModel.current_recommended_user.userId,
+                onSuccess = {
+                    // Handle success, e.g., show a success message
+                    Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
+                    loadNextRecommendation()
                 },
                 onError = { exception ->
                     // Handle error, e.g., show an error message
@@ -80,53 +77,32 @@ class ExploreFragment : Fragment() {
             )
         }
 
-        val buttonSwipeLeft = view.findViewById<Button>(R.id.buttonSwipeLeft)
-        buttonSwipeLeft.setOnClickListener {
-            // Assuming 'current_recommended_user' holds the user object that got swiped on
-            val swipedOnUser = matchesViewModel.current_recommended_user
-            println("this is from fragment: current user that got swiped on is: $swipedOnUser")
-
-            swipedOnUser.let { user ->
-                matchesViewModel.addSwipeLeft(
-                    user.userId,
-                    onSuccess = {
-                        // Handle success, e.g., show a success message
-                        Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
-                        matchesViewModel.popAndGetNextUser { nextUser ->
-                            if (nextUser != null) {
-                                // Display the next user's details
-                                matchesViewModel.current_recommended_user = nextUser
-                                println("User ID: ${nextUser.userId}, Name: ${nextUser.firstName} ${nextUser.lastName}")
-                            } else {
-                                // Reload users if all current users have been swiped on
-                                matchesViewModel.getAllUsers()
-                                matchesViewModel.isInitialUserFetched = false
-                                waitForInitialUser()
-                            }
-                        }
-                    },
-                    onError = { exception ->
-                        // Handle error, e.g., show an error message
-                        Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                )
-            }
-        }
-
 
         return view
     }
 
-    private fun waitForInitialUser() {
+    private fun loadNextRecommendation() {
+        matchesViewModel.popAndGetNextUser { user ->
+            if (user != null) {
+                // Display the user's details
+                println("User ID: ${user.userId}, Name: ${user.firstName} ${user.lastName}")
+            } else {
+                // as all current users have been swiped on:
+                // reload all users to see if we have  any new users to show
+                matchesViewModel.getAllUsers()
+                matchesViewModel.isInitialUserFetched = false
+                // must wait for the query to be done before updating the variable
+                waitForUsersToPropegate()
+            }
+        }
+    }
+
+    private fun waitForUsersToPropegate() {
         matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
             if (users.isNotEmpty() && !matchesViewModel.isInitialUserFetched) {
-                matchesViewModel.isInitialUserFetched = true
-                matchesViewModel.popAndGetNextUser { user ->
+                matchesViewModel.getTheFirstUser { user ->
                     user?.let {
-                        matchesViewModel.current_recommended_user = it
                         println("User ID: ${it.userId}, Name: ${it.firstName} ${it.lastName}")
-                        // Additionally, update UI here if needed
                     }
                 }
             }
