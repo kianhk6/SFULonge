@@ -4,6 +4,8 @@ import android.net.Uri
 import android.util.Log
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.DepthInfo
+import com.example.sfulounge.data.model.SwipeLeft
+import com.example.sfulounge.data.model.SwipeRight
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -199,6 +201,28 @@ class MainRepository {
             .addOnFailureListener { exception ->
                 Log.e("MainRepository", "Error getting users: ", exception)
                 onError(Result.Error(R.string.error_message_fetch_users))
+            }
+    }
+
+    fun addSwipeRight(swipeRight: SwipeRight, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        db.collection("swipeRights") // Assuming "swipeRights" is your collection name
+            .add(swipeRight.toMap())
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onError(e)
+            }
+    }
+
+    fun addSwipeLeft(swipeLeft: SwipeLeft, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        db.collection("swipeLefts") // Assuming "swipeLefts" is your collection name
+            .add(swipeLeft.toMap())
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onError(e)
             }
     }
 }
