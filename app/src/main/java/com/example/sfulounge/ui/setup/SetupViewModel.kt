@@ -31,6 +31,7 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
             onSuccess = { user ->
                 firstName = user.firstName
                 lastName = user.lastName
+                gender = user.gender
                 _userResult.value = UserResult(user = user)
                 getPhotos(user.photos)
             },
@@ -41,7 +42,8 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
     fun saveUser() {
         if (firstName == null) {
             _saved.value = UnitResult(error = R.string.error_message_name_is_null)
-        } else if (gender == null) {
+        }
+        else if (gender == null) {
             _saved.value = UnitResult(error = R.string.error_message_gender_is_null)
         } else {
             repository.updateUserBasicInfo(

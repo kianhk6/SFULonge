@@ -3,7 +3,11 @@ package com.example.sfulounge.data
 import android.net.Uri
 import android.util.Log
 import com.example.sfulounge.R
+import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.data.model.DepthInfo
+import com.example.sfulounge.data.model.MemberInfo
+import com.example.sfulounge.data.model.SwipeLeft
+import com.example.sfulounge.data.model.SwipeRight
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -199,6 +203,81 @@ class MainRepository {
             .addOnFailureListener { exception ->
                 Log.e("MainRepository", "Error getting users: ", exception)
                 onError(Result.Error(R.string.error_message_fetch_users))
+            }
+    }
+
+    fun addSwipeRight(swipeRight: SwipeRight, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        db.collection("swipeRights") // Assuming "swipeRights" is your collection name
+            .add(swipeRight.toMap())
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onError(e)
+            }
+    }
+
+    fun addSwipeLeft(swipeLeft: SwipeLeft, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        db.collection("swipeLefts") // Assuming "swipeLefts" is your collection name
+            .add(swipeLeft.toMap())
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                onError(e)
+            }
+    }
+
+    fun querySwipeRight(user1Id: String, user2Id: String, onSuccess: (SwipeRight?) -> Unit, onError: (Result.Error) -> Unit) {
+        db.collection("swipeRights")
+            .whereEqualTo("user1Id", user1Id)
+            .whereEqualTo("user2Id", user2Id)
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    println("found the match")
+                    val swipeRightDocument = documents.documents.first()
+                    val swipeRight = swipeRightDocument.toObject(SwipeRight::class.java)
+                    onSuccess(swipeRight)
+                } else {
+                    onSuccess(null) // No matching document found
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("MainRepository", "Error querying SwipeRight: ", exception)
+                onError(Result.Error(R.string.error_message_swipe_right_query_failed))
+            }
+    }
+
+    fun createChatRoom(
+        members: List<String>,
+        name: String? = null,
+        onSuccess: () -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val chatRoom = ChatRoom(
+            name = name,
+            members = members.associateWith { _ -> MemberInfo() }
+        )
+        val ref = db.collection("chat_rooms")
+
+        ref.add(ChatRoom.toMap(chatRoom))
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
+                }
+                val chatRoomId = task.result.id
+                ref.document(chatRoomId)
+                    .update(mapOf("roomId" to chatRoomId))
+            }
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    Log.e("error", "create chatroom failed: ${task.exception}")
+                    onError(Result.Error(R.string.error_message_create_chat_room))
+                }
             }
     }
 }
