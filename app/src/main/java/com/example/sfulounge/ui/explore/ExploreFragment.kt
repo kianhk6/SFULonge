@@ -15,8 +15,8 @@ import com.example.sfulounge.data.MainRepository
 
 
 // to do:
-// 1) swipe left
-// 3) all matchesViewModel.current_recommended_user assigning to be done in view model itself
+// 1) what if all users swiped then new users added but there are no actions
+// to propagate get all users
 
 class ExploreFragment : Fragment() {
 
