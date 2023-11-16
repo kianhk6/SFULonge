@@ -79,27 +79,20 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         val photosGrid = binding.gridView
         val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos, setupViewModel)
 
-        setupViewModel.userResult.observe(this, Observer {
-            val userResult = it ?: return@Observer
-            loadUser(userResult.user!!)
-        })
-        setupViewModel.saved.observe(this, Observer {
-            val unitResult = it ?: return@Observer
-            loading.visibility = View.GONE
-            if (unitResult.error != null) {
-                showErrorOnSave(unitResult.error)
-            } else {
-                onSaveUserSuccessful()
-            }
-        })
         setupViewModel.addPhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
+            if (photoResult.error != null) {
+                showErrorOnSave(photoResult.error)
+            }
             if (photoResult.photo != null) {
                 photoGridAdapter.notifyDataSetChanged()
             }
         })
         setupViewModel.deletePhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
+            if (photoResult.error != null) {
+                showErrorOnSave(photoResult.error)
+            }
             if (photoResult.photo != null) {
                 photoGridAdapter.notifyDataSetChanged()
 
@@ -111,6 +104,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         })
         setupViewModel.replacePhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
+            if (photoResult.error != null) {
+                showErrorOnSave(photoResult.error)
+            }
             if (photoResult.photo != null && photoResult.replaced != null) {
                 photoGridAdapter.notifyDataSetChanged()
 
@@ -139,8 +135,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
             } else if (setupViewModel.photos.size > MAX_PHOTOS_LIMIT) {
                 showMaxPhotosLimitReached()
             } else {
-            loading.visibility = View.VISIBLE
-            setupViewModel.saveUser()
+                loading.visibility = View.VISIBLE
+                val intent = Intent(this, SetupInterestsActivity::class.java)
+                interestsResultLauncher.launch(intent)
             }
         }
 
@@ -148,18 +145,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         setupViewModel.getUser()
     }
 
-    private fun loadUser(user: User) {
-//        binding.firstName.setText(user.firstName)
-//        binding.lastName.setText(user.lastName)
-    }
-
     /**
      * wiring to activities
      */
-    private fun onSaveUserSuccessful() {
-        val intent = Intent(this, SetupInterestsActivity::class.java)
-        interestsResultLauncher.launch(intent)
-    }
 
     private fun onReturnToHomePage() {
         startActivity(Intent(this, MainActivity::class.java))
