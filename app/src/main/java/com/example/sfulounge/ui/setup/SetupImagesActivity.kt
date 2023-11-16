@@ -131,11 +131,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         }
         next.setOnClickListener {
             if (setupViewModel.photos.size < MIN_PHOTOS_LIMIT) {
-                showMinPhotosLimitError() //Toast not showing for some reason
-                println("PHOTOS <") //test: log showing
+                showMinPhotosLimitError()
             } else if (setupViewModel.photos.size > MAX_PHOTOS_LIMIT) {
-                showMaxPhotosLimitReached() //Toast not showing for some reason
-                println("PHOTOS >") //test: log showing
+                showMaxPhotosLimitReached()
             } else {
                 loading.visibility = View.VISIBLE
                 val intent = Intent(this, SetupInterestsActivity::class.java)
