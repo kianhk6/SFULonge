@@ -258,11 +258,12 @@ class MainRepository {
     ) {
         val chatRoom = ChatRoom(
             name = name,
-            members = members.associateWith { _ -> MemberInfo() }
+            members = members,
+            memberInfo = members.associateWith { _ -> MemberInfo() }
         )
         val ref = db.collection("chat_rooms")
 
-        ref.add(ChatRoom.toMap(chatRoom))
+        ref.add(chatRoom)
             .continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let { throw it }

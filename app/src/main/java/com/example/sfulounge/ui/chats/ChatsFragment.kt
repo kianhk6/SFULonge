@@ -1,6 +1,7 @@
 package com.example.sfulounge.ui.chats
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.databinding.FragmentChatsBinding
+import com.example.sfulounge.ui.messages.MessagesActivity
 
 class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
 
@@ -62,6 +64,12 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
     }
 
     override fun onItemClick(chatRoom: ChatRoom) {
-        TODO("Not yet implemented")
+        val members = ArrayList<String>()
+        members.addAll(chatRoom.members)
+        val intent = Intent(requireActivity(), MessagesActivity::class.java).apply {
+            putExtra(MessagesActivity.INTENT_CHATROOM_ID, chatRoom.roomId)
+            putExtra(MessagesActivity.INTENT_MEMBER_IDS, members)
+        }
+        startActivity(intent)
     }
 }

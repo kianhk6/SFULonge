@@ -38,6 +38,24 @@ object DatabaseHelper {
             }
     }
 
+    fun getUsers(
+        db: FirebaseFirestore,
+        userIds: List<String>,
+        onComplete: (List<User>) -> Unit
+    ) {
+        db.collection("users")
+            .whereIn("userId", userIds)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val users = documentSnapshot.documents
+                    .map { x -> x.toObject(User::class.java)!! }
+                onComplete(users)
+            }
+            .addOnFailureListener { error ->
+                Log.e("error", "getUsers: " + error.message)
+            }
+    }
+
     private fun addUserOnRecovery(
         db: FirebaseFirestore,
         userId: String,
@@ -47,7 +65,7 @@ object DatabaseHelper {
         val user = User(userId = userId, isProfileInitialized = false)
         db.collection("users")
             .document(userId)
-            .set(User.toMap(user))
+            .set(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess(user)

@@ -11,15 +11,4 @@ data class Message(
     var voiceMemos: List<String> = ArrayList(),
     var videos: List<String> = ArrayList(),
     var files: List<String> = ArrayList()
-) {
-    fun toMap() = mapOf(
-        "messageId" to messageId,
-        "timeCreated" to timeCreated,
-        "senderId" to senderId,
-        "text" to text,
-        "images" to images,
-        "voiceMemos" to voiceMemos,
-        "videos" to videos,
-        "files" to files
-    )
-}
+)

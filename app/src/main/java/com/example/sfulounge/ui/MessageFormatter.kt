@@ -5,6 +5,7 @@ import android.widget.TextView
 import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -16,6 +17,14 @@ object MessageFormatter {
         } else {
             message.text ?: "upload"
         }
+    }
+
+    fun formatMessageTime(time: Timestamp): String {
+        val formatter = SimpleDateFormat(
+            "yyyy-MM-dd",
+            Locale.getDefault(Locale.Category.FORMAT)
+        )
+        return formatter.format(time.toDate())
     }
 
     fun formatTime(chatRoom: ChatRoom): String {

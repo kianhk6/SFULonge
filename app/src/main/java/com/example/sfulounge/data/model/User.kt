@@ -1,27 +1,32 @@
 package com.example.sfulounge.data.model
 
+import com.google.firebase.firestore.PropertyName
+
 data class User(
+    @get:PropertyName("userId")
     val userId: String = "",
+
+    @get:PropertyName("isProfileInitialized")
     val isProfileInitialized: Boolean = false,
+
+    @get:PropertyName("firstName")
     val firstName: String? = null,
+
+    @get:PropertyName("lastName")
     val lastName: String? = null,
+
+    @get:PropertyName("description")
     val description: String? = null,
+
+    @get:PropertyName("gender")
     val gender: Int = Gender.UNSPECIFIED,
+
+    @get:PropertyName("interests")
     val interests: List<String> = ArrayList(),
+
+    @get:PropertyName("depthQuestions")
     val depthQuestions: List<DepthInfo> = ArrayList(),
+
+    @get:PropertyName("photos")
     val photos: List<String> = ArrayList()
-) {
-    companion object {
-        fun toMap(user: User) = mapOf(
-            "userId" to user.userId,
-            "isProfileInitialized" to user.isProfileInitialized,
-            "firstName" to user.firstName,
-            "lastName" to user.lastName,
-            "description" to user.description,
-            "gender" to user.gender,
-            "interests" to user.interests,
-            "depthQuestions" to user.depthQuestions.map { x -> DepthInfo.toMap(x) },
-            "photos" to user.photos
-        )
-    }
-}
+)

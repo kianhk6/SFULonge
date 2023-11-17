@@ -8,9 +8,7 @@ class ChatsViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ChatsViewModel::class.java)) {
-            return ChatsViewModel(
-                repository = ChatRepository()
-            ) as T
+            return ChatsViewModel(repository = ChatRepository()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
