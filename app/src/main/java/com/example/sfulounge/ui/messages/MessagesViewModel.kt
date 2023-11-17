@@ -9,23 +9,24 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.sfulounge.data.MessageRepository
 import com.example.sfulounge.data.MessagesDataSource
-import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.setup.UnitResult
 
 class MessagesViewModel(
     private val repository: MessageRepository,
-    private val chatRoom: ChatRoom
+    private val chatRoomId: String
 ) : ViewModel(), MessageRepository.MessagesListener
 {
-    private val _pagingDataSource = MessagesDataSource(chatRoom.roomId)
+    private var _pagingDataSource: MessagesDataSource? = null
     val flow = Pager(
         // Configure how data is loaded by passing additional properties to
         // PagingConfig, such as prefetchDistance.
         PagingConfig(pageSize = PAGE_SIZE)
     ) {
-        _pagingDataSource
+        val pagingDataSource = MessagesDataSource(chatRoomId)
+        _pagingDataSource = pagingDataSource
+        pagingDataSource
     }.flow
         .cachedIn(viewModelScope)
 
@@ -37,19 +38,19 @@ class MessagesViewModel(
     private val _userId: String = repository.getCurrentUserUid()
     val userId: String = _userId
 
-    fun getUsers() {
+    fun getUsers(members: List<String>) {
         repository.getUsers(
-            chatRoom.memberInfo.keys.toList(),
+            members,
             onComplete = { users ->
                 _cache.putAll(users.associateBy(User::userId))
-                _pagingDataSource.invalidate()
+                _pagingDataSource?.invalidate()
             }
         )
     }
 
     fun sendMessage(text: String) {
         repository.sendMessage(
-            chatRoom.roomId,
+            chatRoomId,
             Message(
                 text = text,
                 senderId = _userId
@@ -60,7 +61,7 @@ class MessagesViewModel(
     }
 
     fun registerMessagesListener() {
-        repository.registerMessagesListener(chatRoom.roomId, this)
+        repository.registerMessagesListener(chatRoomId, this)
     }
 
     fun unregisterMessagesListener() {
@@ -68,7 +69,7 @@ class MessagesViewModel(
     }
 
     override fun onNewMessage(message: Message) {
-        _pagingDataSource.invalidate()
+        _pagingDataSource?.invalidate()
     }
 
     companion object {

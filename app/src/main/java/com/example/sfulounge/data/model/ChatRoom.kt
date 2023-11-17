@@ -10,14 +10,4 @@ data class ChatRoom(
     var timeCreated: Timestamp = Timestamp.now(),
     var lastMessageSentTime: Timestamp? = null,
     var mostRecentMessage: Message? = null
-) {
-    fun toMap() = mapOf(
-        "roomId" to roomId,
-        "name" to name,
-        "timeCreated" to timeCreated,
-        "members" to members,
-        "memberInfo" to memberInfo,
-        "lastMessageSentTime" to lastMessageSentTime,
-        "mostRecentMessage" to mostRecentMessage?.toMap()
-    )
-}
+)

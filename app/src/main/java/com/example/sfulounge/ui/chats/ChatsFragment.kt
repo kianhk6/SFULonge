@@ -64,8 +64,12 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
     }
 
     override fun onItemClick(chatRoom: ChatRoom) {
-        val intent = Intent(requireActivity(), MessagesActivity::class.java)
-        intent.putExtra(MessagesActivity.INTENT_CHATROOM_ID, chatRoom.roomId)
+        val members = ArrayList<String>()
+        members.addAll(chatRoom.members)
+        val intent = Intent(requireActivity(), MessagesActivity::class.java).apply {
+            putExtra(MessagesActivity.INTENT_CHATROOM_ID, chatRoom.roomId)
+            putExtra(MessagesActivity.INTENT_MEMBER_IDS, members)
+        }
         startActivity(intent)
     }
 }

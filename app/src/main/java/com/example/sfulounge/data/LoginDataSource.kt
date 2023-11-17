@@ -132,7 +132,7 @@ class LoginDataSource {
         val user = User(userId = userId, isProfileInitialized = false)
         db.collection("users")
             .document(userId)
-            .set(User.toMap(user))
+            .set(user)
         return user
     }
 }

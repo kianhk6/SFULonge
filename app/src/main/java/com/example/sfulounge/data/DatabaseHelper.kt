@@ -18,9 +18,6 @@ object DatabaseHelper {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     val loggedInUser = document.toObject(User::class.java)!!
-                    Log.d("debug", "user id : ${loggedInUser.userId}")
-                    Log.d("debug", "user initialized : ${loggedInUser.isProfileInitialized}")
-
                     onSuccess(loggedInUser)
                 } else {
                     throw IllegalStateException("User cannot be null")
@@ -68,7 +65,7 @@ object DatabaseHelper {
         val user = User(userId = userId, isProfileInitialized = false)
         db.collection("users")
             .document(userId)
-            .set(User.toMap(user))
+            .set(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess(user)

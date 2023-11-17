@@ -43,12 +43,17 @@ class MessageRepository {
             .document(chatRoomId)
             .collection("data")
 
-        ref.add(message.toMap())
+        ref.add(message)
             .continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let { throw it }
                 }
                 val messageId = task.result.id
+
+                // update the chatroom to show most recent message
+                message.messageId = messageId
+                addMessageToChatRoom(chatRoomId, message)
+
                 ref.document(messageId)
                     .update(mapOf("messageId" to messageId))
             }
@@ -61,6 +66,20 @@ class MessageRepository {
             }
     }
 
+    private fun addMessageToChatRoom(
+        chatRoomId: String,
+        message: Message
+    ) {
+        db.collection("chat_rooms")
+            .document(chatRoomId)
+            .update(
+                mapOf(
+                    "lastMessageSentTime" to message.timeCreated,
+                    "mostRecentMessage" to message
+                )
+            )
+    }
+
     fun registerMessagesListener(chatRoomId: String, listener: MessagesListener) {
         registration = db.collection("messages")
             .document(chatRoomId)
@@ -69,8 +88,7 @@ class MessageRepository {
             .limit(1)
             .addSnapshotListener { value, e ->
                 if (e != null) {
-                    Log.e("error", "message listener" +
-                            (e.message ?: "error on message snapshot listener"))
+                    Log.e("error", "message listener failed: ${e.message}")
                     return@addSnapshotListener
                 }
                 if (value != null) {

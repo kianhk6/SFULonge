@@ -35,11 +35,11 @@ class ChatRepository {
         val chatRoom = ChatRoom(
             name = name,
             members = members,
-            memberInfo = members.associateWith { _ -> MemberInfo() }
+            memberInfo = members.associateWith { MemberInfo() }
         )
         val ref = db.collection("chat_rooms")
 
-        ref.add(chatRoom.toMap())
+        ref.add(chatRoom)
             .continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let { throw it }
@@ -73,12 +73,10 @@ class ChatRepository {
             .orderBy("lastMessageSentTime")
             .addSnapshotListener { value, e ->
                 if (e != null) {
-                    Log.e("error", "registerChatRoomListener" +
-                            (e.message ?: "error on chat_room snapshot listener"))
+                    Log.e("error", "registerChatRoomListener ${e.message}")
                     return@addSnapshotListener
                 }
                 if (value != null) {
-                    Log.d("debug", "size: ${value.documents.size}")
                     val chatRooms = value.documents.map { x ->
                         x.toObject(ChatRoom::class.java)!!
                     }
