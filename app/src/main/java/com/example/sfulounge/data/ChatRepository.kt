@@ -34,11 +34,12 @@ class ChatRepository {
     ) {
         val chatRoom = ChatRoom(
             name = name,
-            members = members.associateWith { _ -> MemberInfo() }
+            members = members,
+            memberInfo = members.associateWith { _ -> MemberInfo() }
         )
         val ref = db.collection("chat_rooms")
 
-        ref.add(ChatRoom.toMap(chatRoom))
+        ref.add(chatRoom.toMap())
             .continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let { throw it }
@@ -61,17 +62,7 @@ class ChatRepository {
         userIds: List<String>,
         onComplete: (List<User>) -> Unit
     ) {
-        db.collection("users")
-            .whereIn("userId", userIds)
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                val users = documentSnapshot.documents
-                    .map { x -> x.toObject(User::class.java)!! }
-                onComplete(users)
-            }
-            .addOnFailureListener { error ->
-                Log.e("error", "getUsers: " + error.message)
-            }
+        DatabaseHelper.getUsers(db, userIds, onComplete)
     }
 
     fun registerChatRoomListener(listener: ChatRoomListener) {
@@ -87,6 +78,7 @@ class ChatRepository {
                     return@addSnapshotListener
                 }
                 if (value != null) {
+                    Log.d("debug", "size: ${value.documents.size}")
                     val chatRooms = value.documents.map { x ->
                         x.toObject(ChatRoom::class.java)!!
                     }

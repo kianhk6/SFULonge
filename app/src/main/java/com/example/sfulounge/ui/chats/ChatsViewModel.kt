@@ -31,7 +31,7 @@ class ChatsViewModel(private val repository: ChatRepository)
         for (room in chatRooms) {
             if (room.roomId !in _cache) {
                 // prefetch image url in user
-                val usersIds = getUserSubset(room.members.keys)
+                val usersIds = getUserSubset(room.memberInfo.keys)
                 repository.getUsers(
                     usersIds,
                     onComplete = { users ->

@@ -2,7 +2,7 @@ package com.example.sfulounge.data.model
 
 data class User(
     val userId: String = "",
-    val isProfileInitialized: Boolean = false,
+    val isProfileInitialized: Boolean = true,
     val firstName: String? = null,
     val lastName: String? = null,
     val description: String? = null,

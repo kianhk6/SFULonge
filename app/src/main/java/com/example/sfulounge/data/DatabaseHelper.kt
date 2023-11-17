@@ -18,6 +18,9 @@ object DatabaseHelper {
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     val loggedInUser = document.toObject(User::class.java)!!
+                    Log.d("debug", "user id : ${loggedInUser.userId}")
+                    Log.d("debug", "user initialized : ${loggedInUser.isProfileInitialized}")
+
                     onSuccess(loggedInUser)
                 } else {
                     throw IllegalStateException("User cannot be null")
@@ -35,6 +38,24 @@ object DatabaseHelper {
                         onError(Result.Error(R.string.error_message_unknown_reason))
                     }
                 )
+            }
+    }
+
+    fun getUsers(
+        db: FirebaseFirestore,
+        userIds: List<String>,
+        onComplete: (List<User>) -> Unit
+    ) {
+        db.collection("users")
+            .whereIn("userId", userIds)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val users = documentSnapshot.documents
+                    .map { x -> x.toObject(User::class.java)!! }
+                onComplete(users)
+            }
+            .addOnFailureListener { error ->
+                Log.e("error", "getUsers: " + error.message)
             }
     }
 

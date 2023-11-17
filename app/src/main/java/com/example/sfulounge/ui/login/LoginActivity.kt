@@ -16,6 +16,7 @@ import com.example.sfulounge.MainActivity
 import com.example.sfulounge.databinding.ActivityLoginBinding
 
 import com.example.sfulounge.data.model.LoggedInUser
+import com.example.sfulounge.script.AutomateAddGenderToUsers
 import com.example.sfulounge.ui.register.RegisterActivity
 import com.example.sfulounge.ui.setup.SetupBasicInfoActivity
 
@@ -30,6 +31,11 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (AutomateAddGenderToUsers.needs_migration) {
+            AutomateAddGenderToUsers().run()
+            return
+        }
 
         val email = binding.email
         val password = binding.password

@@ -1,5 +1,6 @@
 package com.example.sfulounge.ui.chats
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +33,10 @@ class ChatsListAdapter(
         val current = getItem(position)!!
         val users = imageUrlMap.value!![current.roomId]!!
 
-        val lastMessageSeen = current.members[currentUserId]!!.lastMessageSeenTime
-        val isNotSeen = lastMessageSeen.compareTo(current.lastMessageSentTime) < 0
+        val lastMessageSeen = current.memberInfo[currentUserId]!!.lastMessageSeenTime
+        val isNotSeen = current.lastMessageSentTime?.compareTo(lastMessageSeen)?.let {
+            it > 0
+        } ?: false
 
         holder.bind(
             current.name ?: MessageFormatter.formatNames(users),
