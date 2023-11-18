@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/bg_signin" />
+            android:src="@drawable/bg_signin"
+            android:tintMode="src_atop"
+            app:tint="#8D272525" />
 
     </FrameLayout>
 
@@ -74,6 +76,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:hintTextColor="@color/teal_200"
             android:textColorHint="#ffffff">
 
             <EditText
@@ -94,6 +97,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:hintTextColor="@color/teal_200"
             android:textColorHint="#ffffff">
 
             <EditText

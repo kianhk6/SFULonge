@@ -10,6 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -17,7 +18,10 @@ import androidx.annotation.StringRes
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.MainActivity
+import com.example.sfulounge.R
 import com.example.sfulounge.Util
+import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupBasicInfoBinding
 import com.example.sfulounge.ui.components.SingleChoiceDialog
@@ -27,24 +31,15 @@ import java.io.File
  * Step 1 of setting up user profile. When user clicks next it will start Step 2
  * and then Step 2 will start Step 3
  */
-class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoiceDialogListener {
+class SetupBasicInfoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetupBasicInfoBinding
     private lateinit var setupViewModel: SetupViewModel
-    private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
-    private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
-    private lateinit var interestsResultLauncher: ActivityResultLauncher<Intent>
-
-    private val uriPool = HashSet<Uri>()
-    private var cameraTempUri: Uri? = null
-
-    companion object {
-        const val MAX_PHOTOS_LIMIT = 5
-        const val MIN_PHOTOS_LIMIT = 2
-    }
+    private lateinit var imagesResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
 
         Util.checkPermissions(this)
 
@@ -54,36 +49,17 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
         setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
             .get(SetupViewModel::class.java)
 
-        cameraResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                setupViewModel.addPhoto(Photo(localUri = cameraTempUri))
-            } else {
-                // camera was canceled
-                cameraTempUri?.let { uri -> deleteUri(uri) }
-            }
-        }
-        galleryResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val uri = result.data?.data?.let { saveToRandomUri(it) }
-                if (uri != null) {
-                    setupViewModel.addPhoto(Photo(localUri = uri))
-                }
-            }
-        }
-        interestsResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        imagesResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 setResult(RESULT_OK)
-                finish()
+                onReturnToHomePage()
             }
         }
 
         val next = binding.next
         val firstName = binding.firstName
-        val lastName = binding.lastName
-        val upload = binding.upload
+        val gender = binding.gender
         val loading = binding.loading
-        val photosGrid = binding.gridView
-        val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos)
 
         setupViewModel.userResult.observe(this, Observer {
             val userResult = it ?: return@Observer
@@ -98,63 +74,24 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
                 onSaveUserSuccessful()
             }
         })
-        setupViewModel.addPhotoResult.observe(this, Observer {
-            val photoResult = it ?: return@Observer
-            if (photoResult.photo != null) {
-                photoGridAdapter.notifyDataSetChanged()
-            }
-        })
-        setupViewModel.deletePhotoResult.observe(this, Observer {
-            val photoResult = it ?: return@Observer
-            if (photoResult.photo != null) {
-                photoGridAdapter.notifyDataSetChanged()
-
-                // clean up uri if the photo is using a local uri
-                if (photoResult.photo.localUri != null) {
-                    deleteUri(photoResult.photo.localUri)
-                }
-            }
-        })
-        setupViewModel.replacePhotoResult.observe(this, Observer {
-            val photoResult = it ?: return@Observer
-            if (photoResult.photo != null && photoResult.replaced != null) {
-                photoGridAdapter.notifyDataSetChanged()
-
-                // clean up uri if the photo is using a local uri
-                if (photoResult.photo.localUri != null) {
-                    deleteUri(photoResult.photo.localUri)
-                }
-            }
-        })
-
-        photosGrid.adapter = photoGridAdapter
 
         firstName.afterTextChanged {
             setupViewModel.firstName = it
         }
-        lastName.afterTextChanged {
-            setupViewModel.lastName = it
+
+        gender.onCheckedChanged {
+            setupViewModel.gender = when (it) {
+                R.id.rb_male -> Gender.MALE
+                R.id.rb_female -> Gender.FEMALE
+                R.id.rb_other -> Gender.OTHER
+                R.id.rb_prefer_not_to_say -> Gender.UNSPECIFIED
+                else -> null
+            }
         }
 
-        upload.setOnClickListener {
-            if (setupViewModel.photos.size < MAX_PHOTOS_LIMIT) {
-                SingleChoiceDialog.newInstance(
-                    "Upload photo",
-                    arrayOf("Open Camera", "Select from Gallery")
-                ).show(supportFragmentManager, "upload_photo")
-            } else {
-                showMaxPhotosLimitReached()
-            }
-        }
         next.setOnClickListener {
-            if (setupViewModel.photos.size < MIN_PHOTOS_LIMIT) {
-                showMinPhotosLimitError()
-            } else if (setupViewModel.photos.size > MAX_PHOTOS_LIMIT) {
-                showMaxPhotosLimitReached()
-            } else {
-                loading.visibility = View.VISIBLE
-                setupViewModel.saveUser()
-            }
+            loading.visibility = View.VISIBLE
+            setupViewModel.saveUser()
         }
 
         // get the current user
@@ -163,81 +100,37 @@ class SetupBasicInfoActivity : AppCompatActivity(), SingleChoiceDialog.SingleCho
 
     private fun loadUser(user: User) {
         binding.firstName.setText(user.firstName)
-        binding.lastName.setText(user.lastName)
+        binding.gender.check(
+            when (user.gender) {
+                Gender.MALE -> R.id.rb_male
+                Gender.FEMALE -> R.id.rb_female
+                Gender.OTHER -> R.id.rb_other
+                Gender.UNSPECIFIED -> R.id.rb_prefer_not_to_say
+                else -> -1
+            }
+        )
     }
 
+    /**
+     * wiring to activities
+     */
     private fun onSaveUserSuccessful() {
-        val intent = Intent(this, SetupInterestsActivity::class.java)
-        interestsResultLauncher.launch(intent)
+        val intent = Intent(this, SetupImagesActivity::class.java)
+        imagesResultLauncher.launch(intent)
     }
 
+    private fun onReturnToHomePage() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    /**
+     * UI
+     */
     private fun showErrorOnSave(@StringRes errorString: Int) {
         Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 
-    private fun showMinPhotosLimitError() {
-        Toast.makeText(this, "Number of photos < $MIN_PHOTOS_LIMIT", Toast.LENGTH_SHORT)
-            .show()
-    }
-
-    private fun showMaxPhotosLimitReached() {
-        Toast.makeText(this, "Number of photos > $MAX_PHOTOS_LIMIT", Toast.LENGTH_SHORT)
-            .show()
-    }
-
-    /**
-     * Getting temporary uri to store the images when the image
-     * is selected from camera or gallery
-     */
-    private fun saveToRandomUri(sourceUri: Uri): Uri {
-        val destUri = getRandomUri()
-        contentResolver.openInputStream(sourceUri)?.use { istream ->
-            contentResolver.openOutputStream(destUri).use { ostream ->
-                if (ostream != null) {
-                    istream.copyTo(ostream)
-                }
-            }
-        }
-        return destUri
-    }
-    private fun getRandomUri(): Uri {
-        val file = File.createTempFile("img", null, cacheDir)
-        val uri = FileProvider.getUriForFile(this, packageName, file)
-        uriPool.add(uri)
-        return uri
-    }
-    private fun deleteUri(uri: Uri) {
-        if (uriPool.contains(uri)) {
-            contentResolver.delete(uri, null, null)
-            uriPool.remove(uri)
-        }
-    }
-
-    /**
-     * Dialog box: Choose photo from camera or gallery
-     */
-    override fun onDialogItemIsSelected(dialog: DialogInterface, selectedItemIdx: Int) {
-        when (selectedItemIdx) {
-            0 -> {
-                cameraTempUri = getRandomUri()
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,cameraTempUri)
-                cameraResultLauncher.launch(intent)
-            }
-            1 -> {
-                galleryResultLauncher.launch(
-                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                )
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        for (uri in uriPool) {
-            deleteUri(uri)
-        }
-    }
 }
 
 /**
@@ -253,4 +146,10 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
     })
+}
+
+fun RadioGroup.onCheckedChanged(afterCheckedChanged: (Int) -> Unit) {
+    this.setOnCheckedChangeListener { _, checkedId ->
+        afterCheckedChanged.invoke(checkedId)
+    }
 }

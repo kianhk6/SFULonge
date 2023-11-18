@@ -18,7 +18,23 @@ class LoginDataSource {
     private val db = Firebase.firestore
 
     val isLoggedIn: Boolean
-        get() = auth.currentUser != null
+        get() = auth.currentUser != null && auth.currentUser!!.isEmailVerified
+
+    fun getLoggedInUser(
+        onSuccess: (Result.Success<LoggedInUser>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        assert(isLoggedIn)
+        val user = auth.currentUser!!
+        DatabaseHelper.getUser(
+            db,
+            user.uid,
+            onSuccess = {
+                onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!, it)))
+            },
+            onError
+        )
+    }
 
     fun login(
         email: String,
@@ -31,12 +47,20 @@ class LoginDataSource {
                 if (task.isSuccessful) {
                     val user = task.result.user!!
                     if (user.isEmailVerified) {
-                        onSuccess(Result.Success(LoggedInUser(user.uid, email)))
+                        DatabaseHelper.getUser(
+                            db,
+                            user.uid,
+                            onSuccess = {
+                                onSuccess(Result.Success(LoggedInUser(user.uid, email, it)))
+                            },
+                            onError
+                        )
                     } else {
+                        Log.e("error", "Login failed. email not verified." + task.exception?.message)
                         onError(Result.Error(R.string.error_message_account_unverified))
                     }
                 } else {
-                    Log.e("error", task.exception?.message ?: "Login failed.")
+                    Log.e("error", "Login failed." + task.exception?.message)
                     onError(Result.Error(R.string.login_failed))
                 }
             }
@@ -52,18 +76,18 @@ class LoginDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = task.result.user!!
-                    addUser(user.uid)
+                    val userData = addUser(user.uid)
 
                     // send verification email
                     sendVerificationEmail(
                         user,
                         onSuccess = {
-                            onSuccess(Result.Success(LoggedInUser(user.uid, email)))
+                            onSuccess(Result.Success(LoggedInUser(user.uid, email, userData)))
                         },
-                        onError = onError
+                        onError = { /* ignore errors */}
                     )
                 } else {
-                    Log.e("error", task.exception?.message ?: "Register failed.")
+                    Log.e("error", "Register failed:\n" + task.exception?.message)
                     onError(Result.Error(R.string.error_message_existing_account))
                 }
             }
@@ -87,19 +111,28 @@ class LoginDataSource {
         onError: (Result.Error) -> Unit
     ) {
         user.sendEmailVerification()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!)))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    DatabaseHelper.getUser(
+                        db,
+                        user.uid,
+                        onSuccess = {
+                            onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!, it)))
+                        },
+                        onError
+                    )
                 } else {
+                    Log.e("error", "send verification email failed")
                     onError(Result.Error(R.string.error_message_verification_failed_to_send))
                 }
             }
     }
 
-    private fun addUser(userId: String) {
+    private fun addUser(userId: String): User {
         val user = User(userId = userId, isProfileInitialized = false)
         db.collection("users")
             .document(userId)
-            .set(User.toMap(user))
+            .set(user)
+        return user
     }
 }

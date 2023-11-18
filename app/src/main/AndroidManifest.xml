@@ -18,6 +18,9 @@
         android:theme="@style/Theme.SFULounge"
         tools:targetApi="31">
         <activity
+            android:name=".ui.messages.MessagesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.register.EmailVerificationActivity"
             android:exported="false" />
         <activity
@@ -27,9 +30,12 @@
             android:name=".ui.setup.SetupInterestsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.setup.SetupBasicInfoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:name=".ui.setup.SetupImagesActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.setup.SetupBasicInfoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false"

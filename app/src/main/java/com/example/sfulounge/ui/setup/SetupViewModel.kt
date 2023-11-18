@@ -3,6 +3,7 @@ package com.example.sfulounge.ui.setup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
 
 class SetupViewModel(private val repository: MainRepository) : ViewModel() {
@@ -20,6 +21,7 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
 
     var firstName: String? = null
     var lastName: String? = null
+    var gender: Int? = null
 
     private val _photos: ArrayList<Photo> = ArrayList()
     val photos: List<Photo> = _photos
@@ -29,6 +31,7 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
             onSuccess = { user ->
                 firstName = user.firstName
                 lastName = user.lastName
+                gender = user.gender
                 _userResult.value = UserResult(user = user)
                 getPhotos(user.photos)
             },
@@ -37,12 +40,19 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     fun saveUser() {
-        repository.updateUserBasicInfo(
-            firstName,
-            lastName,
-            onSuccess = { _saved.value = UnitResult() },
-            onError = { _saved.value = UnitResult(error = it.exception) }
-        )
+        if (firstName == null) {
+            _saved.value = UnitResult(error = R.string.error_message_name_is_null)
+        }
+        else if (gender == null) {
+            _saved.value = UnitResult(error = R.string.error_message_gender_is_null)
+        } else {
+            repository.updateUserBasicInfo(
+                firstName!!,
+                gender!!,
+                onSuccess = { _saved.value = UnitResult() },
+                onError = { _saved.value = UnitResult(error = it.exception) }
+            )
+        }
     }
 
     private fun getPhotos(photoUrls: List<String>) {

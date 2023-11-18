@@ -25,7 +25,7 @@ class DepthQuestionsViewModel(private val repository: MainRepository) : ViewMode
             .filter { x -> x.isSelected }
             .map { x -> DepthInfo(question = x.question, answer = x.answer) }
 
-        repository.updateUserDepthQuestions(
+        repository.finalizeUserDepthQuestions(
             updatedDepthQuestions,
             onSuccess = { _saved.value = UnitResult() },
             onError = { _saved.value = UnitResult(error = it.exception) }

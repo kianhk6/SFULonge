@@ -1,37 +1,32 @@
 package com.example.sfulounge.data.model
 
+import com.google.firebase.firestore.PropertyName
+
 data class User(
-    var userId: String = "",
-    var isProfileInitialized: Boolean = false,
-    var firstName: String? = null,
-    var lastName: String? = null,
-    var description: String? = null,
-    var interests: List<String> = ArrayList(),
-    var depthQuestions: List<DepthInfo> = ArrayList(),
-    var photos: List<String> = ArrayList()
-) {
-    companion object {
-        fun fromMap(map: Map<String, *>) = User(
-            userId = map["userId"] as String,
-            isProfileInitialized = map["isProfileInitialized"] as Boolean,
-            firstName = map["firstName"] as String?,
-            lastName = map["lastName"] as String?,
-            description = map["description"] as String?,
-            interests = (map["interests"] as List<*>).map { x -> x as String },
-            depthQuestions = (map["depthQuestions"] as List<*>).map { x ->
-                DepthInfo.fromMap((x as Map<*, *>).mapKeys { (k, _) -> k as String })
-            },
-            photos = (map["photos"] as List<*>).map { x -> x as String }
-        )
-        fun toMap(user: User) = mapOf(
-            "userId" to user.userId,
-            "isProfileInitialized" to user.isProfileInitialized,
-            "firstName" to user.firstName,
-            "lastName" to user.lastName,
-            "description" to user.description,
-            "interests" to user.interests,
-            "depthQuestions" to user.depthQuestions.map { x -> DepthInfo.toMap(x) },
-            "photos" to user.photos
-        )
-    }
-}
+    @get:PropertyName("userId")
+    val userId: String = "",
+
+    @get:PropertyName("isProfileInitialized")
+    val isProfileInitialized: Boolean = false,
+
+    @get:PropertyName("firstName")
+    val firstName: String? = null,
+
+    @get:PropertyName("lastName")
+    val lastName: String? = null,
+
+    @get:PropertyName("description")
+    val description: String? = null,
+
+    @get:PropertyName("gender")
+    val gender: Int = Gender.UNSPECIFIED,
+
+    @get:PropertyName("interests")
+    val interests: List<String> = ArrayList(),
+
+    @get:PropertyName("depthQuestions")
+    val depthQuestions: List<DepthInfo> = ArrayList(),
+
+    @get:PropertyName("photos")
+    val photos: List<String> = ArrayList()
+)
