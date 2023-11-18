@@ -5,12 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.setup.SetupDepthQuestionsActivity">
+    tools:context=".ui.setup.SetupDepthQuestionsActivity"
+    android:background="@drawable/bg_register_info">
 
     <TextView
+        android:id="@id/textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Depth Questions" />
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="Depth Questions"
+        android:padding="8dp"
+        android:textColor="#000000"/>
 
     <ListView
         android:id="@+id/list_view"
@@ -25,6 +32,7 @@
         android:minHeight="48dp"
         android:layout_marginBottom="8dp"
         android:layout_gravity="center_horizontal"
-        android:text="Finish" />
+        android:text="Finish"
+        android:backgroundTint="@color/button_orange"/>
 
 </LinearLayout>
