@@ -1,13 +1,19 @@
 package com.example.sfulounge.script
 
 import android.util.Log
-import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.data.model.Gender
+import com.example.sfulounge.data.model.Message
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class AutomateAddGenderToUsers {
+class FirestoreMigration {
 
     private val db = Firebase.firestore
 
@@ -75,7 +81,62 @@ class AutomateAddGenderToUsers {
             }
     }
 
+    private suspend fun moveMessagesCollectionToChatRooms() {
+
+        val messageMapping: HashMap<String, ArrayList<Message>> = HashMap()
+        val documents = db.collection("messages")
+            .get()
+            .await()
+            .documents
+
+        messageMapping.putAll(documents.map { x -> Pair(x.id, ArrayList()) })
+
+        // get all messages for each chatroom
+        for (chatRoomId in messageMapping.keys) {
+             val docs = db.collection("messages")
+                .document(chatRoomId)
+                .collection("data")
+                .get()
+                .await()
+                .documents
+
+            messageMapping[chatRoomId]!!
+                .addAll(docs.map { x -> x.toObject(Message::class.java)!! })
+        }
+
+        // batch write
+        val batch = db.batch()
+        for ((chatRoomId, messages) in messageMapping) {
+            for (message in messages) {
+                val ref = db.collection("chat_rooms")
+                    .document(chatRoomId)
+                    .collection("messages")
+                    .document(message.messageId)
+
+                batch.set(ref, message)
+
+                val dref = db.collection("messages")
+                    .document(chatRoomId)
+                    .collection("data")
+                    .document(message.messageId)
+
+                batch.delete(dref)
+            }
+            batch.delete(db.collection("messages").document(chatRoomId))
+        }
+
+        batch.commit()
+            .addOnSuccessListener {
+                Log.i(INFO, "Batch write successful: messages.")
+            }
+            .addOnFailureListener { e ->
+                Log.e(ERROR, "Error performing batch write: $e")
+            }
+    }
+
     fun run() {
-//        addMemberInfoToChatRooms()
+//        CoroutineScope(Dispatchers.IO).launch {
+//            moveMessagesCollectionToChatRooms()
+//        }
     }
 }

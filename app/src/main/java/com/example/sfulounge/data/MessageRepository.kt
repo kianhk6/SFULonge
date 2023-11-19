@@ -39,9 +39,9 @@ class MessageRepository {
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
-        val ref = db.collection("messages")
+        val ref = db.collection("chat_rooms")
             .document(chatRoomId)
-            .collection("data")
+            .collection("messages")
 
         ref.add(message)
             .continueWithTask { task ->
@@ -81,9 +81,9 @@ class MessageRepository {
     }
 
     fun registerMessagesListener(chatRoomId: String, listener: MessagesListener) {
-        registration = db.collection("messages")
+        registration = db.collection("chat_rooms")
             .document(chatRoomId)
-            .collection("data")
+            .collection("messages")
             .orderBy("timeCreated", Query.Direction.DESCENDING)
             .limit(1)
             .addSnapshotListener { value, e ->

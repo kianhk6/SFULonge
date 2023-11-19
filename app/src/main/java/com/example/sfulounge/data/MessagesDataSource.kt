@@ -37,9 +37,9 @@ class MessagesDataSource(private val chatRoomId: String) : PagingSource<Document
     override suspend fun load(params: LoadParams<DocumentSnapshot>): LoadResult<DocumentSnapshot, Message> {
         try {
             val nextPageNumber = params.key
-            var query = db.collection("messages")
+            var query = db.collection("chat_rooms")
                 .document(chatRoomId)
-                .collection("data")
+                .collection("messages")
                 .orderBy("timeCreated", Query.Direction.DESCENDING)
 
             if (nextPageNumber != null) {
