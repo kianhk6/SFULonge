@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -13,12 +14,17 @@
             android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:padding="0dp"
+            android:buttonTint="@color/button_orange"/>
 
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="16dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -26,6 +32,9 @@
         android:id="@+id/input"
         android:minHeight="48dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColorHighlight="@color/button_orange"
+        android:backgroundTint="@color/button_orange"
+        android:textCursorDrawable="@color/button_orange"/>
 
 </LinearLayout>
