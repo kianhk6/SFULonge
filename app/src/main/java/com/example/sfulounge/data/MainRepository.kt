@@ -259,7 +259,7 @@ class MainRepository {
         val chatRoom = ChatRoom(
             name = name,
             members = members,
-            memberInfo = members.associateWith { _ -> MemberInfo() }
+            memberInfo = members.associateWith { MemberInfo() }
         )
         val ref = db.collection("chat_rooms")
 

@@ -34,6 +34,8 @@
     <string name="error_message_gender_is_null">gender is null</string>
     <string name="error_message_message_send">Message failed to send</string>
 
+    <!--  dialog for messages  -->
+    <string name="messages_upload_dialog_title">Upload Additional Items</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_register">RegisterActivity</string>
