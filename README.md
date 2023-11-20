@@ -41,7 +41,6 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 
 
 ## Show and Tell 1 
----
 
 ## Mock Ups
 
