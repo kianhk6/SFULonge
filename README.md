@@ -58,3 +58,16 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 
 ## Support and Contact
 For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!
+Developers: 
+Divij Gupta
+Kian Hosseinkhani
+Nathalie Kaspar
+Teeya Li
+Mathew Wong
+
+#Show and Tell 1 Deliverables:
+For the grading and inspect of 362's professor and TAs
+
+##Mock Ups
+![image](https://github.com/kianhk6/SFULounge/assets/131943811/d972d10b-605c-4dc3-a944-3d85b789b847)
+
