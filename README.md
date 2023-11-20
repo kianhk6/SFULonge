@@ -76,35 +76,40 @@ For the grading and inspect of 362's professor and TAs
 
 ##Work Completed to Date
 
-Kian Hosseinkhani
+## Team Contributions
 
-Management: Led the team, assigned tasks and bug fixes via GitHub issues, and designed the MVVM diagram prototype.
-Worked on matchmaking features.
-Developed user recommendation algorithms.
-Created database tables, reprository functions and viewmodels.
-Participated in developement of chatting/messaging feature.
-Provided doccumentation.
-Nathalie Kaspar
 
-Designed images and basic information sign-up page.
-Contributed to UI prototyping.
-Provided doccumentation.
-Teeya Li
+### Kian Hosseinkhani
+- **Management**: Led the team, assigned tasks and bug fixes via GitHub issues, and designed the MVVM diagram prototype.
+- Worked on matchmaking features.
+- Created database tables, repository functions, and viewmodels.
+- Developed user recommendation algorithms.
+- Participated in the development of chatting/messaging feature.
+- Provided documentation.
 
-Developed Interest and Deep Questions for the sign-up page.
-Created the Welcome page.
-Contributed to UI prototyping.
-Handled website maintenance.
-Provided doccumentation.
-Mathew Wong
+### Mathew Wong
+- Created database tables, repository functions, and viewmodels.
+- Contributed to UI prototyping.
+- Implemented email authentication for sign-up.
+- Implemented login features.
+- Implemented sign up back end and provided a UI prototype for it. 
+- Implemented chatting/messaging feature.
+- Provided documentation.
+- Participated in Bug fixing tasks related to the front end wiring.
 
-Created database tables, reprository functions and viewmodels.
-Contributed to UI prototyping.
-Implemented email authentication for sign up.
-Implemented login freatures.
-Implemented chatting/messaging feature.
-Provided doccumentation.
 
-Divij Gupta
+### Teeya Li
+- Developed/Improved Interest and Deep Questions for the sign-up page.
+- Created the Welcome page.
+- Contributed to UI prototyping.
+- Provided documentation.
+- Participated in Bug fixing tasks related to the front end wiring.
+  
+### Nathalie Kaspar
+- Developed images and basic information sign-up page.
+- Contributed to UI prototyping.
+- Provided documentation.
+- Participated in Bug fixing tasks related to the front end wiring.
 
-Participated in brainstorming meeting for backend database architecture.
+### Divij Gupta
+- Participated in brainstorming meeting for backend database architecture.
