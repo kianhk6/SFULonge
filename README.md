@@ -58,3 +58,58 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 
 ## Support and Contact
 For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!
+Developers: 
+Divij Gupta
+Kian Hosseinkhani
+Nathalie Kaspar
+Teeya Li
+Mathew Wong
+
+#Show and Tell 1 Deliverables:
+For the grading and inspect of 362's professor and TAs
+
+##Mock Ups
+
+
+## Show and tell 1 
+##Show and Tell Video
+
+##Work Completed to Date
+
+## Team Contributions
+
+
+### Kian Hosseinkhani
+- **Management**: Led the team, assigned tasks and bug fixes via GitHub issues, and designed the MVVM diagram prototype.
+- Worked on matchmaking features.
+- Created database tables, repository functions, and viewmodels.
+- Developed user recommendation algorithms.
+- Participated in the development of chatting/messaging feature.
+- Provided documentation.
+
+### Mathew Wong
+- Created database tables, repository functions, and viewmodels.
+- Contributed to UI prototyping.
+- Implemented email authentication for sign-up.
+- Implemented login features.
+- Implemented sign up back end and provided a UI prototype for it. 
+- Implemented chatting/messaging feature.
+- Provided documentation.
+- Participated in Bug fixing tasks related to the front end wiring.
+
+
+### Teeya Li
+- Developed/Improved Interest and Deep Questions for the sign-up page.
+- Created the Welcome page.
+- Contributed to UI prototyping.
+- Provided documentation.
+- Participated in Bug fixing tasks related to the front end wiring.
+  
+### Nathalie Kaspar
+- Developed images and basic information sign-up page.
+- Contributed to UI prototyping.
+- Provided documentation.
+- Participated in Bug fixing tasks related to the front end wiring.
+
+### Divij Gupta
+- Participated in brainstorming meeting for backend database architecture.
