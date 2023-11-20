@@ -47,6 +47,7 @@ For the grading and inspect of 362's professor and TAs
 
 ## Show and tell 1 
 ## Show and Tell Video
+[![](https://markdown-videos-api.jorgenkh.no/youtube/{video_id})](https://youtu.be/v=wpXYgcXO-2Y)
 
 ## Work Completed to Date
 
