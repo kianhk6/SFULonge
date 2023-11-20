@@ -43,14 +43,19 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 For the grading and inspect of 362's professor and TAs
 
 ##Mock Ups
-
+The mvmmm model:
+https://docs.google.com/document/d/1pKTEpQCDUloRtf7tZOJZbdGKUT6yrlkhBMB7Y_HdB-Q/edit?usp=sharing
 
 ## Show and tell 1 
 ## Show and Tell Video
 [![](https://markdown-videos-api.jorgenkh.no/youtube/v=wpXYgcXO-2Y)](https://youtu.be/v=wpXYgcXO-2Y)
-[![](https://markdown-videos-api.jorgenkh.no/youtube/dQw4w9WgXcQ)](https://youtu.be/dQw4w9WgXcQ)
 
 ## Work Completed to Date
+Login
+Sign up
+Chatting ability [back end: model, model view, UI prototype]
+Explore page (swipes, user recommendation) [back end: model, model view, UI prototype]
+Settings [back end prototype]
 
 ## Team Contributions
 
