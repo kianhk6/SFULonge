@@ -55,7 +55,12 @@ class MessageRepository {
                 addMessageToChatRoom(chatRoomId, message)
 
                 ref.document(messageId)
-                    .update(mapOf("messageId" to messageId))
+                    .update(
+                        mapOf(
+                            "messageId" to messageId,
+                            "lastMessageSentTime" to message.timeCreated
+                        )
+                    )
             }
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
