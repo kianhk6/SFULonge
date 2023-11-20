@@ -40,19 +40,19 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 - **Icebreaker Chat**: Facilitates easy conversation initiation.
 
 
-## Show and Tell 1 
+## Show and Tell 1 (Sprint 1)
 
 ## Mock Ups
 
 ### The mvmm Model
 You can view the document for the mvmm model here: [mvmm Model Document](https://docs.google.com/document/d/142Y2wBGEi41fotJXZjBQioxGrZqqjPv744CmfmjM3T8/edit?usp=sharing)
 
-### Show and Tell Video
+### Show and Tell 1 Video
 Click on the thumbnail below to watch the Show and Tell video:
 
 [![Show and Tell Video](https://img.youtube.com/vi/wpXYgcXO-2Y/0.jpg)](https://youtu.be/wpXYgcXO-2Y)
 
-## Work Completed to Date
+## Work Completed to Date (Over a 2 week sprint)
 
 - **Login:** Completed
 - **Sign Up:** Completed
