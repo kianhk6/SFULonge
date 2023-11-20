@@ -88,7 +88,7 @@ For the grading and inspect of 362's professor and TAs
 - Provided documentation.
 
 ### Mathew Wong
-- Created database tables, repository functions, and viewmodels.
+- Created database tables, repository functions, and viewmodels 
 - Contributed to UI prototyping.
 - Implemented email authentication for sign-up.
 - Implemented login features.
