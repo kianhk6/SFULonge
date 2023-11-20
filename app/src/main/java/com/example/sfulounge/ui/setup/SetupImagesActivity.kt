@@ -11,16 +11,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.MainActivity
 import com.example.sfulounge.Util
-import com.example.sfulounge.data.model.User
-import com.example.sfulounge.databinding.ActivitySetupBasicInfoBinding
 import com.example.sfulounge.databinding.ActivitySetupImagesBinding
+import com.example.sfulounge.ui.components.RandomUriManager
 import com.example.sfulounge.ui.components.SingleChoiceDialog
-import java.io.File
 
 class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoiceDialogListener {
 
@@ -29,8 +26,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var interestsResultLauncher: ActivityResultLauncher<Intent>
+    
+    private lateinit var randomUriManager: RandomUriManager
 
-    private val uriPool = HashSet<Uri>()
     private var cameraTempUri: Uri? = null
 
     companion object {
@@ -46,6 +44,8 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
 
         binding = ActivitySetupImagesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        randomUriManager = RandomUriManager(this)
 
         setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
             .get(SetupViewModel::class.java)
@@ -55,12 +55,12 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
                 setupViewModel.addPhoto(Photo(localUri = cameraTempUri))
             } else {
                 // camera was canceled
-                cameraTempUri?.let { uri -> deleteUri(uri) }
+                cameraTempUri?.let { uri -> randomUriManager.deleteUri(uri) }
             }
         }
         galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val uri = result.data?.data?.let { saveToRandomUri(it) }
+                val uri = result.data?.data?.let { randomUriManager.saveToRandomUri(it) }
                 if (uri != null) {
                     setupViewModel.addPhoto(Photo(localUri = uri))
                 }
@@ -98,7 +98,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
 
                 // clean up uri if the photo is using a local uri
                 if (photoResult.photo.localUri != null) {
-                    deleteUri(photoResult.photo.localUri)
+                    randomUriManager.deleteUri(photoResult.photo.localUri)
                 }
             }
         })
@@ -112,7 +112,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
 
                 // clean up uri if the photo is using a local uri
                 if (photoResult.photo.localUri != null) {
-                    deleteUri(photoResult.photo.localUri)
+                    randomUriManager.deleteUri(photoResult.photo.localUri)
                 }
             }
         })
@@ -170,43 +170,14 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     }
 
     /**
-     * Getting temporary uri to store the images when the image
-     * is selected from camera or gallery
-     */
-    private fun saveToRandomUri(sourceUri: Uri): Uri {
-        val destUri = getRandomUri()
-        contentResolver.openInputStream(sourceUri)?.use { istream ->
-            contentResolver.openOutputStream(destUri).use { ostream ->
-                if (ostream != null) {
-                    istream.copyTo(ostream)
-                }
-            }
-        }
-        return destUri
-    }
-
-    private fun getRandomUri(): Uri {
-        val file = File.createTempFile("img", null, cacheDir)
-        val uri = FileProvider.getUriForFile(this, packageName, file)
-        uriPool.add(uri)
-        return uri
-    }
-    private fun deleteUri(uri: Uri) {
-        if (uriPool.contains(uri)) {
-            contentResolver.delete(uri, null, null)
-            uriPool.remove(uri)
-        }
-    }
-
-    /**
      * Dialog box: Choose photo from camera or gallery
      */
     override fun onDialogItemIsSelected(dialog: DialogInterface, selectedItemIdx: Int) {
         when (selectedItemIdx) {
             0 -> {
-                cameraTempUri = getRandomUri()
+                cameraTempUri = randomUriManager.getRandomUri()
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT,cameraTempUri)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraTempUri)
                 cameraResultLauncher.launch(intent)
             }
             1 -> {
@@ -218,8 +189,6 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     }
     override fun onDestroy() {
         super.onDestroy()
-        for (uri in uriPool) {
-            deleteUri(uri)
-        }
+        randomUriManager.close()
     }
 }

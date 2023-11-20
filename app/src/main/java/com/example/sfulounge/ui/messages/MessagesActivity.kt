@@ -1,19 +1,39 @@
 package com.example.sfulounge.ui.messages
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sfulounge.databinding.ActivityMessagesBinding
+import com.example.sfulounge.ui.components.RandomUriManager
+import com.example.sfulounge.ui.components.UploadDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class MessagesActivity : AppCompatActivity() {
+class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener {
+
     private lateinit var binding: ActivityMessagesBinding
     private lateinit var messagesViewModel: MessagesViewModel
+    private lateinit var uploadDialog: UploadDialog
+    private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
+
+    private lateinit var randomUriManager: RandomUriManager
+
+    private var cameraTempUri: Uri? = null
+
+    companion object {
+        const val INTENT_CHATROOM_ID = "chatroom_id"
+        const val INTENT_MEMBER_IDS = "member_ids"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +48,45 @@ class MessagesActivity : AppCompatActivity() {
         messagesViewModel = ViewModelProvider(this, MessagesViewModelFactory(chatRoomId))
             .get(MessagesViewModel::class.java)
 
+        randomUriManager = RandomUriManager(this)
+        uploadDialog = UploadDialog()
+
+        val attachmentsAdapter = AttachmentAdapter()
+
+        cameraResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            val uri = cameraTempUri
+            if (result.resultCode == RESULT_OK) {
+                if (uri != null) {
+                    messagesViewModel.attachments.add(
+                        Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
+                    )
+                    attachmentsAdapter.notifyItemInserted(
+                        messagesViewModel.attachments.size - 1
+                    )
+                }
+            } else {
+                // camera was canceled
+                uri?.let { randomUriManager.deleteUri(it) }
+            }
+        }
+        galleryResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val uri = result.data?.data?.let { randomUriManager.saveToRandomUri(it) }
+                if (uri != null) {
+                    messagesViewModel.attachments.add(
+                        Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
+                    )
+                    attachmentsAdapter.notifyItemInserted(
+                        messagesViewModel.attachments.size - 1
+                    )
+                }
+            }
+        }
+
         val messages = binding.recyclerView
+        val attachments = binding.attachments
         val send = binding.send
+        val more = binding.more
         val input = binding.input
         val pagingAdapter = MessageAdapter(messagesViewModel.cachedUsers, messagesViewModel.userId)
 
@@ -39,6 +96,15 @@ class MessagesActivity : AppCompatActivity() {
             stackFromEnd = true
         }
 
+        attachments.adapter = attachmentsAdapter
+        attachments.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+
+        attachmentsAdapter.submitList(messagesViewModel.attachments)
+
         send.setOnClickListener {
             val text = input.text.toString()
             if (text.isNotEmpty()) {
@@ -46,6 +112,10 @@ class MessagesActivity : AppCompatActivity() {
                 send.isEnabled = false
                 messagesViewModel.sendMessage(text)
             }
+        }
+
+        more.setOnClickListener {
+            uploadDialog.show(supportFragmentManager, "upload_dialog")
         }
 
         messagesViewModel.sendResult.observe(this) { result ->
@@ -74,8 +144,16 @@ class MessagesActivity : AppCompatActivity() {
         messagesViewModel.unregisterMessagesListener()
     }
 
-    companion object {
-        const val INTENT_CHATROOM_ID = "chatroom_id"
-        const val INTENT_MEMBER_IDS = "member_ids"
+    override fun onGalleryClick() {
+        galleryResultLauncher.launch(
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        )
+    }
+
+    override fun onCameraClick() {
+        cameraTempUri = randomUriManager.getRandomUri()
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraTempUri)
+        cameraResultLauncher.launch(intent)
     }
 }
