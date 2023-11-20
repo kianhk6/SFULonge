@@ -69,7 +69,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         interestsResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 setResult(RESULT_OK)
-                onReturnToHomePage()
+                finish()
             }
         }
 
@@ -136,8 +136,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
                 showMaxPhotosLimitReached()
             } else {
                 loading.visibility = View.VISIBLE
-                val intent = Intent(this, SetupInterestsActivity::class.java)
-                interestsResultLauncher.launch(intent)
+                onNextIsClicked()
             }
         }
 
@@ -148,10 +147,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     /**
      * wiring to activities
      */
-
-    private fun onReturnToHomePage() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+    private fun onNextIsClicked() {
+        val intent = Intent(this, SetupInterestsActivity::class.java)
+        interestsResultLauncher.launch(intent)
     }
 
     /**
