@@ -50,6 +50,7 @@ You can view the document for the mvmmm model here: [mvmmm Model Document](https
 
 ### Show and Tell Video
 Click on the thumbnail below to watch the Show and Tell video:
+
 [![Show and Tell Video](https://img.youtube.com/vi/wpXYgcXO-2Y/0.jpg)](https://youtu.be/wpXYgcXO-2Y)
 
 ## Work Completed to Date
