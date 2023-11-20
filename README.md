@@ -39,32 +39,6 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 - **Matching Algorithm**: Matches users based on interests, values, and depth question answers.
 - **Icebreaker Chat**: Facilitates easy conversation initiation.
 
-## Challenges and Future Developments
-- **Anticipated Challenges**: Implementing real-time chatting, email verification, complex UI designs, Firebase database integration, image uploads, and swiping mechanisms.
-- **Skill Development**: The team will focus on learning and implementing the above-mentioned features.
-- **Future Plans**: Post-semester deployment, advertisement through SFU clubs, and continuous app development for enhancing user experience.
-
-## Getting Started
-
-### Prerequisites
-- Android Studio with Kotlin support.
-- Firebase account for database and authentication services.
-
-### Installation
-1. Clone the repository.
-2. Open the project in Android Studio.
-3. Configure Firebase and other dependencies.
-4. Build and run the application on an emulator or physical device.
-
-## Support and Contact
-For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!
-Developers: 
-Divij Gupta
-Kian Hosseinkhani
-Nathalie Kaspar
-Teeya Li
-Mathew Wong
-
 #Show and Tell 1 Deliverables:
 For the grading and inspect of 362's professor and TAs
 
@@ -72,12 +46,11 @@ For the grading and inspect of 362's professor and TAs
 
 
 ## Show and tell 1 
-##Show and Tell Video
+## Show and Tell Video
 
-##Work Completed to Date
+## Work Completed to Date
 
 ## Team Contributions
-
 
 ### Kian Hosseinkhani
 - **Management**: Led the team, assigned tasks and bug fixes via GitHub issues, and designed the MVVM diagram prototype.
@@ -113,3 +86,30 @@ For the grading and inspect of 362's professor and TAs
 
 ### Divij Gupta
 - Participated in brainstorming meeting for backend database architecture.
+
+
+## Challenges and Future Developments
+- **Anticipated Challenges**: Implementing real-time chatting, email verification, complex UI designs, Firebase database integration, image uploads, and swiping mechanisms.
+- **Skill Development**: The team will focus on learning and implementing the above-mentioned features.
+- **Future Plans**: Post-semester deployment, advertisement through SFU clubs, and continuous app development for enhancing user experience.
+
+## Getting Started
+
+### Prerequisites
+- Android Studio with Kotlin support.
+- Firebase account for database and authentication services.
+
+### Installation
+1. Clone the repository.
+2. Open the project in Android Studio.
+3. Configure Firebase and other dependencies.
+4. Build and run the application on an emulator or physical device.
+
+## Support and Contact
+For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!
+Developers: 
+Divij Gupta
+Kian Hosseinkhani
+Nathalie Kaspar
+Teeya Li
+Mathew Wong
