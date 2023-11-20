@@ -75,23 +75,36 @@ For the grading and inspect of 362's professor and TAs
 ##Show and Tell Video
 
 ##Work Completed to Date
-Divij Gupta
-- **participated in brainstorming meeting for backend database architecture
+
 Kian Hosseinkhani
-- **Management: Led the team, assigned tasks, and bug fixes via GitHub issues, and designed the MVVM diagram prototype 
-- **matchmaking 
-- **user recommendation 
-- **Database models 
-- **chatting / messaging feature
+
+Management: Led the team, assigned tasks and bug fixes via GitHub issues, and designed the MVVM diagram prototype.
+Worked on matchmaking features.
+Developed user recommendation algorithms.
+Created database tables, reprository functions and viewmodels.
+Participated in developement of chatting/messaging feature.
+Provided doccumentation.
 Nathalie Kaspar
-- **images and basic info sign-up page
-- **UI prototyping
+
+Designed images and basic information sign-up page.
+Contributed to UI prototyping.
+Provided doccumentation.
 Teeya Li
-- **Interest, Deep Questions sign-up page
-- **Welcome page
-- **UI prototyping
-- **Website maintenance
+
+Developed Interest and Deep Questions for the sign-up page.
+Created the Welcome page.
+Contributed to UI prototyping.
+Handled website maintenance.
+Provided doccumentation.
 Mathew Wong
-- **Database models
-- **UI prototyping
-- **Website Maintenance
+
+Created database tables, reprository functions and viewmodels.
+Contributed to UI prototyping.
+Implemented email authentication for sign up.
+Implemented login freatures.
+Implemented chatting/messaging feature.
+Provided doccumentation.
+
+Divij Gupta
+
+Participated in brainstorming meeting for backend database architecture.
