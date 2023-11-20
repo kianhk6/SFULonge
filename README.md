@@ -44,8 +44,8 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 
 ## Mock Ups
 
-### The mvmmm Model
-You can view the document for the mvmmm model here: [mvmmm Model Document](https://docs.google.com/document/d/142Y2wBGEi41fotJXZjBQioxGrZqqjPv744CmfmjM3T8/edit?usp=sharing)
+### The mvmm Model
+You can view the document for the mvmm model here: [mvmm Model Document](https://docs.google.com/document/d/142Y2wBGEi41fotJXZjBQioxGrZqqjPv744CmfmjM3T8/edit?usp=sharing)
 
 ### Show and Tell Video
 Click on the thumbnail below to watch the Show and Tell video:
