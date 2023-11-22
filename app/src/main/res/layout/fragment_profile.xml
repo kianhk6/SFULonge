@@ -18,8 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+            android:paddingVertical="40dp"
+            android:paddingHorizontal="20dp"
             android:orientation="vertical">
 
             <TextView
@@ -121,6 +121,7 @@
                 android:layout_height="wrap_content" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
@@ -153,6 +154,7 @@
                 android:layout_height="wrap_content" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
@@ -190,6 +192,7 @@
                 android:layout_height="wrap_content" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
@@ -227,6 +230,7 @@
                 android:layout_height="wrap_content" >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" >
 
@@ -257,13 +261,16 @@
 
             </androidx.cardview.widget.CardView>
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:minHeight="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_horizontal"
                 android:text="@string/save"
-                android:layout_gravity="center_horizontal" />
+                android:backgroundTint="@color/button_orange"/>
 
         </LinearLayout>
     </ScrollView>

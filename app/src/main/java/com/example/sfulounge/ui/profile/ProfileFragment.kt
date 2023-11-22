@@ -14,6 +14,7 @@ import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.FragmentProfileBinding
 import com.example.sfulounge.ui.setup.SetupDepthQuestionsActivity
+import com.example.sfulounge.ui.setup.SetupImagesActivity
 import com.example.sfulounge.ui.setup.SetupInterestsActivity
 import com.example.sfulounge.ui.setup.SetupViewModel
 import com.example.sfulounge.ui.setup.SetupViewModelFactory
@@ -84,8 +85,8 @@ class ProfileFragment : Fragment() {
             setupViewModel.saveUser()
         }
         editImages.setOnClickListener {
-            val intent = Intent(requireActivity(), SetupInterestsActivity::class.java)
-            intent.putExtra(SetupInterestsActivity.INTENT_EDIT_MODE, true)
+            val intent = Intent(requireActivity(), SetupImagesActivity::class.java)
+            intent.putExtra(SetupImagesActivity.INTENT_EDIT_MODE, true)
             startActivity(intent)
         }
         editInterests.setOnClickListener {
