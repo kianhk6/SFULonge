@@ -151,9 +151,9 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
     }
 
     override fun onCameraClick() {
-        cameraTempUri = randomUriManager.getRandomUri()
+        randomUriManager.getRandomUri()
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraTempUri)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, randomUriManager.lastUri)
         cameraResultLauncher.launch(intent)
     }
 }

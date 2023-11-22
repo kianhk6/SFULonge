@@ -34,6 +34,9 @@
     <string name="error_message_gender_is_null">gender is null</string>
     <string name="error_message_message_send">Message failed to send</string>
 
+    <!--  success messages  -->
+    <string name="success_message_profile_saved">Profile saved!</string>
+
     <!--  dialog for messages  -->
     <string name="messages_upload_dialog_title">Upload Additional Items</string>
 
@@ -44,6 +47,7 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
+    <string name="save">Save</string>
     <string name="previous">Previous</string>
 
     <!--  email verification activity  -->
@@ -96,4 +100,17 @@
     <string name="action_next">Next</string>
     <string name="content_description_profile_picture">profile picture</string>
     <string name="error_message_swipe_right_query_failed">Cannot QUery the swipe right database failure found\n(note: this is not a NOT_FOUND err)</string>
+    <string name="profile_gender_male">Male</string>
+    <string name="profile_gender_female">Female</string>
+    <string name="profile_gender_other">Other</string>
+    <string name="profile_gender_unspecified">Prefer not to say</string>
+    <string name="profile_gender_label">Change your gender</string>
+    <string name="profile_name_hint">e.g. Frank</string>
+    <string name="profile_name_label">Change your first name</string>
+    <string name="profile_description">You can edit your profile info here!</string>
+    <string name="profile_header">Settings</string>
+    <string name="profile_show_gender_label">Don\'t show my gender on my profile</string>
+    <string name="profile_edit_images_label">Edit images</string>
+    <string name="profile_edit_interests_label">Edit interests</string>
+    <string name="profile_edit_depth_questions_label">Edit depth questions</string>
 </resources>

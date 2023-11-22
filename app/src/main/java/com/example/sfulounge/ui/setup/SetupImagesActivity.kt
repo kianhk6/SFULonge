@@ -2,7 +2,6 @@ package com.example.sfulounge.ui.setup
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -13,11 +12,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.sfulounge.MainActivity
+import com.example.sfulounge.R
 import com.example.sfulounge.Util
 import com.example.sfulounge.databinding.ActivitySetupImagesBinding
 import com.example.sfulounge.ui.components.RandomUriManager
 import com.example.sfulounge.ui.components.SingleChoiceDialog
+import kotlin.properties.Delegates
 
 class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoiceDialogListener {
 
@@ -26,14 +26,15 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var interestsResultLauncher: ActivityResultLauncher<Intent>
+    private var isEditMode by Delegates.notNull<Boolean>()
     
     private lateinit var randomUriManager: RandomUriManager
-
-    private var cameraTempUri: Uri? = null
 
     companion object {
         const val MAX_PHOTOS_LIMIT = 4
         const val MIN_PHOTOS_LIMIT = 2
+
+        const val INTENT_EDIT_MODE = "edit_mode"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,16 +47,18 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         setContentView(binding.root)
         
         randomUriManager = RandomUriManager(this)
+        isEditMode = intent.getBooleanExtra(INTENT_EDIT_MODE, false)
 
         setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
             .get(SetupViewModel::class.java)
 
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                setupViewModel.addPhoto(Photo(localUri = cameraTempUri))
+                val uri = randomUriManager.lastUri!!
+                setupViewModel.addPhoto(Photo(localUri = uri))
             } else {
                 // camera was canceled
-                cameraTempUri?.let { uri -> randomUriManager.deleteUri(uri) }
+                randomUriManager.deleteLastUri()
             }
         }
         galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -130,15 +133,18 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
             }
         }
         next.setOnClickListener {
+            loading.visibility = View.VISIBLE
             if (setupViewModel.photos.size < MIN_PHOTOS_LIMIT) {
                 showMinPhotosLimitError()
             } else if (setupViewModel.photos.size > MAX_PHOTOS_LIMIT) {
                 showMaxPhotosLimitReached()
+            } else if (isEditMode) {
+                onEditUserSuccessful()
             } else {
-                loading.visibility = View.VISIBLE
-                onNextIsClicked()
+                onSaveUserSuccessful()
             }
         }
+        next.text = if (isEditMode) getString(R.string.save) else getString(R.string.next)
 
         // get the current user
         setupViewModel.getUser()
@@ -147,9 +153,13 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     /**
      * wiring to activities
      */
-    private fun onNextIsClicked() {
+    private fun onSaveUserSuccessful() {
         val intent = Intent(this, SetupInterestsActivity::class.java)
         interestsResultLauncher.launch(intent)
+    }
+
+    private fun onEditUserSuccessful() {
+        finish()
     }
 
     /**
@@ -175,9 +185,9 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     override fun onDialogItemIsSelected(dialog: DialogInterface, selectedItemIdx: Int) {
         when (selectedItemIdx) {
             0 -> {
-                cameraTempUri = randomUriManager.getRandomUri()
+                randomUriManager.getRandomUri()
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraTempUri)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, randomUriManager.lastUri)
                 cameraResultLauncher.launch(intent)
             }
             1 -> {

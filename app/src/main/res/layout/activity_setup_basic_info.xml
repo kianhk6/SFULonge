@@ -24,154 +24,143 @@
 
     <!--        </FrameLayout>-->
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <ScrollView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <LinearLayout
+            android:paddingVertical="40dp"
+            android:paddingHorizontal="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_label"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="What's your name?"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/name_label"
+            <TextView
+                android:id="@+id/name_disclaimer"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:text="Only your first name will be shown to other users!"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                app:hintTextColor="@color/teal_200"
+                android:textColorHint="#ffffff">
+
+                <EditText
+                    android:id="@+id/firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/detail_white_outline"
+                    android:hint="First Name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/gender_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="50dp"
+                android:paddingBottom="8dp"
+                android:text="Your gender!"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/gender_disclaimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You can always change your gender later and you can hide it from your profile!"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <RadioGroup
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp" >
+
+                <RadioButton
+                    android:id="@+id/rb_male"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="8dp"
-                    android:text="What's your name?"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:text="@string/profile_gender_male"
+                    android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/name_disclaimer"
-                    android:layout_width="350dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="20dp"
-                    android:text="Only your first name will be shown to other users!"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout"
+                <RadioButton
+                    android:id="@+id/rb_female"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    app:hintTextColor="@color/teal_200"
-                    android:textColorHint="#ffffff">
+                    android:text="@string/profile_gender_female"
+                    android:textSize="16sp" />
 
-                    <EditText
-                        android:id="@+id/firstName"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/detail_white_outline"
-                        android:hint="First Name"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:textColor="#ffffff"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/gender_label"
+                <RadioButton
+                    android:id="@+id/rb_other"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingTop="50dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="8dp"
-                    android:text="Your gender!"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:text="@string/profile_gender_other"
+                    android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/gender_disclaimer"
-                    android:layout_width="380dp"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
-                    android:text="You can always change your gender later and you can hide it from your profile!"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <RadioGroup
-                    android:id="@+id/gender"
+                <RadioButton
+                    android:id="@+id/rb_prefer_not_to_say"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
-                    android:paddingTop="15dp"
-                    android:paddingEnd="20dp">
+                    android:text="@string/profile_gender_unspecified"
+                    android:textSize="16sp" />
+            </RadioGroup>
 
-                    <RadioButton
-                        android:id="@+id/rb_male"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Male"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_female"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Female"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_other"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Other"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_prefer_not_to_say"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Prefer not to say"
-                        android:textSize="16sp" />
-                </RadioGroup>
-            </LinearLayout>
-        </ScrollView>
+            <Button
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/next"
+                android:backgroundTint="@color/button_orange"/>
+        </LinearLayout>
+    </ScrollView>
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/white"
-            android:clickable="true"
-            android:contentDescription="next"
-            android:outlineAmbientShadowColor="@color/black"
-            android:src="@drawable/baseline_keyboard_double_arrow_right_24"
-            app:borderWidth="0dp"
-            app:fabCustomSize="60dp" />
-    </LinearLayout>
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/next"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:layout_marginEnd="30dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:clickable="true"-->
+<!--            android:contentDescription="next"-->
+<!--            android:outlineAmbientShadowColor="@color/black"-->
+<!--            android:src="@drawable/baseline_keyboard_double_arrow_right_24"-->
+<!--            app:borderWidth="0dp"-->
+<!--            app:fabCustomSize="60dp" />-->
 
     <ProgressBar
         android:id="@+id/loading"
