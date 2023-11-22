@@ -3,8 +3,6 @@ package com.example.sfulounge.ui.setup
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -16,6 +14,7 @@ import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupInterestsBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import kotlin.properties.Delegates
 
 class SetupInterestsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySetupInterestsBinding
@@ -24,6 +23,7 @@ class SetupInterestsActivity : AppCompatActivity() {
     private lateinit var depthQuestionsResultLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var chipGroup: ChipGroup
+    private var isEditMode by Delegates.notNull<Boolean>()
 
     private val interests = arrayOf(
         InterestItem(tag = "Hiking"),
@@ -78,6 +78,8 @@ class SetupInterestsActivity : AppCompatActivity() {
     )
 
     companion object {
+        const val INTENT_EDIT_MODE = "edit_mode"
+
         private const val MAX_INTERESTS_LIMIT = 4
     }
 
@@ -86,6 +88,8 @@ class SetupInterestsActivity : AppCompatActivity() {
 
         binding = ActivitySetupInterestsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        isEditMode = intent.getBooleanExtra(INTENT_EDIT_MODE, false)
 
         interestsViewModel = ViewModelProvider(this, InterestsViewModelFactory())
             .get(InterestsViewModel::class.java)
@@ -98,6 +102,8 @@ class SetupInterestsActivity : AppCompatActivity() {
             val unitResult = it ?: return@Observer
             if (unitResult.error != null) {
                 showErrorOnSave(unitResult.error)
+            } else if (isEditMode) {
+                onEditUserSuccessful()
             } else {
                 onSaveUserSuccessful()
             }
@@ -128,7 +134,7 @@ class SetupInterestsActivity : AppCompatActivity() {
                 interestsViewModel.save(selectedInterestItems.toTypedArray())
             }
         }
-
+        next.text = if (isEditMode) getString(R.string.save) else getString(R.string.next)
     }
 
     private fun loadUser(user: User) {
@@ -144,6 +150,10 @@ class SetupInterestsActivity : AppCompatActivity() {
     private fun onSaveUserSuccessful() {
         val intent = Intent(this, SetupDepthQuestionsActivity::class.java)
         depthQuestionsResultLauncher.launch(intent)
+    }
+
+    private fun onEditUserSuccessful() {
+        finish()
     }
 
     private fun showMaxInterestsLimitError() {

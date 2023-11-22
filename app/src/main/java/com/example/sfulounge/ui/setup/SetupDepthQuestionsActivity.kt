@@ -6,15 +6,18 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.R
 import com.example.sfulounge.data.model.DepthInfo
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupDepthQuestionsBinding
+import kotlin.properties.Delegates
 
 class SetupDepthQuestionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySetupDepthQuestionsBinding
     private lateinit var depthQuestionsViewModel: DepthQuestionsViewModel
     private lateinit var depthQuestionListAdapter: DepthQuestionListAdapter
-    
+    private var isEditMode by Delegates.notNull<Boolean>()
+
     private val depthQuestions = arrayOf(
         DepthQuestionItem(question = "If you could have any superpower, what would it be, and why?"),
         DepthQuestionItem(question = "What's your favorite way to spend a lazy weekend?"),
@@ -37,6 +40,7 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
     )
 
     companion object {
+        const val INTENT_EDIT_MODE = "edit_mode"
         private const val MAX_DEPTH_QUESTIONS = 3
     }
 
@@ -45,6 +49,8 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
 
         binding = ActivitySetupDepthQuestionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        isEditMode = intent.getBooleanExtra(INTENT_EDIT_MODE, false)
 
         depthQuestionsViewModel = ViewModelProvider(this, DepthQuestionsViewModelFactory())
             .get(DepthQuestionsViewModel::class.java)
@@ -57,6 +63,8 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
             val unitResult = it ?: return@Observer
             if (unitResult.error != null) {
                 showErrorOnSave(unitResult.error)
+            } else if (isEditMode) {
+                onEditUserSuccessful()
             } else {
                 onSaveUserSuccessful()
             }
@@ -80,6 +88,7 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
                 depthQuestionsViewModel.save(depthQuestions)
             }
         }
+        next.text = if (isEditMode) getString(R.string.save) else getString(R.string.next)
 
         depthQuestionsViewModel.getUser()
     }
@@ -97,6 +106,10 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
 
     private fun onSaveUserSuccessful() {
         setResult(RESULT_OK)
+        finish()
+    }
+
+    private fun onEditUserSuccessful() {
         finish()
     }
 
