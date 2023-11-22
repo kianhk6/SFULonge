@@ -50,7 +50,7 @@
     <string name="title_email_verification">
         Please check your email to verify your account.\n\n\n Did not receive email?
     </string>
-    <string name="action_resend_email">Re-send verification email</string>
+    <string name="action_resend_email">Resend verification email</string>
     <string name="verification_email_failed">Failed to send verification email</string>
 
     <string name="lorem_ipsum">

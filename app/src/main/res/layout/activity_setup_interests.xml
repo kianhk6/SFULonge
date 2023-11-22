@@ -9,7 +9,7 @@
     android:background="@drawable/bg_register_info">
 
     <TextView
-        android:id="@id/textview"
+        android:id="@+id/textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
