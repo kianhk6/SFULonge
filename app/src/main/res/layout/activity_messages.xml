@@ -7,10 +7,23 @@
     android:orientation="vertical"
     tools:context=".ui.messages.MessagesActivity">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="FirstName LastName"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:background="@color/button_orange"
+        android:textColor="#ffffff"
+        android:padding="16dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_below="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <LinearLayout
@@ -21,15 +34,19 @@
         <EditText
             android:id="@+id/input"
             android:hint="send message..."
+            android:textSize="14dp"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
 
         <Button
             android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=">" />
+            android:text="Send"
+            android:gravity="center"
+            android:backgroundTint="@color/button_orange" />
 
     </LinearLayout>
 
