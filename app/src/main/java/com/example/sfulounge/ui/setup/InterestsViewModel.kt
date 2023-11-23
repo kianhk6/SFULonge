@@ -3,22 +3,14 @@ package com.example.sfulounge.ui.setup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.example.sfulounge.data.MainRepository
 
 class InterestsViewModel(private val repository: MainRepository) : ViewModel() {
-    private var _userResult = MutableLiveData<UserResult>()
-    val userResult: LiveData<UserResult> = _userResult
+    val userResult: LiveData<UserResult> = repository.currentUser.map { UserResult(user = it) }
     private val _saved = MutableLiveData<UnitResult>()
     val saved: LiveData<UnitResult> = _saved
 
-    fun getUser() {
-        repository.getUser(
-            onSuccess = { user ->
-                _userResult.value = UserResult(user = user)
-            },
-            onError = { throw IllegalStateException("user cannot be null") }
-        )
-    }
     fun save(interests: Array<InterestItem>) {
         val updatedInterests = interests
             .filter { x -> x.isSelected }

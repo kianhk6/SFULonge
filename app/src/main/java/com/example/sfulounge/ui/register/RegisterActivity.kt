@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import com.example.sfulounge.MainApplication
+import com.example.sfulounge.afterTextChanged
 import com.example.sfulounge.databinding.ActivityRegisterBinding
-
-import com.example.sfulounge.ui.login.afterTextChanged
 
 /**
  * Register an account for the user
@@ -35,8 +35,10 @@ class RegisterActivity : AppCompatActivity() {
         val login = binding.register
         val loading = binding.loading
 
-        registerViewModel = ViewModelProvider(this, RegisterModelFactory())
-            .get(RegisterViewModel::class.java)
+        registerViewModel = ViewModelProvider(
+            this,
+            RegisterViewModelFactory((application as MainApplication).loginRepository)
+        ).get(RegisterViewModel::class.java)
 
         registerViewModel.registerFormState.observe(this@RegisterActivity, Observer {
             val loginState = it ?: return@Observer

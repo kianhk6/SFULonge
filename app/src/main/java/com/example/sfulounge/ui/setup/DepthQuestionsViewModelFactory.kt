@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.data.MainRepository
 
-class DepthQuestionsViewModelFactory : ViewModelProvider.Factory {
+class DepthQuestionsViewModelFactory(private val repository: MainRepository)
+    : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DepthQuestionsViewModel::class.java)) {
             return DepthQuestionsViewModel(
-                repository = MainRepository()
+                repository = repository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

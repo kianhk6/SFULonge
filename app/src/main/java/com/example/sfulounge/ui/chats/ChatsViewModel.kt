@@ -3,12 +3,12 @@ package com.example.sfulounge.ui.chats
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.sfulounge.data.ChatRepository
+import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.data.model.User
 
-class ChatsViewModel(private val repository: ChatRepository)
-    : ViewModel(), ChatRepository.ChatRoomListener
+class ChatsViewModel(private val repository: MainRepository)
+    : ViewModel(), MainRepository.ChatRoomListener
 {
     private val _userId: String = repository.getCurrentUserUid()
     val userId: String = _userId

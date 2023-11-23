@@ -16,7 +16,7 @@ class MessagesDataSource(private val chatRoomId: String) : PagingSource<Document
     private val db = Firebase.firestore
 
     companion object {
-        const val PAGE_SIZE = 10L
+        const val PAGE_SIZE = 10
     }
 
     override fun getRefreshKey(state: PagingState<DocumentSnapshot, Message>): DocumentSnapshot? {
@@ -47,7 +47,7 @@ class MessagesDataSource(private val chatRoomId: String) : PagingSource<Document
             }
 
             // get page
-            val documentSnapshot = query.limit(PAGE_SIZE)
+            val documentSnapshot = query.limit(PAGE_SIZE.toLong())
                 .get()
                 .await()
 

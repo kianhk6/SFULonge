@@ -9,17 +9,19 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.R
+import com.example.sfulounge.afterTextChanged
 import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.FragmentProfileBinding
+import com.example.sfulounge.observeOnce
+import com.example.sfulounge.onCheckedChanged
 import com.example.sfulounge.ui.setup.SetupDepthQuestionsActivity
 import com.example.sfulounge.ui.setup.SetupImagesActivity
 import com.example.sfulounge.ui.setup.SetupInterestsActivity
 import com.example.sfulounge.ui.setup.SetupViewModel
 import com.example.sfulounge.ui.setup.SetupViewModelFactory
-import com.example.sfulounge.ui.setup.afterTextChanged
-import com.example.sfulounge.ui.setup.onCheckedChanged
 
 class ProfileFragment : Fragment() {
 
@@ -37,8 +39,10 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
-            .get(SetupViewModel::class.java)
+        setupViewModel = ViewModelProvider(
+            this,
+            SetupViewModelFactory((requireActivity().application as MainApplication).repository)
+        ).get(SetupViewModel::class.java)
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -52,9 +56,8 @@ class ProfileFragment : Fragment() {
         val editInterests = binding.editInterests
         val editDepthQuestions = binding.editDepthQuestions
 
-        setupViewModel.userResult.observe(requireActivity()) {
-            val userResult = it ?: return@observe
-            loadUser(userResult.user!!)
+        setupViewModel.userResult.observeOnce(requireActivity()) {
+            loadUser(it.user!!)
         }
         setupViewModel.saved.observe(requireActivity()) {
             val unitResult = it ?: return@observe
@@ -99,9 +102,6 @@ class ProfileFragment : Fragment() {
             intent.putExtra(SetupDepthQuestionsActivity.INTENT_EDIT_MODE, true)
             startActivity(intent)
         }
-
-        // get the current user
-        setupViewModel.getUser()
 
         return root
     }

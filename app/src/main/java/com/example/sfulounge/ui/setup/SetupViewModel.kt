@@ -3,12 +3,13 @@ package com.example.sfulounge.ui.setup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
+import com.example.sfulounge.data.model.User
 
 class SetupViewModel(private val repository: MainRepository) : ViewModel() {
-    private var _userResult = MutableLiveData<UserResult>()
-    val userResult: LiveData<UserResult> = _userResult
+    val userResult: LiveData<UserResult> = repository.currentUser.map { UserResult(user = it) }
     private val _addPhotoResult = MutableLiveData<PhotoResult>()
     val addPhotoResult: LiveData<PhotoResult> = _addPhotoResult
     private val _deletePhotoResult = MutableLiveData<PhotoResult>()
@@ -20,23 +21,15 @@ class SetupViewModel(private val repository: MainRepository) : ViewModel() {
     val saved: LiveData<UnitResult> = _saved
 
     var firstName: String? = null
-    var lastName: String? = null
     var gender: Int? = null
 
     private val _photos: ArrayList<Photo> = ArrayList()
     val photos: List<Photo> = _photos
 
-    fun getUser() {
-        repository.getUser(
-            onSuccess = { user ->
-                firstName = user.firstName
-                lastName = user.lastName
-                gender = user.gender
-                _userResult.value = UserResult(user = user)
-                getPhotos(user.photos)
-            },
-            onError = { throw IllegalStateException("user cannot be null") }
-        )
+    fun loadUser(user: User) {
+        firstName = user.firstName
+        gender = user.gender
+        getPhotos(user.photos)
     }
 
     fun saveUser() {

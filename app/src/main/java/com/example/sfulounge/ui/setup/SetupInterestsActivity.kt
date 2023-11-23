@@ -9,9 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupInterestsBinding
+import com.example.sfulounge.observeOnce
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import kotlin.properties.Delegates
@@ -91,13 +93,14 @@ class SetupInterestsActivity : AppCompatActivity() {
 
         isEditMode = intent.getBooleanExtra(INTENT_EDIT_MODE, false)
 
-        interestsViewModel = ViewModelProvider(this, InterestsViewModelFactory())
-            .get(InterestsViewModel::class.java)
+        interestsViewModel = ViewModelProvider(
+            this,
+            InterestsViewModelFactory((application as MainApplication).repository)
+        ).get(InterestsViewModel::class.java)
 
-        interestsViewModel.userResult.observe(this, Observer {
-            val userResult = it ?: return@Observer
-            loadUser(userResult.user!!)
-        })
+        interestsViewModel.userResult.observeOnce(this) {
+            loadUser(it.user!!)
+        }
         interestsViewModel.saved.observe(this, Observer {
             val unitResult = it ?: return@Observer
             if (unitResult.error != null) {
@@ -138,13 +141,13 @@ class SetupInterestsActivity : AppCompatActivity() {
     }
 
     private fun loadUser(user: User) {
-        val interestsSet = user.interests.toSet()
-        for (item in interests) {
-            if (item.tag in interestsSet) {
-                item.isSelected = true
-            }
-        }
-        interestListAdapter.notifyDataSetChanged()
+//        val interestsSet = user.interests.toSet()
+//        for (item in interests) {
+//            if (item.tag in interestsSet) {
+//                item.isSelected = true
+//            }
+//        }
+//        interestListAdapter.notifyDataSetChanged()
     }
 
     private fun onSaveUserSuccessful() {

@@ -8,13 +8,17 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.MediaMetadataRetriever
-import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
-import android.util.Size
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.RadioGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 // from lecture
 object Util {
@@ -47,5 +51,38 @@ object Util {
             retriever.release()
         }
         return null
+    }
+}
+
+/**
+ * Extension function for live data
+ */
+fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: Observer<T>) {
+    observe(owner, object : Observer<T> {
+        override fun onChanged(value: T) {
+            observer.onChanged(value)
+            removeObserver(this)
+        }
+    })
+}
+
+/**
+ * Extension function to simplify setting an afterTextChanged action to EditText components.
+ */
+fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            afterTextChanged.invoke(editable.toString())
+        }
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+    })
+}
+
+fun RadioGroup.onCheckedChanged(afterCheckedChanged: (Int) -> Unit) {
+    this.setOnCheckedChangeListener { _, checkedId ->
+        afterCheckedChanged.invoke(checkedId)
     }
 }

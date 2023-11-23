@@ -7,12 +7,11 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.Toast
 import com.example.sfulounge.MainActivity
+import com.example.sfulounge.MainApplication
+import com.example.sfulounge.afterTextChanged
 import com.example.sfulounge.databinding.ActivityLoginBinding
 
 import com.example.sfulounge.data.model.LoggedInUser
@@ -36,8 +35,10 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val register = binding.register
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProvider(
+            this,
+            LoginViewModelFactory((application as MainApplication).loginRepository)
+        ).get(LoginViewModel::class.java)
 
         if (loginViewModel.isLoggedIn()) {
             // auto login
@@ -147,19 +148,4 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, getString(errorString), Toast.LENGTH_SHORT).show()
     }
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
 }

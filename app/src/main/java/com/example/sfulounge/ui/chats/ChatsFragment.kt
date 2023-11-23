@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.data.model.ChatRoom
 import com.example.sfulounge.databinding.FragmentChatsBinding
 import com.example.sfulounge.ui.messages.MessagesActivity
@@ -30,8 +31,10 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
     ): View {
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
 
-        chatsViewModel = ViewModelProvider(this, ChatsViewModelFactory())
-            .get(ChatsViewModel::class.java)
+        chatsViewModel = ViewModelProvider(
+            this,
+            ChatsViewModelFactory((requireActivity().application as MainApplication).repository)
+        ).get(ChatsViewModel::class.java)
 
         val chatsListAdapter = ChatsListAdapter(
             chatsViewModel.userId,

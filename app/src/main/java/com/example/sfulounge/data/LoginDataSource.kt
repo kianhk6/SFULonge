@@ -5,6 +5,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.LoggedInUser
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -17,6 +18,8 @@ class LoginDataSource {
     private val auth = Firebase.auth
     private val db = Firebase.firestore
 
+    private var listener: AuthStateListener? = null
+
     val isLoggedIn: Boolean
         get() = auth.currentUser != null && auth.currentUser!!.isEmailVerified
 
@@ -26,8 +29,7 @@ class LoginDataSource {
     ) {
         assert(isLoggedIn)
         val user = auth.currentUser!!
-        DatabaseHelper.getUser(
-            db,
+        getUser(
             user.uid,
             onSuccess = {
                 onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!, it)))
@@ -47,8 +49,7 @@ class LoginDataSource {
                 if (task.isSuccessful) {
                     val user = task.result.user!!
                     if (user.isEmailVerified) {
-                        DatabaseHelper.getUser(
-                            db,
+                        getUser(
                             user.uid,
                             onSuccess = {
                                 onSuccess(Result.Success(LoggedInUser(user.uid, email, it)))
@@ -64,6 +65,20 @@ class LoginDataSource {
                     onError(Result.Error(R.string.login_failed))
                 }
             }
+    }
+
+    fun addListenerForEmailVerification(onEmailIsVerified: () -> Unit) {
+        listener = AuthStateListener {firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null && user.isEmailVerified) {
+                onEmailIsVerified()
+            }
+        }
+        auth.addAuthStateListener(listener!!)
+    }
+
+    fun removeListenerForEmailVerification() {
+        auth.removeAuthStateListener(listener!!)
     }
 
     fun register(
@@ -113,8 +128,7 @@ class LoginDataSource {
         user.sendEmailVerification()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    DatabaseHelper.getUser(
-                        db,
+                    getUser(
                         user.uid,
                         onSuccess = {
                             onSuccess(Result.Success(LoggedInUser(user.uid, user.email!!, it)))
@@ -134,5 +148,54 @@ class LoginDataSource {
             .document(userId)
             .set(user)
         return user
+    }
+
+    private fun getUser(
+        userId: String,
+        onSuccess: (User) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    val loggedInUser = document.toObject(User::class.java)!!
+                    onSuccess(loggedInUser)
+                } else {
+                    throw IllegalStateException("User cannot be null")
+                }
+            }
+            .addOnFailureListener { error ->
+                Log.e("error", error.message ?: "failed to read from db. trying to recover...")
+
+                // user not found error: try to recover
+                addUserOnRecovery(
+                    userId,
+                    onSuccess,
+                    onError = {
+                        onError(Result.Error(R.string.error_message_unknown_reason))
+                    }
+                )
+            }
+    }
+
+    private fun addUserOnRecovery(
+        userId: String,
+        onSuccess: (User) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = User(userId = userId, isProfileInitialized = false)
+        db.collection("users")
+            .document(userId)
+            .set(user)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess(user)
+                } else {
+                    Log.e("error", "recovery error")
+                    onError(Result.Error(R.string.error_message_recovery))
+                }
+            }
     }
 }

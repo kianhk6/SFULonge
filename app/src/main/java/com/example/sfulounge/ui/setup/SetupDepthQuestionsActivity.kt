@@ -6,10 +6,12 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.DepthInfo
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupDepthQuestionsBinding
+import com.example.sfulounge.observeOnce
 import kotlin.properties.Delegates
 
 class SetupDepthQuestionsActivity : AppCompatActivity() {
@@ -52,13 +54,14 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
 
         isEditMode = intent.getBooleanExtra(INTENT_EDIT_MODE, false)
 
-        depthQuestionsViewModel = ViewModelProvider(this, DepthQuestionsViewModelFactory())
-            .get(DepthQuestionsViewModel::class.java)
+        depthQuestionsViewModel = ViewModelProvider(
+            this,
+            DepthQuestionsViewModelFactory((application as MainApplication).repository)
+        ).get(DepthQuestionsViewModel::class.java)
 
-        depthQuestionsViewModel.userResult.observe(this, Observer {
-            val userResult = it ?: return@Observer
-            loadUser(userResult.user!!)
-        })
+        depthQuestionsViewModel.userResult.observeOnce(this) {
+            loadUser(it.user!!)
+        }
         depthQuestionsViewModel.saved.observe(this, Observer {
             val unitResult = it ?: return@Observer
             if (unitResult.error != null) {
@@ -89,8 +92,6 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
             }
         }
         next.text = if (isEditMode) getString(R.string.save) else getString(R.string.next)
-
-        depthQuestionsViewModel.getUser()
     }
 
     private fun loadUser(user: User) {

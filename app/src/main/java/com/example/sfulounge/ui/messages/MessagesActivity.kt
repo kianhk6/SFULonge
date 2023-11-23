@@ -12,6 +12,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.databinding.ActivityMessagesBinding
 import com.example.sfulounge.ui.components.RandomUriManager
 import com.example.sfulounge.ui.components.UploadDialog
@@ -45,8 +46,10 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
         val members = intent.getStringArrayListExtra(INTENT_MEMBER_IDS)
             ?: throw IllegalStateException("chat room members list is null")
 
-        messagesViewModel = ViewModelProvider(this, MessagesViewModelFactory(chatRoomId))
-            .get(MessagesViewModel::class.java)
+        messagesViewModel = ViewModelProvider(
+            this,
+            MessagesViewModelFactory(chatRoomId, (application as MainApplication).repository)
+        ).get(MessagesViewModel::class.java)
 
         randomUriManager = RandomUriManager(this)
         uploadDialog = UploadDialog()

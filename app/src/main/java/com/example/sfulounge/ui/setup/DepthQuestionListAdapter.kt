@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import com.example.sfulounge.R
+import com.example.sfulounge.afterTextChanged
 
 class DepthQuestionListAdapter(context: Context, data: Array<DepthQuestionItem>)
     : ArrayAdapter<DepthQuestionItem>(context, R.layout.depth_questions_list_view_item, data)

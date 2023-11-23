@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.MatchesViewModel
 import com.example.sfulounge.MatchesViewModelFactory
 import com.example.sfulounge.R
@@ -31,7 +32,7 @@ class ExploreFragment : Fragment() {
         // Initialize the MatchesViewModel
         matchesViewModel = ViewModelProvider(
             this,
-            MatchesViewModelFactory(MainRepository())
+            MatchesViewModelFactory((requireActivity().application as MainApplication).repository)
         ).get(MatchesViewModel::class.java)
 
         waitForUsersToPropagate()

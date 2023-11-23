@@ -1,31 +1,25 @@
 package com.example.sfulounge.ui.setup
 
-import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.StringRes
-import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.MainActivity
+import com.example.sfulounge.MainApplication
 import com.example.sfulounge.R
 import com.example.sfulounge.Util
+import com.example.sfulounge.afterTextChanged
 import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivitySetupBasicInfoBinding
-import com.example.sfulounge.ui.components.SingleChoiceDialog
-import java.io.File
+import com.example.sfulounge.observeOnce
+import com.example.sfulounge.onCheckedChanged
 
 /**
  * Step 1 of setting up user profile. When user clicks next it will start Step 2
@@ -46,8 +40,10 @@ class SetupBasicInfoActivity : AppCompatActivity() {
         binding = ActivitySetupBasicInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
-            .get(SetupViewModel::class.java)
+        setupViewModel = ViewModelProvider(
+            this,
+            SetupViewModelFactory((application as MainApplication).repository)
+        ).get(SetupViewModel::class.java)
 
         imagesResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -61,10 +57,9 @@ class SetupBasicInfoActivity : AppCompatActivity() {
         val gender = binding.gender
         val loading = binding.loading
 
-        setupViewModel.userResult.observe(this, Observer {
-            val userResult = it ?: return@Observer
-            loadUser(userResult.user!!)
-        })
+        setupViewModel.userResult.observeOnce(this) {
+            loadUser(it.user!!)
+        }
         setupViewModel.saved.observe(this, Observer {
             val unitResult = it ?: return@Observer
             loading.visibility = View.GONE
@@ -93,12 +88,10 @@ class SetupBasicInfoActivity : AppCompatActivity() {
             loading.visibility = View.VISIBLE
             setupViewModel.saveUser()
         }
-
-        // get the current user
-        setupViewModel.getUser()
     }
 
     private fun loadUser(user: User) {
+        setupViewModel.loadUser(user)
         binding.firstName.setText(user.firstName)
         binding.gender.check(
             when (user.gender) {
@@ -131,25 +124,4 @@ class SetupBasicInfoActivity : AppCompatActivity() {
         Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
-}
-
-fun RadioGroup.onCheckedChanged(afterCheckedChanged: (Int) -> Unit) {
-    this.setOnCheckedChangeListener { _, checkedId ->
-        afterCheckedChanged.invoke(checkedId)
-    }
 }

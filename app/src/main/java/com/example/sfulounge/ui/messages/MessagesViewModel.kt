@@ -7,16 +7,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.example.sfulounge.data.MessageRepository
+import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.MessagesDataSource
+import com.example.sfulounge.data.MessagesDataSource.Companion.PAGE_SIZE
 import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.setup.UnitResult
 
 class MessagesViewModel(
-    private val repository: MessageRepository,
+    private val repository: MainRepository,
     private val chatRoomId: String
-) : ViewModel(), MessageRepository.MessagesListener
+) : ViewModel(), MainRepository.MessagesListener
 {
     private var _pagingDataSource: MessagesDataSource? = null
     val flow = Pager(
@@ -72,9 +73,5 @@ class MessagesViewModel(
 
     override fun onNewMessage(message: Message) {
         _pagingDataSource?.invalidate()
-    }
-
-    companion object {
-        const val PAGE_SIZE = 50
     }
 }
