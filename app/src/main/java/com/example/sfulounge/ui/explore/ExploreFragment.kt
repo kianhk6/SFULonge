@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -36,7 +37,7 @@ class ExploreFragment : Fragment() {
 
         waitForUsersToPropagate()
 
-        val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
+        val buttonSwipeRight = view.findViewById<ImageView>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
             // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
             println(
@@ -57,7 +58,7 @@ class ExploreFragment : Fragment() {
             }
         }
 
-        val buttonSwipeLeft = view.findViewById<Button>(R.id.buttonSwipeLeft)
+        val buttonSwipeLeft = view.findViewById<ImageView>(R.id.buttonSwipeLeft)
         buttonSwipeLeft.setOnClickListener {
             // Assuming 'current_recommended_user' holds the user object that got swiped on
             val swipedOnUser = matchesViewModel.current_recommended_user

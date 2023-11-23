@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,19 +12,61 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-
-        <Button
-            android:id="@+id/buttonSwipeRight"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Swipe Right"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:text="SFU Lounge "
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/buttonSwipeLeft"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Swipe Left"
-            android:layout_gravity="center_horizontal"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/buttonSwipeLeft"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="#9ACA382D"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_close_24_red" />
+
+            <FrameLayout
+                android:layout_width="300dp"
+                android:layout_height="300dp">
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_person_24" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/buttonSwipeRight"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="#8838DD3F"
+                android:scaleType="fitCenter"
+                android:src="@drawable/baseline_check_24" />
+        </LinearLayout>
+
+<!--        <Button-->
+<!--            android:id="@+id/buttonSwipeRight"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Swipe Right"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/buttonSwipeLeft"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Swipe Left"-->
+<!--            android:layout_gravity="center_horizontal"/>-->
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
