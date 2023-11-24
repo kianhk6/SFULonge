@@ -246,7 +246,7 @@ class MainRepository {
             }
             .addOnFailureListener { exception ->
                 Log.e("MainRepository", "Error querying SwipeRight: ", exception)
-                onError(Result.Error(R.string.error_message_swipe_right_query_failed))
+                onError(Result.Error(R.string.error_message_swipe_query_failed))
             }
     }
 
@@ -279,6 +279,40 @@ class MainRepository {
                     Log.e("error", "create chatroom failed: ${task.exception}")
                     onError(Result.Error(R.string.error_message_create_chat_room))
                 }
+            }
+    }
+
+
+    fun querySwipeRightsForUser1(user1Id: String, onSuccess: (List<String>) -> Unit, onError: (Result.Error) -> Unit) {
+        db.collection("swipeRights")
+            .whereEqualTo("user1Id", user1Id)
+            .get()
+            .addOnSuccessListener { documents ->
+                val user2Ids = documents.mapNotNull { document ->
+                    (document.data["user2Id"] as? String)?.takeIf { it.isNotEmpty() }
+                }
+                onSuccess(user2Ids)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("MainRepository", "Error querying SwipeRight for user1Id: $user1Id", exception)
+                onError(Result.Error(R.string.error_message_swipe_query_failed))
+
+            }
+    }
+
+    fun querySwipeLeftsForUser1(user1Id: String, onSuccess: (List<String>) -> Unit, onError: (Result.Error) -> Unit) {
+        db.collection("swipeLefts") // Assuming the collection for swipe lefts is "swipeLefts"
+            .whereEqualTo("user1Id", user1Id)
+            .get()
+            .addOnSuccessListener { documents ->
+                val user2Ids = documents.mapNotNull { document ->
+                    (document.data["user2Id"] as? String)?.takeIf { it.isNotEmpty() }
+                }
+                onSuccess(user2Ids)
+            }
+            .addOnFailureListener { exception ->
+                Log.e("MainRepository", "Error querying SwipeLeft for user1Id: $user1Id", exception)
+                onError(Result.Error(R.string.error_message_swipe_query_failed))
             }
     }
 }
