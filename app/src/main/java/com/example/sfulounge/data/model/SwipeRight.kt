@@ -20,8 +20,4 @@ data class SwipeRight(
             user2Id = map["user2Id"] as String
         )
     }
-
-
-
-
 }

@@ -85,7 +85,7 @@ class ExploreFragment : Fragment() {
         matchesViewModel.popAndGetNextUser { user ->
             if (user != null) {
                 // Display the user's details
-                println("User ID: ${user.userId}, Name: ${user.firstName} ${user.lastName}")
+                println("User ID: ${user.userId}, Name: ${user.firstName}")
             } else {
                 // as all current users have been swiped on:
                 // reload all users to see if we have  any new users to show
@@ -102,7 +102,7 @@ class ExploreFragment : Fragment() {
             if (users.isNotEmpty() && !matchesViewModel.isInitialUserFetched) {
                 matchesViewModel.getTheFirstUser { user ->
                     user?.let {
-                        println("User ID: ${it.userId}, Name: ${it.firstName} ${it.lastName}")
+                        println("User ID: ${it.userId}, Name: ${it.firstName}")
                     }
                 }
             }
