@@ -62,6 +62,10 @@ class MessagesViewModel(
         )
     }
 
+    fun updateLastSeen() {
+        repository.updateMemberLastMessageSeenTime(chatRoomId, userId)
+    }
+
     fun registerMessagesListener() {
         repository.registerMessagesListener(chatRoomId, this)
     }

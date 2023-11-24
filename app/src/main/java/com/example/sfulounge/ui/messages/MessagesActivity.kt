@@ -141,6 +141,7 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
 
     override fun onDestroy() {
         super.onDestroy()
+        messagesViewModel.updateLastSeen()
         messagesViewModel.unregisterMessagesListener()
     }
 
