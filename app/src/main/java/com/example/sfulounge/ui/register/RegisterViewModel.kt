@@ -14,9 +14,22 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : ViewMode
     val registerFormState: LiveData<RegisterFormState> = _registerForm
 
     private val _registerResult = MutableLiveData<RegisterResult>()
-    private val _verificationResult = MutableLiveData<VerificationResult>()
+    private val _retryEmailResult = MutableLiveData<VerificationResult>()
     val registerResult: LiveData<RegisterResult> = _registerResult
-    val verificationResult: LiveData<VerificationResult> = _verificationResult
+    val retryEmailResult: LiveData<VerificationResult> = _retryEmailResult
+
+    private val _verificationResult = MutableLiveData<Unit>()
+    val verificationResult: LiveData<Unit> = _verificationResult
+
+    fun addListenerForEmailVerification() {
+        loginRepository.addListenerForEmailVerification {
+            _verificationResult.value = Unit
+        }
+    }
+
+    fun removeListenerForEmailVerification() {
+        loginRepository.removeListenerForEmailVerification()
+    }
 
     fun register(email: String, password: String) {
         loginRepository.register(
@@ -35,10 +48,10 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : ViewMode
     fun retrySendVerificationEmail() {
         loginRepository.retrySendVerificationEmail(
             onSuccess = {
-                _verificationResult.value = VerificationResult()
+                _retryEmailResult.value = VerificationResult()
             },
             onError = {
-                _verificationResult.value = VerificationResult(error = R.string.verification_email_failed)
+                _retryEmailResult.value = VerificationResult(error = R.string.verification_email_failed)
             }
         )
     }
