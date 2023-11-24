@@ -16,7 +16,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
     var isInitialUserFetched = false
     private val _currentUsers = MutableLiveData<List<User>>()
     val currentUsers: LiveData<List<User>> = _currentUsers
-
+    lateinit var loggedInUser: User
     private val _operationState = MutableLiveData<UnitResult>()
     val operationState: LiveData<UnitResult> = _operationState
 
@@ -29,7 +29,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             try {
                 repository.getAllUsers(
                     onSuccess = { allUsers ->
-                        filterAllUsersForCurrentUsers(allUsers)
+                        populateCurrentUserList(allUsers)
                     },
                     onError = { getAllUsersError ->
                         // Handle the error case, potentially by setting an error state LiveData
@@ -42,9 +42,10 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
-    private fun filterAllUsersForCurrentUsers(allUsers: List<User>) {
+    private fun populateCurrentUserList(allUsers: List<User>) {
         repository.getUser(
             onSuccess = { currentUser ->
+                loggedInUser = currentUser
                 repository.querySwipeRightsForUser1(currentUser.userId,
                     onSuccess = { swipedRightUserIds ->
                         repository.querySwipeLeftsForUser1(currentUser.userId,
@@ -57,8 +58,15 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
                                 val filteredUsers = allUsers.filterNot { user ->
                                     swipedUserIds.contains(user.userId) || user.userId == currentUser.userId
                                 }
+
+                                val currentUserInterests = loggedInUser.interests.toSet()
+
+                                val sortedUsers = filteredUsers.sortedByDescending { user ->
+                                  user.interests.count { interest -> currentUserInterests.contains(interest) }
+                                }
+
                                 // Update _currentUsers with the filtered list
-                                _currentUsers.postValue(filteredUsers)
+                                _currentUsers.postValue(sortedUsers)
                             },
                             onError = { swipeLeftError ->
                                 // Handle errors in querying swipe lefts
@@ -79,22 +87,31 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
         )
     }
 
+
     fun printList() {
         val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
 
-        // Iterate over the current list of users and print their names
+
+        // Iterate over the current list of users and print their names and interests
         currentList.forEach { user ->
-            println("User Name: ${user.firstName} + User id:  ${user.userId}")
+            println("User Name: ${user.firstName}, User ID: ${user.userId}")
+            println("Interests: ${user.interests.joinToString(", ")}")
         }
     }
 
     // This function tries to pop a user from the current list or fetch new ones if the list is empty
     fun popAndGetNextUser(onResult: (User?) -> Unit) {
         val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
+
         if (currentList.isNotEmpty()) {
-            // Pops the last user from the list and posts the updated list
-            val userToReturn = currentList.removeLast()
+            // Pop the first user from the sorted list
+            val userToReturn = currentList.first()
+
+            // Remove the popped user from the original list and update LiveData
+            currentList.remove(userToReturn)
             _currentUsers.postValue(currentList)
+
+            // Update current recommended user and return the result
             current_recommended_user = userToReturn
             onResult(userToReturn)
         } else {
@@ -106,7 +123,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
     fun getTheFirstUser(onResult: (User?) -> Unit) {
         val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
         if (currentList.isNotEmpty()) {
-            val userToReturn = currentList.removeLast()
+            val userToReturn = currentList.first()
             _currentUsers.postValue(currentList)
             current_recommended_user = userToReturn
             isInitialUserFetched = true
@@ -121,6 +138,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             onSuccess = { user ->
                 println(user.firstName + " swiped right on " + userThatGotSwipedOn.userId)
                 // add the swipe regardless
+
                 val swipeRight = SwipeRight(user.userId, userThatGotSwipedOn.userId)
 
                 repository.addSwipeRight(swipeRight, onSuccess, onError)
