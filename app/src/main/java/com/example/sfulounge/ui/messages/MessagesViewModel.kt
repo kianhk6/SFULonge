@@ -38,6 +38,8 @@ class MessagesViewModel(
     private val _userId: String = repository.getCurrentUserUid()
     val userId: String = _userId
 
+    val attachments = ArrayList<Attachment>()
+
     fun getUsers(members: List<String>) {
         repository.getUsers(
             members,

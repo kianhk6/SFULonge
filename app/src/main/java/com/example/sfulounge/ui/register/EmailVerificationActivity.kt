@@ -16,6 +16,7 @@ class EmailVerificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEmailVerificationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         binding = ActivityEmailVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

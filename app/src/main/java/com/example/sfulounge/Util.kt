@@ -7,8 +7,12 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.media.MediaMetadataRetriever
+import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
+import android.util.Size
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -27,5 +31,21 @@ object Util {
         val matrix = Matrix()
         matrix.setRotate(90f)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
+    fun retrieveVideoThumbnail(context: Context, uri: Uri): Bitmap? {
+        val retriever = MediaMetadataRetriever()
+        try {
+            retriever.setDataSource(context, uri)
+            val frame = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+            if (frame != null) {
+                return Bitmap.createBitmap(frame)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            retriever.release()
+        }
+        return null
     }
 }

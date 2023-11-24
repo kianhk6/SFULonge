@@ -34,6 +34,11 @@
     <string name="error_message_gender_is_null">gender is null</string>
     <string name="error_message_message_send">Message failed to send</string>
 
+    <!--  success messages  -->
+    <string name="success_message_profile_saved">Profile saved!</string>
+
+    <!--  dialog for messages  -->
+    <string name="messages_upload_dialog_title">Upload Additional Items</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_register">RegisterActivity</string>
@@ -42,13 +47,14 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
+    <string name="save">Save</string>
     <string name="previous">Previous</string>
 
     <!--  email verification activity  -->
     <string name="title_email_verification">
-        Please check email to verify your account. Did not receive email?
+        Please check your email to verify your account.\n\n\n Did not receive email?
     </string>
-    <string name="action_resend_email">Re-send Verification Email</string>
+    <string name="action_resend_email">Resend verification email</string>
     <string name="verification_email_failed">Failed to send verification email</string>
 
     <string name="lorem_ipsum">
@@ -93,5 +99,58 @@
     <string name="error_message_fetch_users">Unable to fetch users \n</string>
     <string name="action_next">Next</string>
     <string name="content_description_profile_picture">profile picture</string>
-    <string name="error_message_swipe_right_query_failed">Cannot QUery the swipe right database failure found\n(note: this is not a NOT_FOUND err)</string>
+    <string name="error_message_swipe_query_failed">Cannot Query the swipe database failure found\n(note: this is not a NOT_FOUND err)</string>
+    <string name="profile_gender_male">Male</string>
+    <string name="profile_gender_female">Female</string>
+    <string name="profile_gender_other">Other</string>
+    <string name="profile_gender_unspecified">Prefer not to say</string>
+    <string name="profile_gender_label">Change your gender</string>
+    <string name="profile_name_hint">e.g. Frank</string>
+    <string name="profile_name_label">Change your first name</string>
+    <string name="profile_description">You can edit your profile info here!</string>
+    <string name="profile_header">Settings</string>
+    <string name="profile_show_gender_label">Don\'t show my gender on my profile</string>
+    <string name="profile_edit_images_label">Edit images</string>
+    <string name="profile_edit_interests_label">Edit interests</string>
+    <string name="profile_edit_depth_questions_label">Edit depth questions</string>
+
+
+    <!--interest tags-->
+    <string name="social_impact_and_volunteering">Social Impact and Volunteering</string>
+    <string name="philosophy">Philosophy</string>
+    <string name="science_fiction_and_fantasy">Science Fiction and Fantasy</string>
+    <string name="astronomy">Astronomy</string>
+    <string name="history_and_archaeology">History and Archaeology</string>
+    <string name="science">Science</string>
+    <string name="coffee_and_tea">Coffee and Tea</string>
+    <string name="wine_and_beer">Wine and Beer</string>
+    <string name="food">Food</string>
+    <string name="meditation_and_mindfulness">Meditation and Mindfulness</string>
+    <string name="fitness_and_workout">Fitness and Workout</string>
+    <string name="theater_and_performing_arts">Theater and Performing Arts</string>
+    <string name="yoga">Yoga</string>
+    <string name="comedy">Comedy</string>
+    <string name="anime_and_cosplay">Anime and Cosplay</string>
+    <string name="languages">Languages</string>
+    <string name="board_games">Board Games</string>
+    <string name="movies_and_tv_shows">Movies and TV Shows</string>
+    <string name="fashion">Fashion</string>
+    <string name="gardening">Gardening</string>
+    <string name="diy_and_crafting">DIY and Crafting</string>
+    <string name="baking">Baking</string>
+    <string name="hiking">Hiking</string>
+    <string name="travel">Travel</string>
+    <string name="camping">Camping</string>
+    <string name="running">Running</string>
+    <string name="biking">Biking</string>
+    <string name="boating">Boating</string>
+    <string name="skiing_and_snowboarding">Skiing and Snowboarding</string>
+    <string name="cooking">Cooking</string>
+    <string name="photography">Photography</string>
+    <string name="gaming">Gaming</string>
+    <string name="reading">Reading</string>
+    <string name="music">Music</string>
+    <string name="art_and_painting">Art and Painting</string>
+    <string name="dancing">Dancing</string>
+    <string name="writing">Writing</string>
 </resources>
