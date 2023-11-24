@@ -8,6 +8,6 @@ data class ChatRoom(
     var members: List<String> = ArrayList(),
     var memberInfo: Map<String, MemberInfo> = HashMap(),
     var timeCreated: Timestamp = Timestamp.now(),
-    var lastMessageSentTime: Timestamp? = null,
+    var lastMessageSentTime: Timestamp? = Timestamp.now(),
     var mostRecentMessage: Message? = null
 )

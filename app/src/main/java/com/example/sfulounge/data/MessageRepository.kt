@@ -58,8 +58,7 @@ class MessageRepository {
                 ref.document(messageId)
                     .update(
                         mapOf(
-                            "messageId" to messageId,
-                            "lastMessageSentTime" to message.timeCreated
+                            "messageId" to messageId
                         )
                     )
             }
