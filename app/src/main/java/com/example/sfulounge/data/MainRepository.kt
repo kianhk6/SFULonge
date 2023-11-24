@@ -290,41 +290,6 @@ class MainRepository {
             }
     }
 
-//    fun createChatRoom(
-//        members: List<String>,
-//        name: String? = null,
-//        onSuccess: (String) -> Unit, // Expecting chatRoomId as a parameter
-//        onError: (Result.Error) -> Unit
-//    ) {
-//        val chatRoom = ChatRoom(
-//            name = name,
-//            members = members,
-//            memberInfo = members.associateWith { MemberInfo() }
-//        )
-//        val ref = db.collection("chat_rooms")
-//
-//        ref.add(chatRoom)
-//            .addOnSuccessListener { documentReference ->
-//                // Capture the chat room ID immediately after creation
-//                val chatRoomId = documentReference.id
-//
-//                // Update the document with its own ID
-//                ref.document(chatRoomId)
-//                    .update("roomId", chatRoomId)
-//                    .addOnSuccessListener {
-//                        // Invoke onSuccess with the chatRoomId
-//                        onSuccess(chatRoomId)
-//                    }
-//                    .addOnFailureListener { e ->
-//                        Log.e("error", "Update chatroom failed: ${e.message}")
-//                        onError(Result.Error(R.string.error_message_create_chat_room))
-//                    }
-//            }
-//            .addOnFailureListener { e ->
-//                Log.e("error", "Create chatroom failed: ${e.message}")
-//                onError(Result.Error(R.string.error_message_create_chat_room))
-//            }
-//    }
 
 
     fun querySwipeRightsForUser1(
