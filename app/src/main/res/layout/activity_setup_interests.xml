@@ -51,7 +51,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hiking"
+                android:text="@string/hiking"
                 app:chipBackgroundColor="#FFFFFF"/>
 
             <com.google.android.material.chip.Chip
@@ -59,7 +59,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Travel"
+                android:text="@string/travel"
                 app:chipBackgroundColor="#FFFFFF"/>
 
             <com.google.android.material.chip.Chip
@@ -67,7 +67,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Camping"
+                android:text="@string/camping"
                 app:chipBackgroundColor="#FFFFFF"/>
 
             <com.google.android.material.chip.Chip
@@ -75,238 +75,238 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Running"
+                android:text="@string/running"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Biking"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Biking"
+                android:text="@string/biking"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Boating"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Boating"
+                android:text="@string/boating"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/SkiingSnowboarding"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Skiing and Snowboarding"
+                android:text="@string/skiing_and_snowboarding"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Cooking"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cooking"
+                android:text="@string/cooking"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Photography"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Photography"
+                android:text="@string/photography"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Gaming"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gaming"
+                android:text="@string/gaming"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Reading"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reading"
+                android:text="@string/reading"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Music"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Music"
+                android:text="@string/music"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/ArtPainting"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Art and Painting"
+                android:text="@string/art_and_painting"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Dancing"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dancing"
+                android:text="@string/dancing"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Writing"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Writing"
+                android:text="@string/writing"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Baking"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Baking"
+                android:text="@string/baking"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/DIY"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DIY and Crafting"
+                android:text="@string/diy_and_crafting"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Gardening"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gardening"
+                android:text="@string/gardening"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Fashion"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fashion"
+                android:text="@string/fashion"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/MoviesTV"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Movies and TV Shows"
+                android:text="@string/movies_and_tv_shows"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/BoardGames"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Board Games"
+                android:text="@string/board_games"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Languages"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Languages"
+                android:text="@string/languages"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/AnimeCosplay"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Anime and Cosplay"
+                android:text="@string/anime_and_cosplay"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Comedy"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comedy"
+                android:text="@string/comedy"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Yoga"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yoga"
+                android:text="@string/yoga"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/TheaterPerformingArts"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Theater and Performing Arts"
+                android:text="@string/theater_and_performing_arts"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/FitnessWorkout"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fitness and Workout"
+                android:text="@string/fitness_and_workout"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/MeditationMindfulness"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Meditation and Mindfulness"
+                android:text="@string/meditation_and_mindfulness"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Food"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Food"
+                android:text="@string/food"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/WineBeer"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wine and Beer"
+                android:text="@string/wine_and_beer"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/CoffeeTea"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Coffee and Tea"
+                android:text="@string/coffee_and_tea"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Science"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Science"
+                android:text="@string/science"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/HistoryArchaeology"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="History and Archaeology"
+                android:text="@string/history_and_archaeology"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Astronomy"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Astronomy"
+                android:text="@string/astronomy"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/ScienceFictionFantasy"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Science Fiction and Fantasy"
+                android:text="@string/science_fiction_and_fantasy"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/Philosophy"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Philosophy"
+                android:text="@string/philosophy"
                 app:chipBackgroundColor="#FFFFFF"/>
             <com.google.android.material.chip.Chip
                 android:id="@+id/SocialImpactVolunteering"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Social Impact and Volunteering"
+                android:text="@string/social_impact_and_volunteering"
                 app:chipBackgroundColor="#FFFFFF"/>
         </com.google.android.material.chip.ChipGroup>
 

@@ -113,4 +113,44 @@
     <string name="profile_edit_images_label">Edit images</string>
     <string name="profile_edit_interests_label">Edit interests</string>
     <string name="profile_edit_depth_questions_label">Edit depth questions</string>
+
+
+    <!--interest tags-->
+    <string name="social_impact_and_volunteering">Social Impact and Volunteering</string>
+    <string name="philosophy">Philosophy</string>
+    <string name="science_fiction_and_fantasy">Science Fiction and Fantasy</string>
+    <string name="astronomy">Astronomy</string>
+    <string name="history_and_archaeology">History and Archaeology</string>
+    <string name="science">Science</string>
+    <string name="coffee_and_tea">Coffee and Tea</string>
+    <string name="wine_and_beer">Wine and Beer</string>
+    <string name="food">Food</string>
+    <string name="meditation_and_mindfulness">Meditation and Mindfulness</string>
+    <string name="fitness_and_workout">Fitness and Workout</string>
+    <string name="theater_and_performing_arts">Theater and Performing Arts</string>
+    <string name="yoga">Yoga</string>
+    <string name="comedy">Comedy</string>
+    <string name="anime_and_cosplay">Anime and Cosplay</string>
+    <string name="languages">Languages</string>
+    <string name="board_games">Board Games</string>
+    <string name="movies_and_tv_shows">Movies and TV Shows</string>
+    <string name="fashion">Fashion</string>
+    <string name="gardening">Gardening</string>
+    <string name="diy_and_crafting">DIY and Crafting</string>
+    <string name="baking">Baking</string>
+    <string name="hiking">Hiking</string>
+    <string name="travel">Travel</string>
+    <string name="camping">Camping</string>
+    <string name="running">Running</string>
+    <string name="biking">Biking</string>
+    <string name="boating">Boating</string>
+    <string name="skiing_and_snowboarding">Skiing and Snowboarding</string>
+    <string name="cooking">Cooking</string>
+    <string name="photography">Photography</string>
+    <string name="gaming">Gaming</string>
+    <string name="reading">Reading</string>
+    <string name="music">Music</string>
+    <string name="art_and_painting">Art and Painting</string>
+    <string name="dancing">Dancing</string>
+    <string name="writing">Writing</string>
 </resources>
