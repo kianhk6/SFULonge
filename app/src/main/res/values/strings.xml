@@ -99,7 +99,7 @@
     <string name="error_message_fetch_users">Unable to fetch users \n</string>
     <string name="action_next">Next</string>
     <string name="content_description_profile_picture">profile picture</string>
-    <string name="error_message_swipe_right_query_failed">Cannot QUery the swipe right database failure found\n(note: this is not a NOT_FOUND err)</string>
+    <string name="error_message_swipe_query_failed">Cannot Query the swipe database failure found\n(note: this is not a NOT_FOUND err)</string>
     <string name="profile_gender_male">Male</string>
     <string name="profile_gender_female">Female</string>
     <string name="profile_gender_other">Other</string>

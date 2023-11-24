@@ -28,18 +28,63 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 repository.getAllUsers(
-                    onSuccess = { users ->
-                        _currentUsers.postValue(users)
-
+                    onSuccess = { allUsers ->
+                        filterAllUsersForCurrentUsers(allUsers)
                     },
-                    onError = { error ->
+                    onError = { getAllUsersError ->
                         // Handle the error case, potentially by setting an error state LiveData
-                        _operationState.postValue(UnitResult(error = error.exception))
+                        _operationState.postValue(UnitResult(error = getAllUsersError.exception))
                     }
                 )
             } catch (e: Exception) {
                 throw e
             }
+        }
+    }
+
+    private fun filterAllUsersForCurrentUsers(allUsers: List<User>) {
+        repository.getUser(
+            onSuccess = { currentUser ->
+                repository.querySwipeRightsForUser1(currentUser.userId,
+                    onSuccess = { swipedRightUserIds ->
+                        repository.querySwipeLeftsForUser1(currentUser.userId,
+                            onSuccess = { swipedLeftUserIds ->
+                                // Combine swipedRightUserIds and swipedLeftUserIds and remove duplicates
+                                val swipedUserIds =
+                                    (swipedRightUserIds + swipedLeftUserIds).distinct()
+
+                                // Filter out users that are in the swipedUserIds list and the current user
+                                val filteredUsers = allUsers.filterNot { user ->
+                                    swipedUserIds.contains(user.userId) || user.userId == currentUser.userId
+                                }
+                                // Update _currentUsers with the filtered list
+                                _currentUsers.postValue(filteredUsers)
+                            },
+                            onError = { swipeLeftError ->
+                                // Handle errors in querying swipe lefts
+                                _operationState.postValue(UnitResult(error = swipeLeftError.exception))
+                            }
+                        )
+                    },
+                    onError = { swipeRightError ->
+                        // Handle errors in querying swipe rights
+                        _operationState.postValue(UnitResult(error = swipeRightError.exception))
+                    }
+                )
+            },
+            onError = { userError ->
+                // Handle user fetch error
+                _operationState.postValue(UnitResult(error = userError.exception))
+            }
+        )
+    }
+
+    fun printList() {
+        val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
+
+        // Iterate over the current list of users and print their names
+        currentList.forEach { user ->
+            println("User Name: ${user.firstName} + User id:  ${user.userId}")
         }
     }
 
@@ -138,5 +183,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             onError = { throw IllegalStateException("User cannot be null") }
         )
     }
+
+
 
 }
