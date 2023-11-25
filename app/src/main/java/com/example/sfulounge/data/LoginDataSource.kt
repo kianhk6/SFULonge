@@ -5,6 +5,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.LoggedInUser
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -16,6 +17,8 @@ class LoginDataSource {
 
     private val auth = Firebase.auth
     private val db = Firebase.firestore
+
+    private var _listener: AuthStateListener? = null
 
     val isLoggedIn: Boolean
         get() = auth.currentUser != null && auth.currentUser!!.isEmailVerified
@@ -91,6 +94,21 @@ class LoginDataSource {
                     onError(Result.Error(R.string.error_message_existing_account))
                 }
             }
+    }
+
+    fun addListenerForEmailVerification(onEmailIsVerified: () -> Unit) {
+        val listener = AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null && user.isEmailVerified) {
+                onEmailIsVerified()
+            }
+        }
+        _listener = listener
+        auth.addAuthStateListener(listener)
+    }
+
+    fun removeListenerForEmailVerification() {
+        _listener?.let { auth.removeAuthStateListener(it) }
     }
 
     fun retrySendVerificationEmail(
