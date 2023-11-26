@@ -1,5 +1,7 @@
 package com.example.sfulounge.ui.explore
 
+import android.graphics.drawable.Drawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -132,7 +136,6 @@ class ExploreFragment : Fragment() {
 
         // Set OnTouchListener on userImage
         userImage.setOnTouchListener(onSwipeTouchListener)
-//        loadUserImage(matchesViewModel.current_recommended_user.photos[0])
 
 
         return view
@@ -188,12 +191,71 @@ class ExploreFragment : Fragment() {
         }
     }
 
+    private fun loadUserInfo() {
+        val user = matchesViewModel.current_recommended_user
+        loadUserImage(user.photos[0])
+        val tvName = view?.findViewById<TextView>(R.id.tv_name)
+        tvName?.setText(user.firstName)
+        val tvGender = view?.findViewById<TextView>(R.id.tv_gender)
+        tvGender?.setText(resources.getStringArray(R.array.gender_array)[user.gender])
+        when (user.interests.size) {
+            0 -> println("Empty Interests")
+            1 -> {
+                view?.findViewById<LinearLayout>(R.id.interestsLinearLayout2)?.visibility = View.GONE
+                view?.findViewById<TextView>(R.id.interest2)?.visibility = View.GONE
+                view?.findViewById<TextView>(R.id.interest1)?.setText(user.interests[0])
+            }
+            2 -> {
+                view?.findViewById<LinearLayout>(R.id.interestsLinearLayout2)?.visibility = View.GONE
+                view?.findViewById<TextView>(R.id.interest1)?.setText(user.interests[0])
+                view?.findViewById<TextView>(R.id.interest2)?.setText(user.interests[1])
+            }
+            3 -> {
+                view?.findViewById<TextView>(R.id.interest4)?.visibility = View.GONE
+                view?.findViewById<TextView>(R.id.interest1)?.setText(user.interests[0])
+                view?.findViewById<TextView>(R.id.interest2)?.setText(user.interests[1])
+                view?.findViewById<TextView>(R.id.interest3)?.setText(user.interests[2])
+            }
+            4 -> {
+                view?.findViewById<TextView>(R.id.interest1)?.setText(user.interests[0])
+                view?.findViewById<TextView>(R.id.interest2)?.setText(user.interests[1])
+                view?.findViewById<TextView>(R.id.interest3)?.setText(user.interests[2])
+                view?.findViewById<TextView>(R.id.interest4)?.setText(user.interests[3])
+            }
+        }
+        when (user.depthQuestions.size) {
+            0 -> println("Empty Depth Questions")
+            1 -> {
+                view?.findViewById<LinearLayout>(R.id.layout_depth_question_2)?.visibility = View.GONE
+                view?.findViewById<LinearLayout>(R.id.layout_depth_question_3)?.visibility = View.GONE
+                view?.findViewById<TextView>(R.id.tv_depth_question_1)?.setText(user.depthQuestions[0].question)
+                view?.findViewById<TextView>(R.id.tv_depth_answer_1)?.setText(user.depthQuestions[0].answer)
+            }
+            2 -> {
+                view?.findViewById<LinearLayout>(R.id.layout_depth_question_3)?.visibility = View.GONE
+                view?.findViewById<TextView>(R.id.tv_depth_question_1)?.setText(user.depthQuestions[0].question)
+                view?.findViewById<TextView>(R.id.tv_depth_answer_1)?.setText(user.depthQuestions[0].answer)
+                view?.findViewById<TextView>(R.id.tv_depth_question_2)?.setText(user.depthQuestions[1].question)
+                view?.findViewById<TextView>(R.id.tv_depth_answer_2)?.setText(user.depthQuestions[1].answer)
+            }
+            3 -> {
+                view?.findViewById<TextView>(R.id.tv_depth_question_1)?.setText(user.depthQuestions[0].question)
+                view?.findViewById<TextView>(R.id.tv_depth_answer_1)?.setText(user.depthQuestions[0].answer)
+                view?.findViewById<TextView>(R.id.tv_depth_question_2)?.setText(user.depthQuestions[1].question)
+                view?.findViewById<TextView>(R.id.tv_depth_answer_2)?.setText(user.depthQuestions[1].answer)
+                view?.findViewById<TextView>(R.id.tv_depth_question_3)?.setText(user.depthQuestions[2].question)
+                view?.findViewById<TextView>(R.id.tv_depth_answer_3)?.setText(user.depthQuestions[2].answer)
+            }
+        }
+    }
+
     private fun loadNextRecommendation() {
         matchesViewModel.popAndGetNextUser { user ->
             if (user != null) {
                 // Display the user's details
                 println("User ID: ${user.userId}, Name: ${user.firstName}")
-                loadUserImage(user.photos[0])
+                loadUserInfo()
+//                loadUserImage(user.photos[0])
             } else {
                 // as all current users have been swiped on:
                 // reload all users to see if we have  any new users to show
@@ -210,7 +272,9 @@ class ExploreFragment : Fragment() {
             if (users.isNotEmpty() && !matchesViewModel.isInitialUserFetched) {
                 matchesViewModel.getTheFirstUser { user ->
                     user?.let {
-                        println("User ID: ${it.userId}, Name: ${it.firstName}")
+                        println("User ID: ${it.userId}, Name: ${it.firstName}, Image: ${user.photos[0]}")
+//                        loadUserImage(user.photos[0])
+                        loadUserInfo()
                     }
                 }
             }
