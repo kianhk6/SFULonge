@@ -13,6 +13,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.FragmentProfileBinding
+import com.example.sfulounge.ui.personality.PersonalityTest
 import com.example.sfulounge.ui.setup.SetupDepthQuestionsActivity
 import com.example.sfulounge.ui.setup.SetupImagesActivity
 import com.example.sfulounge.ui.setup.SetupInterestsActivity
@@ -47,6 +48,7 @@ class ProfileFragment : Fragment() {
         val gender = binding.gender
         val loading = binding.loading
         val save = binding.save
+        val personalityTest = binding.personality
 
         val editImages = binding.editImages
         val editInterests = binding.editInterests
@@ -97,6 +99,10 @@ class ProfileFragment : Fragment() {
         editDepthQuestions.setOnClickListener {
             val intent = Intent(requireActivity(), SetupDepthQuestionsActivity::class.java)
             intent.putExtra(SetupDepthQuestionsActivity.INTENT_EDIT_MODE, true)
+            startActivity(intent)
+        }
+        personalityTest.setOnClickListener {
+            val intent = Intent(requireActivity(), PersonalityTest::class.java)
             startActivity(intent)
         }
 
