@@ -19,9 +19,8 @@ class InterestsViewModel(private val repository: MainRepository) : ViewModel() {
             onError = { throw IllegalStateException("user cannot be null") }
         )
     }
-    fun save(interests: Array<InterestItem>) {
-        val updatedInterests = interests
-            .filter { x -> x.isSelected }
+    fun save(selectedInterests: List<InterestItem>) {
+        val updatedInterests = selectedInterests
             .map { x -> x.tag }
 
         repository.updateUserInterests(

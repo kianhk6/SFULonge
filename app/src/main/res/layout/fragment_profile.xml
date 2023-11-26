@@ -272,6 +272,17 @@
                 android:text="@string/save"
                 android:backgroundTint="@color/button_orange"/>
 
+            <Button
+                android:id="@+id/personality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Personality Test"
+                android:backgroundTint="@color/button_orange"/>
+
         </LinearLayout>
     </ScrollView>
 

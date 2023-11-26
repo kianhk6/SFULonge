@@ -5,6 +5,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
@@ -57,8 +58,7 @@ class MessageRepository {
                 ref.document(messageId)
                     .update(
                         mapOf(
-                            "messageId" to messageId,
-                            "lastMessageSentTime" to message.timeCreated
+                            "messageId" to messageId
                         )
                     )
             }
@@ -69,6 +69,17 @@ class MessageRepository {
                     onError(Result.Error(R.string.error_message_message_send))
                 }
             }
+    }
+
+    fun updateMemberLastMessageSeenTime(chatRoomId: String, memberId: String) {
+        db.collection("chat_rooms")
+                .document(chatRoomId)
+                .update("memberInfo.${memberId}.lastMessageSeenTime", Timestamp.now())
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.e("error", "updateMemberLastMessageSeenTime: ${task.exception}")
+                    }
+                }
     }
 
     private fun addMessageToChatRoom(
