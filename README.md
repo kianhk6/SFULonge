@@ -104,10 +104,86 @@ Click on the thumbnail below to watch the Show and Tell video:
 ### Divij Gupta
 - Participated in brainstorming meeting for backend database architecture.
 
+## Show and Tell 2 (Sprint 2)
+
+## Mock Ups
+
+### The Thread Diagram
+[thread_diagram_2 (1).pdf](https://github.com/kianhk6/SFULounge/files/13469527/thread_diagram_2.1.pdf)
+
+### Show and Tell 2 Video
+Click on the thumbnail below to watch the Show and Tell video:
+
+[![Show and Tell Video](https://img.youtube.com/vi/wpXYgcXO-2Y/0.jpg)](https://youtu.be/wpXYgcXO-2Y)
+
+## Work Completed to Date (Over a 1 week sprint)
+
+- **Settings page** Completed
+- **Recommendation algorithm [for recommending users to get swiped on]** Completed
+- **Personality quiz page** Completed just needs to save the user's persoanlity tag to the Database 
+- **Explore Page** 
+  - Styling prototype completed
+  - need some tweaks + need to add animination for swipes and make the swiping more robust 
+- **Chatroom lists:** Most of styling compeleted some minor tweaks regarding the chatroom names
+- **Messages:**
+  - Ice breaker questions implemented: recommended conversation starter based on common interests
+
+## Team Contributions
+
+### Kian Hosseinkhani
+- **Management**: Led the team, assigned tasks and bug fixes via GitHub issues, and designed the scrum stories.
+- Worked on threading for loading up user profiles in the explore page for my robust UI.
+- Worked on sorting through users based on compatibility. (profiles with most shared interests show up first)
+- Worked on removing users that have already gotten swiped on.
+- Worked on implementing ice breakers: a chat popped up in the chatroom, asking a question where both users can answer.
+- Fixed styling bugs in the development of chatting/messaging feature.
+- Provided documentation.
+
+### Mathew Wong
+- Created Settings page [changing images, depth questions, interests and basic information]
+- Implemented the website.
+- Fixed complicated bugs related to sign in and sign up. 
+- Provided thread diagram.
+- Improved chatrooms by using firestore snapshot listeners with livedata in the viewmodel to respond to changes in the database and update UI
+- Implemented error handling as firebase does not have support for cross service error handling: needed to implement our own data recovery strategies when we detect inconsistencies with the database
+- Used libraries such as Glide to display images that are remote (urls)
+- Implemented paging to paginate all messages in message activity. This improves load times. We used PagingDataSource, PagingAdapter, layout manager and recyclerview to accomplish this
+
+### Nathalie Kaspar
+- Designed explore page xml by putting custom backgrounds and other components.
+- Developed wiring between the xml components and the User information.
+- Developed a swiping feature rather than using buttons. 
+
+### Teeya Li
+- Enhanced the Chatrooms list fragment xml
+- Created new styling pages to enforce photo dimensions and frames so that we can have round profile photos
+- Ensured that textviews stayed restricted to 1 line and included ellipsis (...) if they exceeded the 1 line.
+
+### Divij Gupta
+- Psychology research to find 15 questions to ask from the users so he can assign them a personality tag
+- Implemented the quiz calculating user's response and assigned the user's with their tag through a pop up
+[These tags will be used to enhance user recommendations]
+
 
 ## Challenges and Future Developments
-- **Anticipated Challenges**: Implementing real-time chatting, email verification, complex UI designs, Firebase database integration, image uploads, and swiping mechanisms.
-- **Skill Development**: The team will focus on learning and implementing the above-mentioned features.
+- **Outside of course material**:
+- designing nosql schema that is efficient
+- using firestore SDKs to interact with the database
+- building database index to improve querying time for specific queries
+- using firestore snapshot listeners with livedata in the viewmodel to respond to changes in the database and update UI
+- using email verification for new accounts. Our app will send a verification email to new users and they must click the link in the email to be able to continue/login to our app
+- using firebase storage with firestore to upload images
+- because firebase does not have support for cross service error handling we needed to implement our own data recovery strategies when we detect inconsistencies with the database
+- using library such as Glide to display images that are remote (urls)
+- using paging to paginate all messages in message activity. This improves load times. We used PagingDataSource, PagingAdapter, layout manager and recyclerview to accomplish this
+- use prefetching to load users profile pictures without needing to make queries in the adapter
+- came up with an recommendation algorithm to load of users
+- used complex thread programming to enhance ui experience in explore page
+- created new styling pages to enforce photo dimensions and frames so that we can have round profile photos
+- Ensured that textviews stayed restricted to 1 line and included ellipsis (...) if they exceeded the 1 line.
+- Created custom buttons
+- Added custom backgrounds for different pages
+- Psychology research to determine user's personality inorder to have better match making algorithm 
 - **Future Plans**: Post-semester deployment, advertisement through SFU clubs, and continuous app development for enhancing user experience.
 
 ## Getting Started
