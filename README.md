@@ -109,7 +109,8 @@ Click on the thumbnail below to watch the Show and Tell video:
 ## Mock Ups
 
 ### The Thread Diagram
-[thread_diagram_2 (1).pdf](https://github.com/kianhk6/SFULounge/files/13469527/thread_diagram_2.1.pdf)
+[thread_diagram](https://github.com/kianhk6/SFULounge/files/13471130/thread_diagram_3.4.pdf)
+
 
 ### Show and Tell 2 Video
 Click on the thumbnail below to watch the Show and Tell video:
