@@ -6,6 +6,7 @@ import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 
 class ChatRepository {
@@ -36,7 +37,7 @@ class ChatRepository {
 
         registration = db.collection("chat_rooms")
             .whereArrayContains("members", user.uid)
-            .orderBy("lastMessageSentTime")
+            .orderBy("lastMessageSentTime", Query.Direction.DESCENDING)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     Log.e("error", "registerChatRoomListener ${e.message}")
