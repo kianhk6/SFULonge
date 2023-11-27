@@ -153,4 +153,6 @@
     <string name="art_and_painting">Art and Painting</string>
     <string name="dancing">Dancing</string>
     <string name="writing">Writing</string>
+    <string name="interests_prompt">Let other\'s know what you\'re into</string>
+    <string name="interests_title">Interests</string>
 </resources>

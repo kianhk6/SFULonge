@@ -77,13 +77,15 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
         listView.adapter = depthQuestionListAdapter
 
         next.setOnClickListener {
-            val numQuestions = depthQuestions.fold(0) { acc, item ->
-                return@fold if (item.isSelected) acc + 1 else acc
-            }
-            if (numQuestions > MAX_DEPTH_QUESTIONS) {
+            val questions = depthQuestions.filter { x -> x.isSelected }
+            val isAnyAnswerEmpty = questions.any { x -> x.answer == null }
+
+            if (questions.size > MAX_DEPTH_QUESTIONS) {
                 showMaxDepthQuestionLimitError()
-            } else if (numQuestions == 0) {
+            } else if (questions.isEmpty()) {
                 showMinDepthQuestionLimitError()
+            } else if (isAnyAnswerEmpty) {
+                showEmptyAnswerError()
             } else {
                 depthQuestionsViewModel.save(depthQuestions)
             }
@@ -116,6 +118,11 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
     private fun showMinDepthQuestionLimitError() {
         Toast.makeText(this, "Number of depth questions cannot be 0", Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun showEmptyAnswerError() {
+        Toast.makeText(this, "Answers cannot be empty", Toast.LENGTH_SHORT)
+                .show()
     }
 
     private fun showMaxDepthQuestionLimitError() {

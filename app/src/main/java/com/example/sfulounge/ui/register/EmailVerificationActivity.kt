@@ -23,7 +23,7 @@ class EmailVerificationActivity : AppCompatActivity() {
         registerViewModel = ViewModelProvider(this, RegisterModelFactory())
             .get(RegisterViewModel::class.java)
 
-        registerViewModel.verificationResult.observe(this, Observer {
+        registerViewModel.retryEmailResult.observe(this, Observer {
             val verResult = it ?: return@Observer
 
             if (verResult.error != null) {
@@ -32,17 +32,17 @@ class EmailVerificationActivity : AppCompatActivity() {
                 showVerificationEmailSent()
             }
         })
+        registerViewModel.verificationResult.observe(this) {
+            onEmailVerificationSuccessful()
+        }
 
         val resend = binding.resendEmail
-        val next = binding.next
 
         resend.setOnClickListener {
             registerViewModel.retrySendVerificationEmail()
         }
 
-        next.setOnClickListener {
-            onEmailVerificationSuccessful()
-        }
+        registerViewModel.addListenerForEmailVerification()
     }
 
     /**
@@ -63,5 +63,10 @@ class EmailVerificationActivity : AppCompatActivity() {
     private fun showVerificationEmailSent() {
         Toast.makeText(this, "Verification email sent!", Toast.LENGTH_SHORT)
             .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        registerViewModel.removeListenerForEmailVerification()
     }
 }
