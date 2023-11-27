@@ -135,7 +135,7 @@ Click on the thumbnail below to watch the Show and Tell video:
 - Worked on threading for loading up user profiles in the explore page for my robust UI.
 - Worked on sorting through users based on compatibility. (profiles with most shared interests show up first)
 - Worked on removing users that have already gotten swiped on.
-- Worked on implementing ice breakers: a chat popped up in the chatroom, asking a question where both users can answer.
+- Worked on implementing ice breakers: a message pops up in the chatroom, asking a question related to common interests between users so both users can initiate conversations easier.
 - Fixed styling bugs in the development of chatting/messaging feature.
 - Provided documentation.
 
