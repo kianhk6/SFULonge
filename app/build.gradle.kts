@@ -73,4 +73,7 @@ dependencies {
     implementation("com.lorentzos.swipecards:library:1.0.9")
 //    implementation("com.lorentzos.swipecards:library:X.X.X@aar")
 
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }
