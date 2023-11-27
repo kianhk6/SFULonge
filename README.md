@@ -147,7 +147,7 @@ Click on the thumbnail below to watch the Show and Tell video:
 - Improved chatrooms by using firestore snapshot listeners with livedata in the viewmodel to respond to changes in the database and update UI
 - Implemented error handling as firebase does not have support for cross service error handling: needed to implement our own data recovery strategies when we detect inconsistencies with the database
 - Used libraries such as Glide to display images that are remote (urls)
-- Implemented paging to paginate all messages in message activity. This improves load times. We used PagingDataSource, PagingAdapter, layout manager and recyclerview to accomplish this
+- Implemented paging to paginate all messages in message activity. This improves load times. We used PagingDataSource, PagingAdapter, layout manager and recyclerview to accomplish this.
 
 ### Nathalie Kaspar
 - Designed explore page xml by putting custom backgrounds and other components.
@@ -184,6 +184,7 @@ Click on the thumbnail below to watch the Show and Tell video:
 - Created custom buttons
 - Added custom backgrounds for different pages
 - Psychology research to determine user's personality inorder to have better match making algorithm 
+- Initiated the work for notification implementations
 - **Future Plans**: Post-semester deployment, advertisement through SFU clubs, and continuous app development for enhancing user experience.
 
 ## Getting Started
