@@ -114,7 +114,7 @@ Click on the thumbnail below to watch the Show and Tell video:
 ### Show and Tell 2 Video
 Click on the thumbnail below to watch the Show and Tell video:
 
-[![Show and Tell Video](https://img.youtube.com/vi/wpXYgcXO-2Y/0.jpg)](https://youtu.be/wpXYgcXO-2Y)
+[![Show and Tell Video](https://img.youtube.com/vi/Wpi2w2JjpzU/0.jpg)](https://youtu.be/Wpi2w2JjpzU)
 
 ## Work Completed to Date (Over a 1 week sprint)
 
