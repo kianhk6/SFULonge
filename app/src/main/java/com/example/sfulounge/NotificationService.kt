@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
+// run this as a foreground service
 class NotificationService : Service() {
 
     private val auth = Firebase.auth
