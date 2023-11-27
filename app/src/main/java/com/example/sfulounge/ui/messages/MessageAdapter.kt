@@ -45,9 +45,9 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
             message: Message?,
             isSender: Boolean,
         ) {
-            if (isSender) {
-                messageView.setBackgroundColor(Color.BLUE)
-            }
+//            if (isSender) {
+//                messageView.setBackgroundColor(Color.BLUE)
+//            }
 
             nameView.text = name
             messageView.text = message?.text
