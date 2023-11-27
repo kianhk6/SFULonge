@@ -17,6 +17,12 @@
     <string name="login_failed">"Login failed"</string>
     <string name="register_failed">"Register failed"</string>
 
+    <!--  notifications  -->
+    <string name="notification_channel_name">SFULounge Channel</string>
+    <string name="notification_channel_description">Messages</string>
+    <string name="notification_foreground_title">SFU Lounge</string>
+    <string name="notification_foreground_description">Messages Notification Service</string>
+
     <!--  error messages  -->
     <string name="error_message_account_unverified">Account not email verified</string>
     <string name="error_message_existing_account">Account with same email already exists</string>
