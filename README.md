@@ -41,17 +41,11 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 
 
 ## Show and Tell 1 (Sprint 1)
-For the grading and inspect of 362's professor and TAs ([Click to download app APK](https://github.com/M-max-cell/sfu-lounge/releases/download/sfu-lounge-v1.0.0/sfu-lounge.apk))
 
 ## Mock Ups
-UI mock-up for settings page  
-![settings page mock-up](settings_page_ui_mockup.jpg)  
 
-Design specifications: 
-[Design Specification Document](https://docs.google.com/document/d/142Y2wBGEi41fotJXZjBQioxGrZqqjPv744CmfmjM3T8/edit#heading=h.8lr8rdf90n3b)
-
-### The MVVM Model
-You can view the document for the mvmm model here: [MVVM Model Document](https://docs.google.com/document/d/142Y2wBGEi41fotJXZjBQioxGrZqqjPv744CmfmjM3T8/edit?usp=sharing)
+### The mvmm Model
+You can view the document for the mvmm model here: [mvmm Model Document](https://docs.google.com/document/d/142Y2wBGEi41fotJXZjBQioxGrZqqjPv744CmfmjM3T8/edit?usp=sharing)
 
 ### Show and Tell 1 Video
 Click on the thumbnail below to watch the Show and Tell video:
@@ -110,14 +104,13 @@ Click on the thumbnail below to watch the Show and Tell video:
 ### Divij Gupta
 - Participated in brainstorming meeting for backend database architecture.
 
-
 ## Show and Tell 2 (Sprint 2)
-For the grading and inspect of 362's professor and TAs ([Click to download app APK](https://github.com/M-max-cell/sfu-lounge/releases/download/sfu-lounge-v2.0.0/sfu-lounge2.apk))
 
 ## Mock Ups
 
 ### The Thread Diagram
-[thread_diagram.pdf](https://github.com/kianhk6/SFULounge/files/13469527/thread_diagram_2.1.pdf)
+[thread_diagram](https://github.com/kianhk6/SFULounge/files/13471130/thread_diagram_3.4.pdf)
+
 
 ### Show and Tell 2 Video
 Click on the thumbnail below to watch the Show and Tell video:
@@ -128,11 +121,11 @@ Click on the thumbnail below to watch the Show and Tell video:
 
 - **Settings page** Completed
 - **Recommendation algorithm [for recommending users to get swiped on]** Completed
-- **Personality quiz page** Completed just needs to save the user's personality tag to the Database 
+- **Personality quiz page** Completed just needs to save the user's persoanlity tag to the Database 
 - **Explore Page** 
   - Styling prototype completed
-  - need some tweaks + need to add animation for swipes and make the swiping more robust 
-- **Chatroom lists:** Most of styling completed some minor tweaks regarding the chatroom names
+  - need some tweaks + need to add animination for swipes and make the swiping more robust 
+- **Chatroom lists:** Most of styling compeleted some minor tweaks regarding the chatroom names
 - **Messages:**
   - Ice breaker questions implemented: recommended conversation starter based on common interests
 
@@ -191,7 +184,7 @@ Click on the thumbnail below to watch the Show and Tell video:
 - Ensured that textviews stayed restricted to 1 line and included ellipsis (...) if they exceeded the 1 line.
 - Created custom buttons
 - Added custom backgrounds for different pages
-- Psychology research to determine user's personality in order to have better match making algorithm 
+- Psychology research to determine user's personality inorder to have better match making algorithm 
 - Initiated the work for notification implementations
 - **Future Plans**: Post-semester deployment, advertisement through SFU clubs, and continuous app development for enhancing user experience.
 
@@ -207,8 +200,11 @@ Click on the thumbnail below to watch the Show and Tell video:
 3. Configure Firebase and other dependencies.
 4. Build and run the application on an emulator or physical device.
 
-
 ## Support and Contact
-For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!  
-
-Developers: Divij Gupta, Kian Hosseinkhani, Nathalie Kaspar, Teeya Li, Mathew Wong
+For support, contact sfu_Lounge_support@gmail.com. Join our community and make your SFU experience unforgettable!
+Developers: 
+Divij Gupta
+Kian Hosseinkhani
+Nathalie Kaspar
+Teeya Li
+Mathew Wong
