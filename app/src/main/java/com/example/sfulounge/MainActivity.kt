@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
         // start notification service
         val serviceIntent = Intent(this, NotificationService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             startForegroundService(serviceIntent)
         } else {
             startService(serviceIntent)

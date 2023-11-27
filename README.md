@@ -121,11 +121,11 @@ Click on the thumbnail below to watch the Show and Tell video:
 
 - **Settings page** Completed
 - **Recommendation algorithm [for recommending users to get swiped on]** Completed
-- **Personality quiz page** Completed just needs to save the user's persoanlity tag to the Database 
+- **Personality quiz page** Completed just needs to save the user's personality tag to the Database 
 - **Explore Page** 
   - Styling prototype completed
-  - need some tweaks + need to add animination for swipes and make the swiping more robust 
-- **Chatroom lists:** Most of styling compeleted some minor tweaks regarding the chatroom names
+  - need some tweaks + need to add animation for swipes and make the swiping more robust 
+- **Chatroom lists:** Most of styling completed some minor tweaks regarding the chatroom names
 - **Messages:**
   - Ice breaker questions implemented: recommended conversation starter based on common interests
 
