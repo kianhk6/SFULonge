@@ -67,6 +67,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     fun getAllUsers() {
+        println("hi this is getting called again!")
         viewModelScope.launch {
             try {
                 repository.getAllUsers(
@@ -163,11 +164,14 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
 
 
     fun getTheFirstUser(onResult: (User?) -> Unit) {
+
         val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
         if (currentList.isNotEmpty()) {
             val userToReturn = currentList.first()
             _currentUsers.postValue(currentList)
             current_recommended_user = userToReturn
+            println("get the first user: " + current_recommended_user.firstName)
+
             isInitialUserFetched = true
             onResult(userToReturn)
         } else {
