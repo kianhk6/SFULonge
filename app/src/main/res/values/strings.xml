@@ -42,6 +42,7 @@
 
     <!--  success messages  -->
     <string name="success_message_profile_saved">Profile saved!</string>
+    <string name="success_message_logout">Sign out successful!</string>
 
     <!--  dialog for messages  -->
     <string name="messages_upload_dialog_title">Upload Additional Items</string>
@@ -161,4 +162,5 @@
     <string name="writing">Writing</string>
     <string name="interests_prompt">Let other\'s know what you\'re into</string>
     <string name="interests_title">Interests</string>
+    <string name="profile_logout">Logout</string>
 </resources>

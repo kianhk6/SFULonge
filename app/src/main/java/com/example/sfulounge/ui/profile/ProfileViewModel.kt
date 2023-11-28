@@ -1,13 +1,10 @@
 package com.example.sfulounge.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sfulounge.data.LoginRepository
 
-class ProfileViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+class ProfileViewModel(private val repository: LoginRepository) : ViewModel() {
+    fun logout() {
+        repository.logout()
     }
-    val text: LiveData<String> = _text
 }
