@@ -40,9 +40,16 @@ object MessageFormatter {
         }
     }
 
-    fun formatNames(users: List<User>?): String {
-        return users?.joinToString(", ") { x ->
-            (x.firstName ?: "null") + (x.lastName ?: "null")
-        } ?: ""
+    fun formatNames(members: List<User>, currentUserId: String): String {
+        val users = members.filter { x -> x.userId != currentUserId }
+        if (users.isEmpty()) {
+            return "Me"
+        } else if (users.size <= 2) {
+            return users.joinToString(" and ") { x ->
+                x.firstName ?: "null"
+            }
+        }
+        val first = users.first()
+        return "${first.userId} and ${users.size - 1} others"
     }
 }

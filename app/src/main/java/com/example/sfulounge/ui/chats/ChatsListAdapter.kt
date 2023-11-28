@@ -39,7 +39,7 @@ class ChatsListAdapter(
         } ?: false
 
         holder.bind(
-            current.name ?: MessageFormatter.formatNames(users),
+            MessageFormatter.formatNames(users, currentUserId),
             current.mostRecentMessage,
             isNotSeen,
             MessageFormatter.formatTime(current),
