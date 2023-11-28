@@ -1,5 +1,6 @@
 package com.example.sfulounge.ui.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -110,13 +111,30 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
         logout.setOnClickListener {
-            onLogoutClicked()
+            showConfirmLogoutDialog()
         }
 
         // get the current user
         setupViewModel.getUser()
 
         return root
+    }
+
+    private fun showConfirmLogoutDialog() {
+        activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder
+                .setTitle("Confirm Logout")
+                .setMessage(R.string.confirm_logout)
+                .setPositiveButton("Confirm") { dialog, which ->
+                    onLogoutClicked()
+                }
+                .setNegativeButton("Cancel") { dialog, which ->
+                    dialog.cancel()
+                }
+            val dialog = builder.create()
+            dialog.show()
+        } ?: throw IllegalStateException("Activity cannot be null")
     }
 
     override fun onDestroyView() {
