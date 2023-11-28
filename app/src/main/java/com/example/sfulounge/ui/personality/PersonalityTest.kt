@@ -6,12 +6,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
+import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.R
+import com.example.sfulounge.data.model.Personality
 
 class PersonalityTest : AppCompatActivity() {
 
     private lateinit var saveButton: Button
+    private lateinit var personalityTestViewModel: PersonalityTestViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +26,17 @@ class PersonalityTest : AppCompatActivity() {
         supportActionBar?.title = "Personality Test"
         saveButton = (supportActionBar?.customView as View).findViewById(R.id.personality_save_button)
 
+        personalityTestViewModel = ViewModelProvider(this, PersonalityTestViewModelFactory())
+            .get(PersonalityTestViewModel::class.java)
 
-
+        personalityTestViewModel.saveResult.observe(this) {
+            val result = it ?: return@observe
+            if (result.error != null) {
+                showSavePersonalityTypeError(result.error)
+            } else {
+                onSavePersonalityTypeSuccessful()
+            }
+        }
 
         val questions = arrayOf(
             "I enjoy spontaneous and unplanned activities.",
@@ -50,29 +63,50 @@ class PersonalityTest : AppCompatActivity() {
         listView.adapter = adapter
 
         saveButton.setOnClickListener {
-            val personality: String = categorizePersonality(adapter.getScores().sum())
+            val personality = categorizePersonality(adapter.getScores().sum())
             adapter.getScores()
-            Toast.makeText(this, "Personality is: $personality", Toast.LENGTH_SHORT).show()
-            finish()
+            Toast.makeText(
+                this,
+                "Personality is: ${getPersonality(personality)}",
+                Toast.LENGTH_SHORT
+            ).show()
+            personalityTestViewModel.save(personality)
         }
     }
 
-    private fun categorizePersonality(personalityScoreSum: Int): String {
+    private fun showSavePersonalityTypeError(@StringRes errorString: Int) {
+        Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onSavePersonalityTypeSuccessful() {
+        finish()
+    }
+
+    private fun getPersonality(personalityType: Int) = when(personalityType) {
+        Personality.SOCIAL_BUTTERFLY -> getString(R.string.personality_social_butterfly)
+        Personality.LONE_WOLF -> getString(R.string.personality_lone_wolf)
+        Personality.ORGANIZER -> getString(R.string.personality_organizer)
+        Personality.ADVENTURER -> getString(R.string.personality_adventurer)
+        Personality.ANALYZER -> getString(R.string.personality_analyzer)
+        else -> null
+    }
+
+    private fun categorizePersonality(personalityScoreSum: Int): Int {
 
         if (personalityScoreSum >= 60) {
-            return "Social Butterfly"
+            return Personality.SOCIAL_BUTTERFLY
         }
         else if (personalityScoreSum >= 45) {
-            return "Lone Wolf"
+            return Personality.LONE_WOLF
         }
         else if (personalityScoreSum >= 39) {
-            return "Organizer"
+            return Personality.ORGANIZER
         }
         else if (personalityScoreSum >= 15) {
-            return "Adventurer"
+            return Personality.ADVENTURER
         }
         else {
-            return "Analyzer"
+            return Personality.ANALYZER
         }
     }
 }
