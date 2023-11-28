@@ -336,4 +336,27 @@ class MainRepository {
                 onError(Result.Error(R.string.error_message_swipe_query_failed))
             }
     }
+
+    /**
+     * personality test
+     */
+    fun updateUserPersonality(
+        personalityType: Int,
+        onSuccess: () -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
+
+        db.collection("users")
+            .document(user.uid)
+            .update("personality", personalityType)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    Log.e("Update User Personality", "error: ${task.exception}")
+                    onError(Result.Error(R.string.error_message_update_personality))
+                }
+            }
+    }
 }

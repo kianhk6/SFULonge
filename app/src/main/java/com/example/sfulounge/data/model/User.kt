@@ -28,5 +28,8 @@ data class User(
     val depthQuestions: List<DepthInfo> = ArrayList(),
 
     @get:PropertyName("photos")
-    val photos: List<String> = ArrayList()
+    val photos: List<String> = ArrayList(),
+
+    @get:PropertyName("personality")
+    val personality: Int? = Personality.UNSPECIFIED
 )
