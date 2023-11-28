@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="button_orange">#f79d65</color>
+    <color name="button_red">#b23b3b</color>
 
     <color name="register_background">#DDDBFB</color>
     <color name="register_background2">#FFF5C4</color>
