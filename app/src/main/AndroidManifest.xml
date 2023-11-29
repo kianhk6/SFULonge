@@ -5,7 +5,10 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SFULounge"
         tools:targetApi="31">
+        <service
+            android:name=".NotificationService"
+            android:foregroundServiceType="dataSync"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".ui.personality.PersonalityTest"
             android:exported="false" />

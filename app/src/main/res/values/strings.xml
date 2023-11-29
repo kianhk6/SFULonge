@@ -17,6 +17,12 @@
     <string name="login_failed">"Login failed"</string>
     <string name="register_failed">"Register failed"</string>
 
+    <!--  notifications  -->
+    <string name="notification_channel_name">SFULounge Channel</string>
+    <string name="notification_channel_description">Messages</string>
+    <string name="notification_foreground_title">SFU Lounge</string>
+    <string name="notification_foreground_description">Messages Notification Service</string>
+
     <!--  error messages  -->
     <string name="error_message_account_unverified">Account not email verified</string>
     <string name="error_message_existing_account">Account with same email already exists</string>
@@ -33,9 +39,14 @@
     <string name="error_message_name_is_null">name is null</string>
     <string name="error_message_gender_is_null">gender is null</string>
     <string name="error_message_message_send">Message failed to send</string>
+    <string name="error_message_update_personality">Failed to update personality type</string>
 
     <!--  success messages  -->
     <string name="success_message_profile_saved">Profile saved!</string>
+    <string name="success_message_logout">Sign out successful!</string>
+
+    <!--  confirm dialog  -->
+    <string name="confirm_logout">Are you sure you want to logout?</string>
 
     <!--  dialog for messages  -->
     <string name="messages_upload_dialog_title">Upload Additional Items</string>
@@ -155,4 +166,12 @@
     <string name="writing">Writing</string>
     <string name="interests_prompt">Let other\'s know what you\'re into</string>
     <string name="interests_title">Interests</string>
+    <string name="profile_logout">Logout</string>
+
+    <!--  personality types  -->
+    <string name="personality_social_butterfly">Social Butterfly</string>
+    <string name="personality_lone_wolf">Lone Wolf</string>
+    <string name="personality_organizer">Organizer</string>
+    <string name="personality_adventurer">Adventurer</string>
+    <string name="personality_analyzer">Analyzer</string>
 </resources>

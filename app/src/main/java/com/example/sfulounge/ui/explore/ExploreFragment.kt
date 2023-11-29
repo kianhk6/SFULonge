@@ -1,5 +1,6 @@
 package com.example.sfulounge.ui.explore
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.opengl.Visibility
@@ -38,6 +39,7 @@ class ExploreFragment : Fragment() {
     private var initialY: Float = 0F
     private lateinit var frame: SwipeFlingAdapterView
     private lateinit var arrayOfImages: ArrayList<String>
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -344,6 +346,9 @@ class ExploreFragment : Fragment() {
                         loadUserInfo()
                     }
                 }
+            }
+            else{
+                loadUserInfo()
             }
         }
     }
