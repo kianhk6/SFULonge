@@ -11,7 +11,9 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.sfulounge.data.model.ChatRoom
+import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
+import com.example.sfulounge.ui.MessageFormatter
 import com.example.sfulounge.ui.messages.MessagesActivity
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -59,7 +61,7 @@ class NotificationService : Service() {
             // Create the NotificationChannel.
             val name = getString(R.string.notification_channel_name)
             val descriptionText = getString(R.string.notification_channel_description)
-            val importance = NotificationManager.IMPORTANCE_LOW
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(CHANNEL_ID, name, importance)
             mChannel.description = descriptionText
             // Register the channel with the system. You can't change the importance
@@ -103,7 +105,7 @@ class NotificationService : Service() {
                     // wait for fetchUsers to stopSelf and then continue on the main thread
                     cacheUsers(users)
                     val title = formatTitle(chatRoom)
-                    val text = formatText(chatRoom)
+                    val text = formatText(chatRoom.mostRecentMessage!!)
                     sendNotificationImpl(chatRoom, title, text)
                 }
             } catch (e: Exception) {
@@ -134,6 +136,9 @@ class NotificationService : Service() {
                     val chatRoom = value.documents.firstOrNull()?.toObject(ChatRoom::class.java)
                         ?: return@addSnapshotListener
                     if (chatRoom.mostRecentMessage == null) {
+                        return@addSnapshotListener
+                    }
+                    if (chatRoom.mostRecentMessage!!.senderId == user.uid) {
                         return@addSnapshotListener
                     }
                     val memberInfo = chatRoom.memberInfo[user.uid]
@@ -170,26 +175,14 @@ class NotificationService : Service() {
     }
 
     private fun formatTitle(chatRoom: ChatRoom): String {
-        return chatRoom.name ?: "New Message"
+        val user = auth.currentUser ?: throw IllegalStateException("User is null")
+        val members = chatRoom.members.mapNotNull { x -> _cache[x] }
+        return MessageFormatter.formatNames(members, user.uid)
     }
 
-    private fun formatText(chatRoom: ChatRoom): String {
-        val message = chatRoom.mostRecentMessage!!
-        val sender = _cache[message.senderId]!!
-        val contents = if (message.text != null) {
-            message.text
-        } else if (message.images.isNotEmpty()) {
-            "Sent an image"
-        } else if (message.voiceMemos.isNotEmpty()) {
-            "Sent a voice memo"
-        } else if (message.videos.isNotEmpty()) {
-            "Sent a video"
-        } else if (message.files.isNotEmpty()) {
-            "Sent a file"
-        } else {
-            ""
-        }
-        return "${sender.firstName}: $contents"
+    private fun formatText(message: Message): String {
+        val sender = _cache[message.senderId]
+        return MessageFormatter.formatMessageSummary(message, sender)
     }
 
     private suspend fun fetchUsers(userIds: List<String>): List<User> {

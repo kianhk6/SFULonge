@@ -1,5 +1,6 @@
 package com.example.sfulounge.ui.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.FragmentProfileBinding
+import com.example.sfulounge.ui.login.LoginActivity
 import com.example.sfulounge.ui.personality.PersonalityTest
 import com.example.sfulounge.ui.setup.SetupDepthQuestionsActivity
 import com.example.sfulounge.ui.setup.SetupImagesActivity
@@ -30,7 +32,7 @@ class ProfileFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var setupViewModel: SetupViewModel
-
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +40,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        profileViewModel = ViewModelProvider(this, ProfileViewModelFactory())
+            .get(ProfileViewModel::class.java)
         setupViewModel = ViewModelProvider(this, SetupViewModelFactory())
             .get(SetupViewModel::class.java)
 
@@ -48,6 +52,7 @@ class ProfileFragment : Fragment() {
         val gender = binding.gender
         val loading = binding.loading
         val save = binding.save
+        val logout = binding.logout
         val personalityTest = binding.personality
 
         val editImages = binding.editImages
@@ -105,11 +110,31 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireActivity(), PersonalityTest::class.java)
             startActivity(intent)
         }
+        logout.setOnClickListener {
+            showConfirmLogoutDialog()
+        }
 
         // get the current user
         setupViewModel.getUser()
 
         return root
+    }
+
+    private fun showConfirmLogoutDialog() {
+        activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder
+                .setTitle("Confirm Logout")
+                .setMessage(R.string.confirm_logout)
+                .setPositiveButton("Confirm") { dialog, which ->
+                    onLogoutClicked()
+                }
+                .setNegativeButton("Cancel") { dialog, which ->
+                    dialog.cancel()
+                }
+            val dialog = builder.create()
+            dialog.show()
+        } ?: throw IllegalStateException("Activity cannot be null")
     }
 
     override fun onDestroyView() {
@@ -142,5 +167,17 @@ class ProfileFragment : Fragment() {
             getString(R.string.success_message_profile_saved),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun onLogoutClicked() {
+        profileViewModel.logout()
+        Toast.makeText(
+            requireActivity(),
+            getString(R.string.success_message_logout),
+            Toast.LENGTH_SHORT
+        ).show()
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }
