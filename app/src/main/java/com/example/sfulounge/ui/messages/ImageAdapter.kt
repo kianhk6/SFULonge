@@ -26,6 +26,7 @@ class ImageAdapter : ListAdapter<String, ImageAdapter.ImageViewHolder>(ImageComp
         fun bind(imageUrl: String) {
             Glide.with(itemView.context)
                 .load(imageUrl)
+                .placeholder(R.drawable.baseline_image_24)
                 .dontTransform()
                 .into(imageView)
         }

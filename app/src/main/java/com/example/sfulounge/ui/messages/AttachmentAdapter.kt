@@ -3,7 +3,6 @@ package com.example.sfulounge.ui.messages
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
@@ -14,9 +13,13 @@ import com.example.sfulounge.ui.messages.AttachmentAdapter.AttachmentViewHolder.
 import com.example.sfulounge.ui.messages.AttachmentAdapter.AttachmentViewHolder.Companion.MISC_VIEW
 import com.example.sfulounge.ui.messages.AttachmentAdapter.AttachmentViewHolder.Companion.VIDEO_VIEW
 
-class AttachmentAdapter
+class AttachmentAdapter(private val listener: Listener)
     : ListAdapter<Attachment, AttachmentAdapter.AttachmentViewHolder>(AttachmentComparator())
 {
+    interface Listener {
+        fun onRemoveAttachment(position: Int)
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position).fileType) {
             AttachmentType.IMAGE -> IMAGE_VIEW
@@ -31,9 +34,7 @@ class AttachmentAdapter
     override fun onBindViewHolder(holder: AttachmentViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current) {
-            val temp = currentList.toMutableList()
-            temp.removeAt(position)
-            submitList(temp)
+            listener.onRemoveAttachment(position)
         }
     }
 
