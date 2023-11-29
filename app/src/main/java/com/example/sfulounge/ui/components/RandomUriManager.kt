@@ -8,7 +8,7 @@ import java.io.File
 class RandomUriManager(private val context: Context) : AutoCloseable {
 
     private var _lastUri: Uri? = null
-    val lastUri: Uri? = _lastUri
+    val lastUri: Uri? get() = _lastUri
 
     private val uriPool = HashSet<Uri>()
 
@@ -26,18 +26,6 @@ class RandomUriManager(private val context: Context) : AutoCloseable {
 
     fun getRandomUri() {
         _lastUri = make()
-    }
-
-    fun deleteLastUri() {
-        val uri = _lastUri
-        if (uri != null) {
-            delete(uri)
-            _lastUri = null
-        }
-    }
-    
-    fun deleteUri(uri: Uri) {
-        delete(uri)
     }
 
     private fun delete(uri: Uri) {

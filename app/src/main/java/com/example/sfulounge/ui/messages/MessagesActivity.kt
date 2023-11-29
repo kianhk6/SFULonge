@@ -58,9 +58,6 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
                 if (uri != null) {
                     addImageAttachment(uri)
                 }
-            } else {
-                // camera was canceled
-                uri?.let { randomUriManager.deleteUri(it) }
             }
         }
         galleryResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
