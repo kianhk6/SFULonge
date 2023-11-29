@@ -40,6 +40,7 @@
     <string name="error_message_gender_is_null">gender is null</string>
     <string name="error_message_message_send">Message failed to send</string>
     <string name="error_message_update_personality">Failed to update personality type</string>
+    <string name="error_message_get_messages">Failed to get messages</string>
 
     <!--  success messages  -->
     <string name="success_message_profile_saved">Profile saved!</string>

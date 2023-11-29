@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sfulounge.R
@@ -16,7 +17,7 @@ import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.MessageFormatter
 
 class MessageAdapter(private val usersMap: Map<String, User>, private val userId: String)
-    : PagingDataAdapter<Message, MessageAdapter.MessageViewHolder>(MessageComparator)
+    : ListAdapter<Message, MessageAdapter.MessageViewHolder>(MessageComparator)
 {
     override fun onCreateViewHolder(
         parent: ViewGroup,

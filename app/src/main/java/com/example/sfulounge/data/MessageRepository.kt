@@ -5,10 +5,11 @@ import android.util.Log
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -49,36 +50,29 @@ class MessageRepository {
         val ref = db.collection("chat_rooms")
             .document(chatRoomId)
             .collection("messages")
+            .document()
 
-        ref.add(message)
-            .continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    task.exception?.let { throw it }
-                }
-                val messageId = task.result.id
+        val messageId = ref.id
 
-                // update the chatroom to show most recent message
+        uploadPhotos(
+            chatRoomId,
+            messageId,
+            images,
+            onSuccess = { photos ->
                 message.messageId = messageId
-                addMessageToChatRoom(chatRoomId, message)
-
-                ref.document(messageId)
-                    .update(
-                        mapOf(
-                            "messageId" to messageId
-                        )
-                    )
-            }
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // upload any images
-                    for (img in images) {
-                        uploadPhoto(chatRoomId, message.messageId, img)
+                message.images = photos
+                ref.set(message)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            onSuccess()
+                        } else {
+                            onError(Result.Error(R.string.error_message_message_send))
+                        }
                     }
-                    onSuccess()
-                } else {
-                    onError(Result.Error(R.string.error_message_message_send))
-                }
-            }
+                addMessageToChatRoom(chatRoomId, message)
+            },
+            onError
+        )
     }
 
     fun updateMemberLastMessageSeenTime(chatRoomId: String, memberId: String) {
@@ -106,7 +100,29 @@ class MessageRepository {
             )
     }
 
-    fun registerMessagesListener(chatRoomId: String, listener: MessagesListener) {
+    fun getAllMessages(
+        chatRoomId: String,
+        onSuccess: (List<Message>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        db.collection("chat_rooms")
+            .document(chatRoomId)
+            .collection("messages")
+            .orderBy("timeCreated", Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val messages = task.result.documents
+                        .map { x -> x.toObject(Message::class.java)!! }
+                    onSuccess(messages)
+                } else {
+                    Log.e("Message Repository", "error: ${task.exception}")
+                    onError(Result.Error(R.string.error_message_get_messages))
+                }
+            }
+    }
+
+    fun registerMessagesListener(chatRoomId: String, latestMessage: Message?, listener: MessagesListener) {
         registration = db.collection("chat_rooms")
             .document(chatRoomId)
             .collection("messages")
@@ -120,7 +136,12 @@ class MessageRepository {
                 if (value != null) {
                     if (value.documents.isNotEmpty()) {
                         val message = value.documents.first().toObject(Message::class.java)!!
-                        listener.onNewMessage(message)
+                        if (message.messageId.isEmpty()) {
+                            return@addSnapshotListener
+                        }
+                        if (message.messageId != latestMessage?.messageId) {
+                            listener.onNewMessage(message)
+                        }
                     }
                 }
             }
@@ -133,8 +154,9 @@ class MessageRepository {
     private fun uploadPhoto(
         chatRoomId: String,
         messageId: String,
-        photoUri: Uri
-    ) {
+        photoUri: Uri,
+        onSuccess: (String) -> Unit
+    ): Task<Uri> {
         val ref = storage.reference
         val photoUid = UUID.randomUUID().toString()
 
@@ -142,32 +164,52 @@ class MessageRepository {
         val node = ref.child(
             "chat_rooms/${chatRoomId}/messages/${messageId}/photos/${photoUid}.jpg"
         )
-        node.putFile(photoUri)
+        return node.putFile(photoUri)
             .continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let { throw it }
                 }
                 node.downloadUrl
             }
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val url = task.result.toString()
-                    addPhotoUrlToMessage(chatRoomId, messageId, url)
-                } else {
-                    Log.e("error", "${task.exception}")
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
                 }
+                onSuccess(task.result.toString())
+                task
             }
     }
 
-    private fun addPhotoUrlToMessage(chatRoomId: String, messageId: String, url: String) {
-        db.collection("chat_rooms")
-            .document(chatRoomId)
-            .collection("messages")
-            .document(messageId)
-            .update(
-                mapOf(
-                    "images" to FieldValue.arrayUnion(url)
-                )
+    private fun uploadPhotos(
+        chatRoomId: String,
+        messageId: String,
+        photos: List<Uri>,
+        onSuccess: (List<String>) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        if (photos.isEmpty()) {
+            onSuccess(emptyList())
+            return
+        }
+
+        val downloadUrls = ArrayList<String>()
+        val tasks = photos.map { photo ->
+            uploadPhoto(
+                chatRoomId,
+                messageId,
+                photo,
+                onSuccess = { downloadUrls.add(it) }
             )
+        }
+
+        val allTasks: Task<MutableList<Task<*>>> = Tasks.whenAllComplete(tasks)
+        allTasks.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onSuccess(downloadUrls)
+            } else {
+                Log.e("error", "upload photos: ${task.exception}")
+                onError(Result.Error(R.string.error_message_upload_photo))
+            }
+        }
     }
 }
