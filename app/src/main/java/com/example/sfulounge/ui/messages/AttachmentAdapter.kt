@@ -3,6 +3,7 @@ package com.example.sfulounge.ui.messages
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
@@ -30,8 +31,9 @@ class AttachmentAdapter
     override fun onBindViewHolder(holder: AttachmentViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current) {
-            currentList.removeAt(position)
-            notifyItemRemoved(position)
+            val temp = currentList.toMutableList()
+            temp.removeAt(position)
+            submitList(temp)
         }
     }
 
@@ -93,7 +95,7 @@ class AttachmentAdapter
 
     // base class
     abstract class AttachmentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val deleteButton: TextView = itemView.findViewById(R.id.delete)
+        private val deleteButton: ImageView = itemView.findViewById(R.id.delete)
 
         fun bind(attachment: Attachment, onDelete: () -> Unit) {
             bindImpl(attachment)

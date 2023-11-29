@@ -1,7 +1,6 @@
 package com.example.sfulounge.ui.messages
 
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -28,8 +27,6 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
 
     private lateinit var randomUriManager: RandomUriManager
 
-    private var cameraTempUri: Uri? = null
-
     companion object {
         const val INTENT_CHATROOM_ID = "chatroom_id"
         const val INTENT_MEMBER_IDS = "member_ids"
@@ -54,14 +51,14 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
         val attachmentsAdapter = AttachmentAdapter()
 
         cameraResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-            val uri = cameraTempUri
+            val uri = randomUriManager.lastUri
             if (result.resultCode == RESULT_OK) {
                 if (uri != null) {
                     messagesViewModel.attachments.add(
                         Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
                     )
                     attachmentsAdapter.notifyItemInserted(
-                        messagesViewModel.attachments.size - 1
+                        messagesViewModel.attachments.size - 2
                     )
                 }
             } else {
@@ -77,14 +74,14 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
                         Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
                     )
                     attachmentsAdapter.notifyItemInserted(
-                        messagesViewModel.attachments.size - 1
+                        messagesViewModel.attachments.size - 2
                     )
                 }
             }
         }
 
         val messages = binding.recyclerView
-        val attachments = binding.attachments
+        val attachmentsView = binding.attachments
         val send = binding.send
         val more = binding.more
         val input = binding.input
@@ -96,8 +93,8 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
             stackFromEnd = true
         }
 
-        attachments.adapter = attachmentsAdapter
-        attachments.layoutManager = LinearLayoutManager(
+        attachmentsView.adapter = attachmentsAdapter
+        attachmentsView.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
             false
@@ -107,8 +104,9 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
 
         send.setOnClickListener {
             val text = input.text.toString()
-            if (text.isNotEmpty()) {
+            if (text.isNotEmpty() || messagesViewModel.attachments.isNotEmpty()) {
                 input.text.clear()
+                attachmentsAdapter.submitList(emptyList())
                 send.isEnabled = false
                 messagesViewModel.sendMessage(text)
             }
