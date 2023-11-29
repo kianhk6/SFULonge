@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -55,6 +56,7 @@ class ExploreFragment : Fragment() {
 
         waitForUsersToPropagate()
 
+        matchesViewModel.printList()
         userImage = view.findViewById<ImageView>(R.id.imageUser)
         imageFrame = view.findViewById<FrameLayout>(R.id.imageFrame)
         //implement swipe action for userImage
@@ -62,6 +64,46 @@ class ExploreFragment : Fragment() {
         frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
         arrayOfImages = ArrayList()
 //        setUpSwipeAction()
+        val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
+        buttonSwipeRight.setOnClickListener {
+            // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
+            println(
+                "this is from fragment: current user that got swiped on is: "
+                        + matchesViewModel.current_recommended_user.firstName
+            )
+            matchesViewModel.addSwipeRight(
+                matchesViewModel.current_recommended_user,
+                onSuccess = {
+                    // Handle success, e.g., show a success message
+                    Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
+                    loadNextRecommendation()
+                }
+            ) { exception ->
+                // Handle error, e.g., show an error message
+                Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+        val buttonSwipeLeft = view.findViewById<Button>(R.id.buttonSwipeLeft)
+        buttonSwipeLeft.setOnClickListener {
+            // Assuming 'current_recommended_user' holds the user object that got swiped on
+            val swipedOnUser = matchesViewModel.current_recommended_user
+            println("this is from fragment: current user that got swiped on is: $swipedOnUser")
+            matchesViewModel.addSwipeLeft(
+                matchesViewModel.current_recommended_user.userId,
+                onSuccess = {
+                    // Handle success, e.g., show a success message
+                    Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
+                    loadNextRecommendation()
+                },
+                onError = { exception ->
+                    // Handle error, e.g., show an error message
+                    Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            )
+        }
 
         val onSwipeTouchListener = object : OnSwipeTouchListener(requireContext()) {
 //            override fun onTouch(view: View, event: MotionEvent): Boolean {
@@ -106,6 +148,7 @@ class ExploreFragment : Fragment() {
                         // Handle success, e.g., show a success message
                         Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
                         loadNextRecommendation()
+                        loadUserInfo()
                     },
                     onError = { exception ->
                         // Handle error, e.g., show an error message
@@ -118,16 +161,13 @@ class ExploreFragment : Fragment() {
             override fun onSwipeRight() {
                 // Handle swipe right action (e.g., load the next recommendation)
                 // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
-                println(
-                    "this is from fragment: current user that got swiped on is: "
-                            + matchesViewModel.current_recommended_user.firstName
-                )
                 matchesViewModel.addSwipeRight(
                     matchesViewModel.current_recommended_user,
                     onSuccess = {
                         // Handle success, e.g., show a success message
                         Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
                         loadNextRecommendation()
+                        loadUserInfo()
                     }
                 ) { exception ->
                     // Handle error, e.g., show an error message
@@ -144,14 +184,6 @@ class ExploreFragment : Fragment() {
         return view
     }
 
-    override fun onResume() {
-        //Bug: doesn't load user again after switching fragments
-        // we need to get current user instead of initial user.
-//        loadUserInfo() //causes crash because current user is not initialized
-//        matchesViewModel.isInitialUserFetched = false
-//        waitForUsersToPropagate()
-        super.onResume()
-    }
 
 //    private fun setUpSwipeAction() {
 //        val currentList = matchesViewModel.currentUsers.value?.toMutableList() ?: mutableListOf()
@@ -230,7 +262,7 @@ class ExploreFragment : Fragment() {
             tvGender?.setText(resources.getStringArray(R.array.gender_array)[user.gender])
             when (user.interests.size) {
                 0 -> {
-                    println("Empty Interests")
+//                    println("Empty Interests")
                     view?.findViewById<LinearLayout>(R.id.interestsLinearLayout2)?.visibility =
                         View.GONE
                     view?.findViewById<TextView>(R.id.interest2)?.visibility = View.GONE
@@ -267,7 +299,7 @@ class ExploreFragment : Fragment() {
             }
             when (user.depthQuestions.size) {
                 0 -> {
-                    println("Empty Depth Questions")
+//                    println("Empty Depth Questions")
                     view?.findViewById<LinearLayout>(R.id.layout_depth_question_1)?.visibility =
                         View.GONE
                     view?.findViewById<LinearLayout>(R.id.layout_depth_question_2)?.visibility =

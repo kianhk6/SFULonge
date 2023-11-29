@@ -174,4 +174,6 @@
     <string name="personality_organizer">Organizer</string>
     <string name="personality_adventurer">Adventurer</string>
     <string name="personality_analyzer">Analyzer</string>
+    <string name="swipe_left">Swipe Left</string>
+    <string name="swipe_right">Swipe Right</string>
 </resources>

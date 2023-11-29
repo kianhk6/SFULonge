@@ -285,18 +285,36 @@
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
-        <!--        <Button-->
-        <!--            android:id="@+id/buttonSwipeRight"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Swipe Right"-->
-        <!--            android:layout_gravity="center_horizontal"/>-->
 
-        <!--        <Button-->
-        <!--            android:id="@+id/buttonSwipeLeft"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Swipe Left"-->
-        <!--            android:layout_gravity="center_horizontal"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/buttonSwipeLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/swipe_left"
+                android:layout_marginRight="48dp"
+                android:backgroundTint="@color/button_orange"/>
+            <Button
+                android:id="@+id/buttonSwipeRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/swipe_right"
+                android:backgroundTint="@color/button_orange"/>
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
