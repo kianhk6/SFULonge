@@ -14,9 +14,9 @@
         android:textSize="24sp"
         android:text="Messages"
         android:padding="8dp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:background="#FFFFFF" />
+        android:background="@color/button_orange" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chats"
