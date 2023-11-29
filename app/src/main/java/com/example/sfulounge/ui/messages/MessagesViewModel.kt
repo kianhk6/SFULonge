@@ -51,13 +51,20 @@ class MessagesViewModel(
     }
 
     fun sendMessage(text: String) {
+        val images = attachments
+            .filter { x -> x.fileType == AttachmentType.IMAGE }
+            .map { x -> x.localUri }
         repository.sendMessage(
             chatRoomId,
             Message(
                 text = text,
-                senderId = _userId
+                senderId = _userId,
             ),
-            onSuccess = { _sendResult.value = UnitResult() },
+            images = images,
+            onSuccess = {
+                attachments.clear()
+                _sendResult.value = UnitResult()
+            },
             onError = { _sendResult.value = UnitResult(error = it.exception) }
         )
     }

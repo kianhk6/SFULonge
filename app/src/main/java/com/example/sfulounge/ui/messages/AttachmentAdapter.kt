@@ -13,9 +13,13 @@ import com.example.sfulounge.ui.messages.AttachmentAdapter.AttachmentViewHolder.
 import com.example.sfulounge.ui.messages.AttachmentAdapter.AttachmentViewHolder.Companion.MISC_VIEW
 import com.example.sfulounge.ui.messages.AttachmentAdapter.AttachmentViewHolder.Companion.VIDEO_VIEW
 
-class AttachmentAdapter
+class AttachmentAdapter(private val listener: Listener)
     : ListAdapter<Attachment, AttachmentAdapter.AttachmentViewHolder>(AttachmentComparator())
 {
+    interface Listener {
+        fun onRemoveAttachment(position: Int)
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position).fileType) {
             AttachmentType.IMAGE -> IMAGE_VIEW
@@ -30,8 +34,7 @@ class AttachmentAdapter
     override fun onBindViewHolder(holder: AttachmentViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current) {
-            currentList.removeAt(position)
-            notifyItemRemoved(position)
+            listener.onRemoveAttachment(position)
         }
     }
 
@@ -93,7 +96,7 @@ class AttachmentAdapter
 
     // base class
     abstract class AttachmentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val deleteButton: TextView = itemView.findViewById(R.id.delete)
+        private val deleteButton: ImageView = itemView.findViewById(R.id.delete)
 
         fun bind(attachment: Attachment, onDelete: () -> Unit) {
             bindImpl(attachment)

@@ -18,17 +18,16 @@ import com.example.sfulounge.ui.components.UploadDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener {
+class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener, AttachmentAdapter.Listener {
 
     private lateinit var binding: ActivityMessagesBinding
     private lateinit var messagesViewModel: MessagesViewModel
     private lateinit var uploadDialog: UploadDialog
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var attachmentsAdapter: AttachmentAdapter
 
     private lateinit var randomUriManager: RandomUriManager
-
-    private var cameraTempUri: Uri? = null
 
     companion object {
         const val INTENT_CHATROOM_ID = "chatroom_id"
@@ -51,18 +50,13 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
         randomUriManager = RandomUriManager(this)
         uploadDialog = UploadDialog()
 
-        val attachmentsAdapter = AttachmentAdapter()
+        attachmentsAdapter = AttachmentAdapter(this)
 
         cameraResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-            val uri = cameraTempUri
+            val uri = randomUriManager.lastUri
             if (result.resultCode == RESULT_OK) {
                 if (uri != null) {
-                    messagesViewModel.attachments.add(
-                        Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
-                    )
-                    attachmentsAdapter.notifyItemInserted(
-                        messagesViewModel.attachments.size - 1
-                    )
+                    addImageAttachment(uri)
                 }
             } else {
                 // camera was canceled
@@ -73,18 +67,13 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
             if (result.resultCode == RESULT_OK) {
                 val uri = result.data?.data?.let { randomUriManager.saveToRandomUri(it) }
                 if (uri != null) {
-                    messagesViewModel.attachments.add(
-                        Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
-                    )
-                    attachmentsAdapter.notifyItemInserted(
-                        messagesViewModel.attachments.size - 1
-                    )
+                    addImageAttachment(uri)
                 }
             }
         }
 
         val messages = binding.recyclerView
-        val attachments = binding.attachments
+        val attachmentsView = binding.attachments
         val send = binding.send
         val more = binding.more
         val input = binding.input
@@ -96,8 +85,8 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
             stackFromEnd = true
         }
 
-        attachments.adapter = attachmentsAdapter
-        attachments.layoutManager = LinearLayoutManager(
+        attachmentsView.adapter = attachmentsAdapter
+        attachmentsView.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.HORIZONTAL,
             false
@@ -107,7 +96,7 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
 
         send.setOnClickListener {
             val text = input.text.toString()
-            if (text.isNotEmpty()) {
+            if (text.isNotEmpty() || messagesViewModel.attachments.isNotEmpty()) {
                 input.text.clear()
                 send.isEnabled = false
                 messagesViewModel.sendMessage(text)
@@ -122,6 +111,8 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
             send.isEnabled = true
             if (result.error != null) {
                 showMessageFailedToSend(result.error)
+            } else {
+                attachmentsAdapter.submitList(messagesViewModel.attachments)
             }
         }
 
@@ -145,6 +136,14 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
         messagesViewModel.unregisterMessagesListener()
     }
 
+    private fun addImageAttachment(uri: Uri) {
+        val position = messagesViewModel.attachments.size
+        messagesViewModel.attachments.add(
+            Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
+        )
+        attachmentsAdapter.notifyItemInserted(position)
+    }
+
     override fun onGalleryClick() {
         galleryResultLauncher.launch(
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -156,5 +155,10 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, randomUriManager.lastUri)
         cameraResultLauncher.launch(intent)
+    }
+
+    override fun onRemoveAttachment(position: Int) {
+        messagesViewModel.attachments.removeAt(position)
+        attachmentsAdapter.notifyItemRemoved(position)
     }
 }

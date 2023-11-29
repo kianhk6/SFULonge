@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sfulounge.R
@@ -38,6 +39,7 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
         private val messageView: TextView = itemView.findViewById(R.id.message)
         private val imageView: ImageView = itemView.findViewById(R.id.image)
         private val timeView: TextView = itemView.findViewById(R.id.time)
+        private val imagesRecyclerView: RecyclerView = itemView.findViewById(R.id.images)
 
         fun bind(
             name: String?,
@@ -58,6 +60,7 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
             messageView.text = message?.text
             if (message != null) {
                 timeView.text = MessageFormatter.formatMessageTime(message.timeCreated)
+                bindImages(message.images)
             }
 
             if (imageUrl == null) {
@@ -70,6 +73,16 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
                     .load(imageUrl)
                     .centerCrop()
                     .into(imageView)
+            }
+        }
+
+        private fun bindImages(images: List<String>) {
+            if (images.isNotEmpty()) {
+                val numColumns = 2
+                val adapter = ImageAdapter()
+                imagesRecyclerView.adapter = adapter
+                imagesRecyclerView.layoutManager = GridLayoutManager(itemView.context, numColumns)
+                adapter.submitList(images)
             }
         }
 

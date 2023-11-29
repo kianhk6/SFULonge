@@ -1,5 +1,6 @@
 package com.example.sfulounge.data
 
+import android.net.Uri
 import android.util.Log
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.Message
@@ -7,14 +8,18 @@ import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
+import java.util.UUID
 
 class MessageRepository {
 
     private val auth = Firebase.auth
     private val db = Firebase.firestore
+    private val storage = Firebase.storage
 
     private var registration: ListenerRegistration? = null
 
@@ -37,6 +42,7 @@ class MessageRepository {
     fun sendMessage(
         chatRoomId: String,
         message: Message,
+        images: List<Uri> = ArrayList(),
         onSuccess: () -> Unit,
         onError: (Result.Error) -> Unit
     ) {
@@ -64,6 +70,10 @@ class MessageRepository {
             }
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    // upload any images
+                    for (img in images) {
+                        uploadPhoto(chatRoomId, message.messageId, img)
+                    }
                     onSuccess()
                 } else {
                     onError(Result.Error(R.string.error_message_message_send))
@@ -118,5 +128,46 @@ class MessageRepository {
 
     fun unregisterMessagesListener() {
         registration?.remove()
+    }
+
+    private fun uploadPhoto(
+        chatRoomId: String,
+        messageId: String,
+        photoUri: Uri
+    ) {
+        val ref = storage.reference
+        val photoUid = UUID.randomUUID().toString()
+
+        // first get the firebase url then upload to the firebase storage
+        val node = ref.child(
+            "chat_rooms/${chatRoomId}/messages/${messageId}/photos/${photoUid}.jpg"
+        )
+        node.putFile(photoUri)
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
+                }
+                node.downloadUrl
+            }
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val url = task.result.toString()
+                    addPhotoUrlToMessage(chatRoomId, messageId, url)
+                } else {
+                    Log.e("error", "${task.exception}")
+                }
+            }
+    }
+
+    private fun addPhotoUrlToMessage(chatRoomId: String, messageId: String, url: String) {
+        db.collection("chat_rooms")
+            .document(chatRoomId)
+            .collection("messages")
+            .document(messageId)
+            .update(
+                mapOf(
+                    "images" to FieldValue.arrayUnion(url)
+                )
+            )
     }
 }
