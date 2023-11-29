@@ -104,9 +104,21 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
 
                                 val currentUserInterests = loggedInUser.interests.toSet()
 
-                                val sortedUsers = filteredUsers.sortedByDescending { user ->
-                                  user.interests.count { interest -> currentUserInterests.contains(interest) }
+                                val sortedUsers: List<User> = if(currentUser.personality != null){
+                                    filteredUsers.sortedWith(compareByDescending<User> { user ->
+                                        // First criteria: Check if the user has a personality field and if it matches the currentUser's
+                                        (user.personality != null && user.personality == currentUser.personality)
+                                    }.thenByDescending { user ->
+                                        // Second criteria: Count of shared interests
+                                        user.interests.count { interest -> currentUserInterests.contains(interest) }
+                                    })
+
+                                } else{
+                                    filteredUsers.sortedByDescending { user ->
+                                        user.interests.count { interest -> currentUserInterests.contains(interest) }
+                                    }
                                 }
+
 
                                 // Update _currentUsers with the filtered list
                                 _currentUsers.postValue(sortedUsers)
@@ -190,8 +202,8 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
                 repository.addSwipeRight(swipeRight, onSuccess, onError)
 
                 // testing the matching mechanism:
-//                 val swipeRight1 = SwipeRight(userThatGotSwipedOn.userId, user.userId)
-//                 repository.addSwipeRight(swipeRight1, onSuccess, onError)
+                 val swipeRight1 = SwipeRight(userThatGotSwipedOn.userId, user.userId)
+                 repository.addSwipeRight(swipeRight1, onSuccess, onError)
 
                 // Query if our liked user has already liked us, if yes create a chatroom (match)
                 println(userThatGotSwipedOn.userId + "," + user.userId)
