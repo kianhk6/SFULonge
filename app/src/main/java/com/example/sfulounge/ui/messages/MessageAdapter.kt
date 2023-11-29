@@ -47,11 +47,16 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
             message: Message?,
             isSender: Boolean,
         ) {
+
+            nameView.text = name
+            if (!isSender){
+                nameView.text = "SFU Lounge Prompt"
+            }
+
 //            if (isSender) {
 //                messageView.setBackgroundColor(Color.BLUE)
 //            }
 
-            nameView.text = name
             messageView.text = message?.text
             if (message != null) {
                 timeView.text = MessageFormatter.formatMessageTime(message.timeCreated)
@@ -60,7 +65,7 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
 
             if (imageUrl == null) {
                 Glide.with(itemView.context)
-                    .load(R.drawable.baseline_person_24)
+                    .load(R.drawable.app_icon_round)
                     .centerCrop()
                     .into(imageView)
             } else {
@@ -85,7 +90,7 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
             fun create(parent: ViewGroup): MessageViewHolder {
                 return MessageViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.message_list_view_item, parent, false)
+                        .inflate(R.layout.direct_message_list_view_item, parent, false)
                 )
             }
         }
