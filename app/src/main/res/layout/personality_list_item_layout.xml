@@ -9,44 +9,48 @@
         android:id="@+id/questionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="Sample Question" />
+        android:textSize="18sp"
+        android:text="Sample Question"
+        android:background="@color/chat_background"
+        android:textColor="#FFFFFF"
+        android:padding="8dp"/>
 
     <RadioGroup
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Strongly Disagree"/>
+            android:layout_width="156dp"
+            android:layout_height="29dp"
+            android:text="Strongly Disagree" />
 
         <RadioButton
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disagree"/>
+            android:layout_width="106dp"
+            android:layout_height="32dp"
+            android:text="Disagree" />
 
         <RadioButton
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Neutral"/>
+            android:layout_width="98dp"
+            android:layout_height="30dp"
+            android:text="Neutral" />
 
         <RadioButton
             android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Agree"/>
+            android:layout_width="84dp"
+            android:layout_height="27dp"
+            android:text="Agree" />
 
         <RadioButton
             android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Strongly Agree"/>
+            android:layout_width="142dp"
+            android:layout_height="34dp"
+            android:text="Strongly Agree" />
 
     </RadioGroup>
 
