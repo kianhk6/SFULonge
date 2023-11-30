@@ -10,13 +10,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.databinding.ActivityMessagesBinding
 import com.example.sfulounge.ui.components.RandomUriManager
 import com.example.sfulounge.ui.components.UploadDialog
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.google.common.collect.ImmutableList
+import java.util.LinkedList
 
 class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener, AttachmentAdapter.Listener {
 
@@ -28,6 +28,9 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
     private lateinit var attachmentsAdapter: AttachmentAdapter
 
     private lateinit var randomUriManager: RandomUriManager
+
+    private val messages = LinkedList<Message>()
+    private val attachments = ArrayList<Attachment>()
 
     companion object {
         const val INTENT_CHATROOM_ID = "chatroom_id"
@@ -58,9 +61,6 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
                 if (uri != null) {
                     addImageAttachment(uri)
                 }
-            } else {
-                // camera was canceled
-                uri?.let { randomUriManager.deleteUri(it) }
             }
         }
         galleryResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
@@ -72,15 +72,15 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
             }
         }
 
-        val messages = binding.recyclerView
+        val messagesView = binding.recyclerView
         val attachmentsView = binding.attachments
         val send = binding.send
         val more = binding.more
         val input = binding.input
-        val pagingAdapter = MessageAdapter(messagesViewModel.cachedUsers, messagesViewModel.userId)
+        val messagesAdapter = MessageAdapter(messagesViewModel.cachedUsers, messagesViewModel.userId)
 
-        messages.adapter = pagingAdapter
-        messages.layoutManager = LinearLayoutManager(this).apply {
+        messagesView.adapter = messagesAdapter
+        messagesView.layoutManager = LinearLayoutManager(this).apply {
             reverseLayout = true
             stackFromEnd = true
         }
@@ -92,14 +92,14 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
             false
         )
 
-        attachmentsAdapter.submitList(messagesViewModel.attachments)
+        attachmentsAdapter.submitList(attachments)
 
         send.setOnClickListener {
             val text = input.text.toString()
-            if (text.isNotEmpty() || messagesViewModel.attachments.isNotEmpty()) {
+            if (text.isNotEmpty() || attachments.isNotEmpty()) {
                 input.text.clear()
                 send.isEnabled = false
-                messagesViewModel.sendMessage(text)
+                messagesViewModel.sendMessage(text, ImmutableList.copyOf(attachments))
             }
         }
 
@@ -112,33 +112,45 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
             if (result.error != null) {
                 showMessageFailedToSend(result.error)
             } else {
-                attachmentsAdapter.submitList(messagesViewModel.attachments)
+                val numItems = attachments.size
+                attachments.clear()
+                attachmentsAdapter.notifyItemRangeRemoved(0, numItems)
             }
         }
-
-        lifecycleScope.launch {
-            messagesViewModel.flow.collectLatest { pagingData ->
-                pagingAdapter.submitData(pagingData)
+        messagesViewModel.messagesResult.observe(this) {
+            if (it.error != null) {
+                showMessagesFailedToLoad(it.error)
+            } else {
+                // load the initial messages
+                messages.addAll(it.messages)
+                messagesAdapter.submitList(messages)
             }
+        }
+        messagesViewModel.pushMessageResult.observe(this) {
+            val msg = it ?: return@observe
+            messages.addFirst(msg)
+            messagesAdapter.notifyItemInserted(0)
         }
 
         messagesViewModel.getUsers(members)
-        messagesViewModel.registerMessagesListener()
     }
 
     private fun showMessageFailedToSend(@StringRes errorString: Int) {
+        Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
+    }
+    private fun showMessagesFailedToLoad(@StringRes errorString: Int) {
         Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         messagesViewModel.updateLastSeen()
-        messagesViewModel.unregisterMessagesListener()
+        messagesViewModel.cleanup()
     }
 
     private fun addImageAttachment(uri: Uri) {
-        val position = messagesViewModel.attachments.size
-        messagesViewModel.attachments.add(
+        val position = attachments.size
+        attachments.add(
             Attachment(localUri = uri, fileType = AttachmentType.IMAGE)
         )
         attachmentsAdapter.notifyItemInserted(position)
@@ -158,7 +170,7 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
     }
 
     override fun onRemoveAttachment(position: Int) {
-        messagesViewModel.attachments.removeAt(position)
+        attachments.removeAt(position)
         attachmentsAdapter.notifyItemRemoved(position)
     }
 }

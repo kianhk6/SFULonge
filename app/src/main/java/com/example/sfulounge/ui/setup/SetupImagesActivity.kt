@@ -19,7 +19,7 @@ import com.example.sfulounge.ui.components.RandomUriManager
 import com.example.sfulounge.ui.components.SingleChoiceDialog
 import kotlin.properties.Delegates
 
-class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoiceDialogListener {
+class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoiceDialogListener, PhotoGridAdapter.Listener {
 
     private lateinit var binding: ActivitySetupImagesBinding
     private lateinit var setupViewModel: SetupViewModel
@@ -54,11 +54,10 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
 
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val uri = randomUriManager.lastUri!!
-                setupViewModel.addPhoto(Photo(localUri = uri))
-            } else {
-                // camera was canceled
-                randomUriManager.deleteLastUri()
+                val uri = randomUriManager.lastUri
+                if (uri != null) {
+                    setupViewModel.addPhoto(Photo(localUri = uri))
+                }
             }
         }
         galleryResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -80,7 +79,7 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
         val upload = binding.upload
         val loading = binding.loading
         val photosGrid = binding.gridView
-        val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos, setupViewModel)
+        val photoGridAdapter = PhotoGridAdapter(this, setupViewModel.photos, this)
 
         setupViewModel.addPhotoResult.observe(this, Observer {
             val photoResult = it ?: return@Observer
@@ -98,11 +97,6 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
             }
             if (photoResult.photo != null) {
                 photoGridAdapter.notifyDataSetChanged()
-
-                // clean up uri if the photo is using a local uri
-                if (photoResult.photo.localUri != null) {
-                    randomUriManager.deleteUri(photoResult.photo.localUri)
-                }
             }
         })
         setupViewModel.replacePhotoResult.observe(this, Observer {
@@ -112,11 +106,6 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
             }
             if (photoResult.photo != null && photoResult.replaced != null) {
                 photoGridAdapter.notifyDataSetChanged()
-
-                // clean up uri if the photo is using a local uri
-                if (photoResult.photo.localUri != null) {
-                    randomUriManager.deleteUri(photoResult.photo.localUri)
-                }
             }
         })
 
@@ -200,5 +189,10 @@ class SetupImagesActivity : AppCompatActivity(), SingleChoiceDialog.SingleChoice
     override fun onDestroy() {
         super.onDestroy()
         randomUriManager.close()
+    }
+
+    override fun onPhotoRemoved(position: Int) {
+        val photo = setupViewModel.photos.elementAt(position)
+        setupViewModel.deletePhoto(photo)
     }
 }

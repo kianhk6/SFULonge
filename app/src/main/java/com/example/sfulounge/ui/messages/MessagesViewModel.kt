@@ -3,32 +3,31 @@ package com.example.sfulounge.ui.messages
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
 import com.example.sfulounge.data.MessageRepository
-import com.example.sfulounge.data.MessagesDataSource
 import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.setup.UnitResult
+import com.google.common.collect.ImmutableList
 
 class MessagesViewModel(
     private val repository: MessageRepository,
     private val chatRoomId: String
 ) : ViewModel(), MessageRepository.MessagesListener
 {
-    private var _pagingDataSource: MessagesDataSource? = null
-    val flow = Pager(
-        // Configure how data is loaded by passing additional properties to
-        // PagingConfig, such as prefetchDistance.
-        PagingConfig(pageSize = PAGE_SIZE)
-    ) {
-        val pagingDataSource = MessagesDataSource(chatRoomId)
-        _pagingDataSource = pagingDataSource
-        pagingDataSource
-    }.flow
-        .cachedIn(viewModelScope)
+    companion object {
+        const val PAGE_SIZE = 50
+    }
+//    private var _pagingDataSource: MessagesDataSource? = null
+//    val flow = Pager(
+//        // Configure how data is loaded by passing additional properties to
+//        // PagingConfig, such as prefetchDistance.
+//        PagingConfig(pageSize = PAGE_SIZE)
+//    ) {
+//        val pagingDataSource = MessagesDataSource(chatRoomId)
+//        _pagingDataSource = pagingDataSource
+//        pagingDataSource
+//    }.flow
+//        .cachedIn(viewModelScope)
 
     private val _sendResult = MutableLiveData<UnitResult>()
     val sendResult: LiveData<UnitResult> = _sendResult
@@ -38,19 +37,46 @@ class MessagesViewModel(
     private val _userId: String = repository.getCurrentUserUid()
     val userId: String = _userId
 
-    val attachments = ArrayList<Attachment>()
+    private val _messagesResult = MutableLiveData<MessagesResult>()
+    val messagesResult: LiveData<MessagesResult> = _messagesResult
+
+    private val _pushMessageResult = MutableLiveData<Message>()
+    val pushMessageResult: LiveData<Message> = _pushMessageResult
+
+    private var completedTasks = 0
+    private var _messageResult: MessagesResult? = null
+
+    init {
+        repository.getAllMessages(
+            chatRoomId,
+            onSuccess = { messages ->
+                val mostRecentMessage = messages.firstOrNull()
+                repository.registerMessagesListener(chatRoomId, mostRecentMessage, this)
+                _messageResult = MessagesResult(messages = messages)
+                notifyOnLoadingComplete()
+            },
+            onError = { _messagesResult.value = MessagesResult(error = it.exception) }
+        )
+    }
+
+    private fun notifyOnLoadingComplete() {
+        completedTasks++
+        if (completedTasks == 2) {
+            _messagesResult.value = _messageResult!!
+        }
+    }
 
     fun getUsers(members: List<String>) {
         repository.getUsers(
             members,
             onComplete = { users ->
                 _cache.putAll(users.associateBy(User::userId))
-                _pagingDataSource?.invalidate()
+                notifyOnLoadingComplete()
             }
         )
     }
 
-    fun sendMessage(text: String) {
+    fun sendMessage(text: String, attachments: ImmutableList<Attachment>) {
         val images = attachments
             .filter { x -> x.fileType == AttachmentType.IMAGE }
             .map { x -> x.localUri }
@@ -62,7 +88,6 @@ class MessagesViewModel(
             ),
             images = images,
             onSuccess = {
-                attachments.clear()
                 _sendResult.value = UnitResult()
             },
             onError = { _sendResult.value = UnitResult(error = it.exception) }
@@ -73,19 +98,11 @@ class MessagesViewModel(
         repository.updateMemberLastMessageSeenTime(chatRoomId, userId)
     }
 
-    fun registerMessagesListener() {
-        repository.registerMessagesListener(chatRoomId, this)
-    }
-
-    fun unregisterMessagesListener() {
+    fun cleanup() {
         repository.unregisterMessagesListener()
     }
 
     override fun onNewMessage(message: Message) {
-        _pagingDataSource?.invalidate()
-    }
-
-    companion object {
-        const val PAGE_SIZE = 50
+        _pushMessageResult.value = message
     }
 }
