@@ -46,7 +46,9 @@
     <string name="success_message_logout">Sign out successful!</string>
 
     <!--  confirm dialog  -->
-    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="confirm_logout">
+        Are you sure you want to logout? All notifications for this account will be cleared.
+    </string>
 
     <!--  dialog for messages  -->
     <string name="messages_upload_dialog_title">Upload Additional Items</string>

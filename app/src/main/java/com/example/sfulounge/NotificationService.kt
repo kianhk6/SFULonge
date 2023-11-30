@@ -44,6 +44,8 @@ class NotificationService : Service() {
     companion object {
         private const val NOTIFY_ID = -1
         private const val CHANNEL_ID = "sfu_lounge_messages"
+
+        const val ACTION_LOGOUT = "com.example.sfulounge.ACTION_LOGOUT"
     }
 
     override fun onCreate() {
@@ -82,10 +84,21 @@ class NotificationService : Service() {
         }
     }
 
+    private fun cancelAllNotifications() {
+        notificationManager.cancelAll()
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("Notification Service", "debug: onStartCommand called")
-        removeListener()
-        startListeningForMessages()
+        if (intent?.action == ACTION_LOGOUT) {
+            Log.d("Notification Service", "debug: action logout received. gracefully shutting down")
+            removeListener()
+            cancelAllNotifications()
+            stopSelf()
+        } else {
+            removeListener()
+            startListeningForMessages()
+        }
         return START_STICKY
     }
 
@@ -155,11 +168,15 @@ class NotificationService : Service() {
         val intent = Intent(this, MessagesActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             putExtra(MessagesActivity.INTENT_CHATROOM_ID, chatRoom.roomId)
-            putExtra(MessagesActivity.INTENT_MEMBER_IDS, chatRoom.members.toTypedArray())
+
+            val members = ArrayList<String>()
+            members.addAll(chatRoom.members)
+
+            putExtra(MessagesActivity.INTENT_MEMBER_IDS, members)
         }
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
-            PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
