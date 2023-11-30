@@ -179,4 +179,6 @@
     <string name="personality_analyzer">Analyzer</string>
     <string name="swipe_left">Swipe Left</string>
     <string name="swipe_right">Swipe Right</string>
+    <string name="action_finish">Finish</string>
+    <string name="depth_questions_title">Depth Questions</string>
 </resources>

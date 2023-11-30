@@ -2,8 +2,14 @@ package com.example.sfulounge.ui.setup
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.R
@@ -15,7 +21,6 @@ import kotlin.properties.Delegates
 class SetupDepthQuestionsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySetupDepthQuestionsBinding
     private lateinit var depthQuestionsViewModel: DepthQuestionsViewModel
-    private lateinit var depthQuestionListAdapter: DepthQuestionListAdapter
     private var isEditMode by Delegates.notNull<Boolean>()
 
     private val depthQuestions = arrayOf(
@@ -71,10 +76,8 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
         })
 
         val next = binding.next
-        val listView = binding.listView
-        depthQuestionListAdapter = DepthQuestionListAdapter(this, depthQuestions)
 
-        listView.adapter = depthQuestionListAdapter
+        loadDepthQuestionView()
 
         next.setOnClickListener {
             val questions = depthQuestions.filter { x -> x.isSelected }
@@ -95,15 +98,61 @@ class SetupDepthQuestionsActivity : AppCompatActivity() {
         depthQuestionsViewModel.getUser()
     }
 
+    private fun loadDepthQuestionView() {
+        val depthQuestionsView = binding.depthQuestionsView
+        depthQuestionsView.removeAllViews()
+        for (item in depthQuestions) {
+            val view = createDepthQuestionViewItem(item)
+            depthQuestionsView.addView(view)
+        }
+    }
+
+    private fun createDepthQuestionViewItem(item: DepthQuestionItem): View {
+        val view = LayoutInflater.from(this)
+            .inflate(
+                R.layout.depth_questions_list_view_item,
+                binding.depthQuestionsView,
+                false
+            )
+        val answerView: EditText = view.findViewById(R.id.input)
+        val questionView: TextView = view.findViewById(R.id.text)
+        val checkBox: CheckBox = view.findViewById(R.id.check)
+
+        questionView.text = item.question
+        answerView.afterTextChanged { item.answer = it }
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            item.isSelected = isChecked
+            if (isChecked) {
+                answerView.visibility = View.VISIBLE
+            } else {
+                answerView.visibility = View.GONE
+            }
+        }
+
+        updateDepthQuestionView(item, view)
+        return view
+    }
+
+    private fun updateDepthQuestionView(item: DepthQuestionItem, view: View) {
+        val answerView: EditText = view.findViewById(R.id.input)
+        val checkBox: CheckBox = view.findViewById(R.id.check)
+        answerView.setText(item.answer)
+        answerView.visibility = if (item.isSelected) View.VISIBLE else View.GONE
+        checkBox.isChecked = item.isSelected
+    }
+
     private fun loadUser(user: User) {
         val depthQuestionMap = user.depthQuestions.associateBy(DepthInfo::question)
-        for (item in depthQuestions) {
+        for (i in depthQuestions.indices) {
+            val item = depthQuestions[i]
             if (item.question in depthQuestionMap) {
                 item.isSelected = true
                 item.answer = depthQuestionMap[item.question]?.answer
+
+                val view = binding.depthQuestionsView.children.elementAt(i)
+                updateDepthQuestionView(item, view)
             }
         }
-        depthQuestionListAdapter.notifyDataSetChanged()
     }
 
     private fun onSaveUserSuccessful() {
