@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.sfulounge.NotificationService
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.Gender
 import com.example.sfulounge.data.model.User
@@ -170,7 +171,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun onLogoutClicked() {
+        // the service will stop gracefully
+        val serviceIntent = Intent(requireActivity(), NotificationService::class.java)
+        serviceIntent.action = NotificationService.ACTION_LOGOUT
+        requireActivity().startService(serviceIntent)
+
         profileViewModel.logout()
+
         Toast.makeText(
             requireActivity(),
             getString(R.string.success_message_logout),
