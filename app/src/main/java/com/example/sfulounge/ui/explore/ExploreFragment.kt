@@ -41,7 +41,7 @@ class ExploreFragment : Fragment() {
     private var initialY: Float = 0F
     private lateinit var frame: SwipeFlingAdapterView
     private val usersArray = ArrayList<User>()
-    private lateinit var arrayOfImages: ArrayList<String>
+    private lateinit var arrayOfImages: ArrayList<String?>
     private lateinit var exploreUsers: List<User>
     val isObserverDone = MutableLiveData<Boolean>()
 
@@ -125,6 +125,8 @@ class ExploreFragment : Fragment() {
         for (item in exploreUsers) {
             if (item.photos.isNotEmpty()) {
                 arrayOfImages.add(item.photos[0])
+            } else {
+                arrayOfImages.add(null)
             }
         }
 

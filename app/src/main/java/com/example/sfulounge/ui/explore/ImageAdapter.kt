@@ -8,13 +8,13 @@ import android.widget.ImageView
 import com.example.sfulounge.R
 import com.squareup.picasso.Picasso
 
-class ImageAdapter(private val context: Context, private val imageUrls: ArrayList<String>) : BaseAdapter() {
+class ImageAdapter(private val context: Context, private val imageUrls: ArrayList<String?>) : BaseAdapter() {
 
     override fun getCount(): Int {
         return imageUrls.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): String? {
         return imageUrls[position]
     }
 
@@ -27,6 +27,9 @@ class ImageAdapter(private val context: Context, private val imageUrls: ArrayLis
             .inflate(R.layout.swipe_image_item, parent, false)
 
         val imageView = view.findViewById<ImageView>(R.id.user_image)
+        if (imageUrls[position] == null) {
+            Picasso.get().load(R.drawable.baseline_person_24)
+        }
         Picasso.get().load(imageUrls[position]).into(imageView)
 
         return view
