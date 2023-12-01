@@ -70,8 +70,7 @@
                 app:rotation_degrees="16"
                 app:max_visible="4"
                 app:min_adapter_stack="6"
-                android:background="#ffeee9e2"
-                tools:context=".MainActivity"/>
+                android:background="#ffeee9e2" />
 
             <!--            <ImageView-->
             <!--                android:id="@+id/buttonSwipeRight"-->
@@ -122,6 +121,7 @@
                 android:layout_marginEnd="45dp"
                 android:layout_marginBottom="6dp"
                 android:text="Interests:"
+                android:id="@+id/test"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold" />

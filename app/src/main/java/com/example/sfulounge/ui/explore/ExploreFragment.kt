@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -393,8 +395,10 @@ class ExploreFragment : Fragment() {
                     loadUserInfo()
                 }
                 println("waitForUsersToPropagate is done")
-                isObserverDone.value = true
-
+                if(isInitialLoad){
+                    isObserverDone.value = true
+                    isInitialLoad = false
+                }
             } else {
                 view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.GONE
                 matchesViewModel.mainPageCancelled = true
