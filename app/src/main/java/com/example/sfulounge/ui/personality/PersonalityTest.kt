@@ -39,22 +39,21 @@ class PersonalityTest : AppCompatActivity() {
         }
 
         val questions = arrayOf(
-            "I enjoy spontaneous and unplanned activities.",
-            "I prefer small, intimate gatherings over large parties.",
-            "I find it easy to express my thoughts and emotions openly.",
-            "I believe it's important to stick to a well-organized schedule.",
-            "I find it easy to express my thoughts and emotions openly.",
+            "I prefer routine and consistency.",
+            "I enjoy meeting new people and socializing.",
+            "I am a highly organized person.",
+            "I find it easy to adapt to new situations.",
             "I enjoy taking risks and trying new things.",
-            "I value tradition and stability in my life.",
-            "I often seek the advice and opinions of others.",
-            "I appreciate a good sense of humor, even if it's unconventional.",
-            "I believe in setting ambitious and challenging goals for myself.",
-            "I tend to avoid confrontation and prioritize harmony in relationships.",
-            "I enjoy spending time in nature and outdoor activities.",
-            "I believe in the power of positive thinking and maintaining a optimistic outlook.",
-            "I prefer to have a few close friends rather than a large circle of acquaintances.",
-            "I find comfort in routine and predictability.",
-            "I enjoy discussing philosophical or abstract ideas."
+            "I value logic and reason over emotions.",
+            "I am often the life of the party.",
+            "I am a very creative person.",
+            "I enjoy helping others and being of service.",
+            "I am a detail-oriented person.",
+            "I value honesty and integrity above all else.",
+            "I enjoy taking on leadership roles.",
+            "I am open to new experiences and ideas.",
+            "I often reflect on the meaning of life.",
+            "I am always seeking new challenges."
         )
 
         val adapter = PersonalityListAdapter(this, questions)
@@ -83,30 +82,26 @@ class PersonalityTest : AppCompatActivity() {
     }
 
     private fun getPersonality(personalityType: Int) = when(personalityType) {
-        Personality.SOCIAL_BUTTERFLY -> getString(R.string.personality_social_butterfly)
-        Personality.LONE_WOLF -> getString(R.string.personality_lone_wolf)
-        Personality.ORGANIZER -> getString(R.string.personality_organizer)
-        Personality.ADVENTURER -> getString(R.string.personality_adventurer)
-        Personality.ANALYZER -> getString(R.string.personality_analyzer)
+        Personality.FREE_SPIRITED_DOMAIN -> getString(R.string.personality_free_spirited_dreamer)
+        Personality.COMPASSIONATE_HELPER -> getString(R.string.personality_compassionate_helper)
+        Personality.ORGANIZED_ACHIEVER -> getString(R.string.personality_organized_helper)
+        Personality.ADVENTUROUS_EXPLORER -> getString(R.string.personality_adventurous_explorer)
+        Personality.RESERVED_THINKER -> getString(R.string.personality_reserved_thinker)
         else -> null
     }
 
     private fun categorizePersonality(personalityScoreSum: Int): Int {
 
-        if (personalityScoreSum >= 60) {
-            return Personality.SOCIAL_BUTTERFLY
-        }
-        else if (personalityScoreSum >= 45) {
-            return Personality.LONE_WOLF
-        }
-        else if (personalityScoreSum >= 39) {
-            return Personality.ORGANIZER
-        }
-        else if (personalityScoreSum >= 15) {
-            return Personality.ADVENTURER
-        }
-        else {
-            return Personality.ANALYZER
+        return if (personalityScoreSum >= 55) {
+            Personality.FREE_SPIRITED_DOMAIN
+        } else if (personalityScoreSum >= 40) {
+            Personality.COMPASSIONATE_HELPER
+        } else if (personalityScoreSum >= 30) {
+            Personality.ORGANIZED_ACHIEVER
+        } else if (personalityScoreSum >= 20) {
+            Personality.ADVENTUROUS_EXPLORER
+        } else {
+            Personality.RESERVED_THINKER
         }
     }
 }
