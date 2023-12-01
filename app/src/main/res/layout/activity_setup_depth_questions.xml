@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.setup.SetupDepthQuestionsActivity"
-    android:background="@drawable/bg_register_info">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="Depth Questions"
-        android:padding="8dp"
-        android:textColor="#000000"/>
+        android:orientation="vertical"
+        tools:context=".ui.setup.SetupDepthQuestionsActivity"
+        android:background="@drawable/bg_register_info">
 
-    <ListView
-        android:id="@+id/list_view"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="@string/depth_questions_title"
+            android:padding="8dp"
+            android:textColor="#000000"/>
 
-    <Button
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center_horizontal"
-        android:text="Finish"
-        android:backgroundTint="@color/button_orange"/>
+        <LinearLayout
+            android:id="@+id/depth_questions_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/action_finish"
+            android:backgroundTint="@color/button_orange"/>
+
+    </LinearLayout>
+
+</ScrollView>

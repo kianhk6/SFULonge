@@ -12,13 +12,15 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sfulounge.data.model.Message
+import com.example.sfulounge.data.model.User
 import com.example.sfulounge.databinding.ActivityMessagesBinding
 import com.example.sfulounge.ui.components.RandomUriManager
 import com.example.sfulounge.ui.components.UploadDialog
+import com.example.sfulounge.ui.user_profile.UserProfileActivity
 import com.google.common.collect.ImmutableList
 import java.util.LinkedList
 
-class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener, AttachmentAdapter.Listener {
+class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener, AttachmentAdapter.Listener, MessageAdapter.Listener {
 
     private lateinit var binding: ActivityMessagesBinding
     private lateinit var messagesViewModel: MessagesViewModel
@@ -77,7 +79,11 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
         val send = binding.send
         val more = binding.more
         val input = binding.input
-        val messagesAdapter = MessageAdapter(messagesViewModel.cachedUsers, messagesViewModel.userId)
+        val messagesAdapter = MessageAdapter(
+            messagesViewModel.cachedUsers,
+            messagesViewModel.userId,
+            this
+        )
 
         messagesView.adapter = messagesAdapter
         messagesView.layoutManager = LinearLayoutManager(this).apply {
@@ -121,7 +127,9 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
             if (it.error != null) {
                 showMessagesFailedToLoad(it.error)
             } else {
-                // load the initial messages
+                // load the initial messages.
+                // guarantees that all members of chatroom are loaded into usersMap
+                // so it is safe to go usersMap[userId]!! in the adapter
                 messages.addAll(it.messages)
                 messagesAdapter.submitList(messages)
             }
@@ -172,5 +180,13 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
     override fun onRemoveAttachment(position: Int) {
         attachments.removeAt(position)
         attachmentsAdapter.notifyItemRemoved(position)
+    }
+
+    override fun onProfileImageClicked(user: User?) {
+        if (user != null) {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra(UserProfileActivity.INTENT_USER_ID, user.userId)
+            startActivity(intent)
+        }
     }
 }

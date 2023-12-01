@@ -1,45 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_swipe"
-    android:backgroundTint="#1D9E9E9E"
-    android:backgroundTintMode="src_atop"
-    tools:context=".ui.explore.ExploreFragment">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_swipe"
+        android:backgroundTint="#1D9E9E9E"
+        android:backgroundTintMode="src_atop"
+        android:id="@+id/mainContent"
+        tools:context=".ui.explore.ExploreFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text="SFU Lounge "
-            android:textColor="#000000"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:background="#FBF5F5"-->
-<!--            android:orientation="horizontal">-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:text="SFU Lounge "
+                android:textColor="#000000"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-<!--            <ImageView-->
-<!--                android:id="@+id/buttonSwipeLeft"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="#9ACA382D"-->
-<!--                android:minWidth="40dp"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/baseline_close_24_red" />-->
+            <!--        <LinearLayout-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_gravity="center_horizontal"-->
+            <!--            android:background="#FBF5F5"-->
+            <!--            android:orientation="horizontal">-->
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/buttonSwipeLeft"-->
+            <!--                android:layout_width="40dp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:background="#9ACA382D"-->
+            <!--                android:minWidth="40dp"-->
+            <!--                android:scaleType="fitCenter"-->
+            <!--                android:src="@drawable/baseline_close_24_red" />-->
 
             <FrameLayout
 
@@ -47,8 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="460dp"
                 android:layout_gravity="center_horizontal"
-                android:background="#FBF5F5"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="#FBF5F5">
 
                 <ImageView
                     android:id="@+id/imageUser"
@@ -57,264 +62,275 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/baseline_person_24" />
             </FrameLayout>
-        <com.lorentzos.flingswipe.SwipeFlingAdapterView
-            android:id="@+id/frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:rotation_degrees="16"
-            app:max_visible="4"
-            app:min_adapter_stack="6" />
 
-<!--            <ImageView-->
-<!--                android:id="@+id/buttonSwipeRight"-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="#8838DD3F"-->
-<!--                android:minWidth="40dp"-->
-<!--                android:scaleType="fitCenter"-->
-<!--                android:src="@drawable/baseline_check_24" />-->
-<!--        </LinearLayout>-->
+            <com.lorentzos.flingswipe.SwipeFlingAdapterView
+                android:id="@+id/frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:max_visible="4"
+                app:min_adapter_stack="6"
+                app:rotation_degrees="16" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="24dp">
+            <!--            <ImageView-->
+            <!--                android:id="@+id/buttonSwipeRight"-->
+            <!--                android:layout_width="40dp"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:background="#8838DD3F"-->
+            <!--                android:minWidth="40dp"-->
+            <!--                android:scaleType="fitCenter"-->
+            <!--                android:src="@drawable/baseline_check_24" />-->
+            <!--        </LinearLayout>-->
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Jason"
-                android:textColor="@color/black"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/tv_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/detail_white_outline"
-                android:padding="6dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="Male"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="6dp"
-            android:text="Interests:"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/interestsLinearLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/interest1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/detail_white_outline"
-                android:maxWidth="120dp"
-                android:padding="8dp"
-                android:text="Theater and Performing Arts"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/interest2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/detail_white_outline"
-                android:maxWidth="120dp"
-                android:padding="8dp"
-                android:text="Social Impact and Volunteering"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/interestsLinearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/interest3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/detail_white_outline"
-                android:maxWidth="120dp"
-                android:padding="8dp"
-                android:text="Meditation and Mindfulness"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/interest4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/detail_white_outline"
-                android:maxWidth="120dp"
-                android:padding="8dp"
-                android:text="Science Fiction and Fantasy"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="8dp"
-            android:text="More about me:"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/layout_depth_question_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="18dp"
-            android:background="#FBF5F5"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/tv_depth_question_1"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Loading"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/tv_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/detail_white_outline"
+                    android:padding="6dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="Loading"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
                 android:layout_marginBottom="6dp"
-                android:text="If you could spend a day with any fictional character, who would it be, and what would you do together?"
+                android:text="Interests:"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_depth_answer_1"
+            <LinearLayout
+                android:id="@+id/interestsLinearLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="asjkbd asjdhaksd asdasd sdjasdsd dnsndnd dnd d dd d"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/layout_depth_question_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="18dp"
-            android:background="#FBF5F5"
-            android:orientation="vertical"
-            android:padding="8dp">
+                <TextView
+                    android:id="@+id/interest1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/detail_white_outline"
+                    android:maxWidth="120dp"
+                    android:padding="8dp"
+                    android:text="Loading"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tv_depth_question_2"
+                <TextView
+                    android:id="@+id/interest2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/detail_white_outline"
+                    android:maxWidth="120dp"
+                    android:padding="8dp"
+                    android:text="Loading"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/interestsLinearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:text="If you were a DJ, what would your signature song be to get the party started?"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/interest3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/detail_white_outline"
+                    android:maxWidth="120dp"
+                    android:padding="8dp"
+                    android:text="Loading"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/interest4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/detail_white_outline"
+                    android:maxWidth="120dp"
+                    android:padding="8dp"
+                    android:text="Loading"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_depth_answer_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="asdk asndndd sdsdsd ddd d dd d d d dddddd"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_depth_question_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginBottom="14dp"
-            android:background="#FBF5F5"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/tv_depth_question_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:text="What's the most hilarious or embarrassing thing that's ever happened to you?"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_depth_answer_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="bakjsbd asdlaskdh ajsdbkasjdbkajsbd hashdhd"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/buttonSwipeLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="45dp"
                 android:layout_marginBottom="8dp"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/swipe_left"
-                android:layout_marginRight="48dp"
-                android:backgroundTint="@color/button_orange"/>
-            <Button
-                android:id="@+id/buttonSwipeRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/swipe_right"
-                android:backgroundTint="@color/button_orange"/>
+                android:text="More about me:"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
+            <LinearLayout
+                android:id="@+id/layout_depth_question_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginBottom="18dp"
+                android:background="#FBF5F5"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/tv_depth_question_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Loading"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_depth_answer_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_depth_question_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginBottom="18dp"
+                android:background="#FBF5F5"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/tv_depth_question_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Loading"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_depth_answer_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_depth_question_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginBottom="14dp"
+                android:background="#FBF5F5"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/tv_depth_question_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="Loading"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_depth_answer_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSwipeLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="48dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/button_orange"
+                    android:minHeight="48dp"
+                    android:text="@string/swipe_left" />
+
+                <Button
+                    android:id="@+id/buttonSwipeRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:backgroundTint="@color/button_orange"
+                    android:minHeight="48dp"
+                    android:text="@string/swipe_right" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+    <!-- No More Users Layout -->
+    <include
+        android:id="@+id/noMoreUsersLayout"
+        layout="@layout/no_more_matches"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

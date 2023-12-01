@@ -359,4 +359,23 @@ class MainRepository {
                 }
             }
     }
+
+    fun getUser(
+        userId: String,
+        onSuccess: (User) -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = task.result.toObject(User::class.java)!!
+                    onSuccess(user)
+                } else {
+                    Log.e("Main Repository", "getUser: ${task.exception}")
+                    onError(Result.Error(R.string.error_message_get_users))
+                }
+            }
+    }
 }

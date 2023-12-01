@@ -43,7 +43,9 @@ class MessagesViewModel(
     private val _pushMessageResult = MutableLiveData<Message>()
     val pushMessageResult: LiveData<Message> = _pushMessageResult
 
-    private var completedTasks = 0
+    private var _areMessagesLoaded = false
+    private var _areUsersLoaded = false
+
     private var _messageResult: MessagesResult? = null
 
     init {
@@ -53,6 +55,7 @@ class MessagesViewModel(
                 val mostRecentMessage = messages.firstOrNull()
                 repository.registerMessagesListener(chatRoomId, mostRecentMessage, this)
                 _messageResult = MessagesResult(messages = messages)
+                _areMessagesLoaded = true
                 notifyOnLoadingComplete()
             },
             onError = { _messagesResult.value = MessagesResult(error = it.exception) }
@@ -60,8 +63,7 @@ class MessagesViewModel(
     }
 
     private fun notifyOnLoadingComplete() {
-        completedTasks++
-        if (completedTasks == 2) {
+        if (_areMessagesLoaded && _areUsersLoaded) {
             _messagesResult.value = _messageResult!!
         }
     }
@@ -71,6 +73,7 @@ class MessagesViewModel(
             members,
             onComplete = { users ->
                 _cache.putAll(users.associateBy(User::userId))
+                _areUsersLoaded = true
                 notifyOnLoadingComplete()
             }
         )

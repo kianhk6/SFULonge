@@ -40,6 +40,12 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
         )
 
         chatsViewModel.preCachedUrls.observe(requireActivity()) {
+            it ?: return@observe
+            if (it.isEmpty()) {
+                showNoChatRooms()
+            } else {
+                hideNoChatRooms()
+            }
             // only the profile picture gets updated here
             chatsListAdapter.notifyDataSetChanged()
         }
@@ -55,6 +61,14 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
         chatsViewModel.registerChatRoomListener()
 
         return root
+    }
+
+    private fun showNoChatRooms() {
+        binding.noChatsLabel.visibility = View.VISIBLE
+    }
+
+    private fun hideNoChatRooms() {
+        binding.noChatsLabel.visibility = View.GONE
     }
 
     override fun onDestroyView() {

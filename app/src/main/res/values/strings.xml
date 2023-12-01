@@ -179,4 +179,11 @@
     <string name="personality_reserved_thinker">Reserved Thinker</string>
     <string name="swipe_left">Swipe Left</string>
     <string name="swipe_right">Swipe Right</string>
+    <string name="action_finish">Finish</string>
+    <string name="depth_questions_title">Depth Questions</string>
+    <string name="user_profile_interests_label">Interests</string>
+    <string name="user_profile_more_about_me_label">More about me</string>
+
+    <!--  chats fragment  -->
+    <string name="chats_fragment_no_chats">No chats</string>
 </resources>

@@ -18,6 +18,15 @@
         android:textStyle="bold"
         android:background="@color/button_orange" />
 
+    <TextView
+        android:id="@+id/no_chats_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:text="@string/chats_fragment_no_chats" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chats"
         android:layout_margin="8dp"
