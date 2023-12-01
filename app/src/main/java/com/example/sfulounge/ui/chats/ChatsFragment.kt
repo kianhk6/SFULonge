@@ -64,17 +64,24 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
     }
 
     private fun showNoChatRooms() {
-        binding.noChatsLabel.visibility = View.VISIBLE
+        val binding = _binding
+        if (binding != null) {
+            binding.noChatsLabel.visibility = View.VISIBLE
+        }
     }
 
     private fun hideNoChatRooms() {
-        binding.noChatsLabel.visibility = View.GONE
+        val binding = _binding
+        if (binding != null) {
+            binding.noChatsLabel.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        chatsViewModel.preCachedUrls.removeObservers(requireActivity())
         chatsViewModel.unregisterChatRoomListener()
+        _binding = null
     }
 
     override fun onItemClick(chatRoom: ChatRoom) {
