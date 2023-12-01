@@ -14,6 +14,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.sfulounge.MatchesViewModel
@@ -30,8 +31,11 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView
 
 class ExploreFragment : Fragment() {
 
+    private lateinit var adapter: ArrayAdapter<String>
+
     private lateinit var matchesViewModel: MatchesViewModel
-//    private lateinit var userImage: ImageView
+
+    //    private lateinit var userImage: ImageView
     private lateinit var imageFrame: FrameLayout
     private lateinit var onSwipeTouchListener: OnSwipeTouchListener
     private var initialX: Float = 0F
@@ -39,7 +43,13 @@ class ExploreFragment : Fragment() {
     private lateinit var frame: SwipeFlingAdapterView
     private val usersArray = ArrayList<User>()
     private lateinit var arrayOfImages: ArrayList<String>
-    private lateinit var exploreUsers : List<User>
+    private lateinit var exploreUsers: List<User>
+    val isObserverDone = MutableLiveData<Boolean>()
+
+    interface ObserverCompletionCallback {
+        fun onObserverCompleted()
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,18 +65,17 @@ class ExploreFragment : Fragment() {
         ).get(MatchesViewModel::class.java)
 
         exploreUsers = listOf<User>()
-        frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
         arrayOfImages = ArrayList()
+        isObserverDone.value = false
         waitForUsersToPropagate()
 
-        matchesViewModel.printList()
-//        userImage = view.findViewById<ImageView>(R.id.imageUser)
-//        imageFrame = view.findViewById<FrameLayout>(R.id.imageFrame)
-        //implement swipe action for userImage
-        // Create an instance of OnSwipeTouchListener
-//        frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
-//        arrayOfImages = ArrayList()
-//        setUpSwipeAction()
+        isObserverDone.observe(viewLifecycleOwner) { isDone ->
+            if (isDone) {
+                println("set swipe is called")
+                setUpSwipeAction()
+            }
+        }
+
         val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
             // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
@@ -112,50 +121,27 @@ class ExploreFragment : Fragment() {
 
 
     private fun setUpSwipeAction() {
-        println("SWIPE FUNCTION STARTED")
-//        val currentList = matchesViewModel.currentUsers
-//        currentList.observe(owner, Observer { data ->
-//            // Clear the existing data in the ArrayList
-//            arrayList.clear()
-//
-//            // Add the new data to the ArrayList
-//            if (data != null) {
-//                arrayList.addAll(data)
-//            }
-//
-//            // Now, the 'arrayList' contains the updated data from the LiveData
-//            // You can use 'arrayList' as needed
-//        })
-//        arrayOfImages.clear()
-//        val usersArray = ArrayList<User>()
-//        matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
-//            usersArray.clear()
-////            arrayOfImages.clear()
-//            usersArray.addAll(users)
-////            users.forEach { user ->
-////                if (user.photos.isNotEmpty()) {
-//////                        println("ADD IMAGE")
-////                    arrayOfImages.add(user.photos[0])
-////                }
-////            }
-//            println("users Size: ${usersArray.size}")
-//            println("images Size: ${arrayOfImages.size}")
-//
-////            val adapter = ImageAdapter(requireContext(), arrayOfImages)
-////            println("users Size: ${usersArray.size}")
-//
-//        }
+        frame = requireView().findViewById<SwipeFlingAdapterView>(R.id.frame)
+
+
+        println("set swipe is called")
         arrayOfImages.add("php")
         arrayOfImages.add("c")
         arrayOfImages.add("python")
         arrayOfImages.add("java")
-        val adapter = ArrayAdapter(requireContext(), R.layout.swipe_image_item, R.id.helloText, arrayOfImages)
+        adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.swipe_image_item,
+            R.id.helloText,
+            arrayOfImages
+        )
+
+
         frame.adapter = adapter
 
-        frame.setFlingListener(object: SwipeFlingAdapterView.onFlingListener {
+        frame.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
             override fun removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
-//                Log.d("LIST", "removed object!")
                 arrayOfImages.removeAt(0)
                 adapter.notifyDataSetChanged()
             }
@@ -183,26 +169,6 @@ class ExploreFragment : Fragment() {
 
             }
         })
-//        println("users Size 2: ${usersArray.size}")
-//        println("name: ${usersArray[0].firstName}")
-//        println("users Size: ${currentList.size}")
-//        usersArray.forEach { user ->
-//            if (user.photos.isNotEmpty()) {
-//                println("IMAGES NOT EMPTY")
-//                arrayOfImages.add(user.photos[0])
-//            }
-//        }
-//        println("Size: ${arrayOfImages.size}")
-//        for (item in arrayOfImages) println("url: $item")
-//        arrayOfImages.add("php");
-//        arrayOfImages.add("c");
-//        arrayOfImages.add("python");
-//        arrayOfImages.add("java");
-//        val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.swipe_image_item, R.id.user_image, arrayOfImages)
-//        val adapter = ImageAdapter(requireContext(), arrayOfImages)
-//        frame.adapter = adapter
-
-
     }
 
 //    private fun loadUserImage(imageUrl: String?) {
@@ -246,6 +212,7 @@ class ExploreFragment : Fragment() {
                     view?.findViewById<TextView>(R.id.interest2)?.visibility = View.GONE
                     view?.findViewById<TextView>(R.id.interest1)?.setText("No Interests")
                 }
+
                 1 -> {
                     view?.findViewById<LinearLayout>(R.id.interestsLinearLayout2)?.visibility =
                         View.GONE
@@ -273,6 +240,7 @@ class ExploreFragment : Fragment() {
                     view?.findViewById<TextView>(R.id.interest3)?.setText(user.interests[2])
                     view?.findViewById<TextView>(R.id.interest4)?.setText(user.interests[3])
                 }
+
                 else -> println("More than 4 interests")
             }
             when (user.depthQuestions.size) {
@@ -284,6 +252,7 @@ class ExploreFragment : Fragment() {
                     view?.findViewById<LinearLayout>(R.id.layout_depth_question_3)?.visibility =
                         View.GONE
                 }
+
                 1 -> {
                     view?.findViewById<LinearLayout>(R.id.layout_depth_question_2)?.visibility =
                         View.GONE
@@ -322,6 +291,7 @@ class ExploreFragment : Fragment() {
                     view?.findViewById<TextView>(R.id.tv_depth_answer_3)
                         ?.setText(user.depthQuestions[2].answer)
                 }
+
                 else -> println("More than 3 questions")
             }
         }
@@ -346,6 +316,7 @@ class ExploreFragment : Fragment() {
     }
 
     private fun waitForUsersToPropagate() {
+        var isInitialLoad = true
 
         matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
             if (users.isNotEmpty()) {
@@ -354,23 +325,31 @@ class ExploreFragment : Fragment() {
                 // only propagate if there are no other users
                 exploreUsers = users
                 println(exploreUsers.size)
-                if(matchesViewModel.current_recommended_user == null){
+                // user loaded for the first time
+                if (matchesViewModel.current_recommended_user == null) {
                     matchesViewModel.getTheFirstUser { user ->
                         user?.let {
                             println("User ID: ${it.userId}, Name: ${it.firstName}")
-                            if(matchesViewModel.mainPageCancelled){
-                                val noMoreUsersView = view?.findViewById<View>(R.id.noMoreUsersLayout)
+                            if (matchesViewModel.mainPageCancelled) {
+                                val noMoreUsersView =
+                                    view?.findViewById<View>(R.id.noMoreUsersLayout)
                                 noMoreUsersView?.visibility = View.GONE
-                                view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.VISIBLE
+                                view?.findViewById<ScrollView>(R.id.mainContent)?.visibility =
+                                    View.VISIBLE
                             }
                             loadUserInfo()
-                            setUpSwipeAction()
+//                            setUpSwipeAction()
                         }
                     }
                 }
-//                setUpSwipeAction()
-            }
-            else{
+                // user was already loaded
+                else {
+                    loadUserInfo()
+                }
+                println("waitForUsersToPropagate is done")
+                isObserverDone.value = true
+
+            } else {
                 view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.GONE
                 matchesViewModel.mainPageCancelled = true
                 val noMoreUsersView = view?.findViewById<View>(R.id.noMoreUsersLayout)
