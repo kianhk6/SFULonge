@@ -1,12 +1,10 @@
 package com.example.sfulounge.ui.messages
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +14,16 @@ import com.example.sfulounge.data.model.Message
 import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.MessageFormatter
 
-class MessageAdapter(private val usersMap: Map<String, User>, private val userId: String)
+class MessageAdapter(
+    private val usersMap: Map<String, User>,
+    private val userId: String,
+    private val listener: Listener)
     : ListAdapter<Message, MessageAdapter.MessageViewHolder>(MessageComparator)
 {
+    interface Listener {
+        fun onProfileImageClicked(user: User)
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,9 +34,16 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val item = getItem(position)!!
         val user = usersMap[item.senderId]
-        val imageUrl = user?.photos?.firstOrNull()
+            ?: throw IllegalStateException("User not loaded in usersMap!")
 
-        holder.bind(user?.firstName, imageUrl, item, userId == item.senderId)
+        val imageUrl = user.photos.firstOrNull()
+        holder.bind(
+            user.firstName,
+            imageUrl,
+            item,
+            userId == item.senderId,
+            onImageClicked = { listener.onProfileImageClicked(user) }
+        )
     }
 
 
@@ -47,6 +59,7 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
             imageUrl: String?,
             message: Message?,
             isSender: Boolean,
+            onImageClicked: () -> Unit
         ) {
 
             nameView.text = name
@@ -74,6 +87,10 @@ class MessageAdapter(private val usersMap: Map<String, User>, private val userId
                     .load(imageUrl)
                     .centerCrop()
                     .into(imageView)
+            }
+
+            imageView.setOnClickListener {
+                onImageClicked()
             }
         }
 

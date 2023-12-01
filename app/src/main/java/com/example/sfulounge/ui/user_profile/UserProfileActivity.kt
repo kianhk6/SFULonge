@@ -2,8 +2,8 @@ package com.example.sfulounge.ui.user_profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -69,10 +69,26 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun loadImages(images: List<String>) {
         val imagesView = binding.imagesContainer
-        for (url in images) {
+        for (i in images.indices) {
+            val url = images[i]
             val view = createImageView(url)
-            imagesView.addView(view)
+            val params = createGridParams(i)
+            imagesView.addView(view, params)
         }
+    }
+
+    private fun createGridParams(position: Int): GridLayout.LayoutParams {
+        val (row, col) = getGridPosition(position)
+        val params = GridLayout.LayoutParams()
+        params.rowSpec = GridLayout.spec(row)
+        params.columnSpec = GridLayout.spec(col, 1f / IMAGE_GRID_NUM_COLUMNS)
+        return params
+    }
+
+    private fun getGridPosition(position: Int): Pair<Int, Int> {
+        val row = position / IMAGE_GRID_NUM_COLUMNS
+        val column = position % IMAGE_GRID_NUM_COLUMNS
+        return Pair(row, column)
     }
 
     private fun createImageView(url: String): View {
@@ -85,6 +101,7 @@ class UserProfileActivity : AppCompatActivity() {
         Glide.with(this)
             .load(url)
             .placeholder(R.drawable.baseline_image_24)
+            .dontTransform()
             .into(imageView)
         return view
     }
@@ -137,6 +154,7 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val IMAGE_GRID_NUM_COLUMNS = 3
         const val INTENT_USER_ID = "user_id"
     }
 }
