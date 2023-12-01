@@ -16,8 +16,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.sfulounge.MatchesViewModel
-import com.example.sfulounge.MatchesViewModelFactory
+import com.example.sfulounge.ui.explore.MatchesViewModel
+import com.example.sfulounge.ui.explore.MatchesViewModelFactory
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.model.User
