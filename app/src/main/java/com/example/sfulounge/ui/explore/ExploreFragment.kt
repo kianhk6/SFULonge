@@ -62,7 +62,7 @@ class ExploreFragment : Fragment() {
         // Create an instance of OnSwipeTouchListener
         frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
         arrayOfImages = ArrayList()
-//        setUpSwipeAction()
+
         val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
             // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
@@ -268,6 +268,9 @@ class ExploreFragment : Fragment() {
                             loadUserInfo()
                         }
                     }
+                }
+                else{
+                    loadUserInfo()
                 }
             }
             else{
