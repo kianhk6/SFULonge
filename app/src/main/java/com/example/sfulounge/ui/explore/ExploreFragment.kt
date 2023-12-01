@@ -156,14 +156,39 @@ class ExploreFragment : Fragment() {
             }
 
             override fun onLeftCardExit(dataObject: Any?) {
-                //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(requireContext(), "Left!", Toast.LENGTH_SHORT).show()
+                // Assuming 'current_recommended_user' holds the user object that got swiped on
+                val swipedOnUser = matchesViewModel.current_recommended_user
+                println("this is from fragment: current user that got swiped on is: $swipedOnUser")
+                matchesViewModel.addSwipeLeft(
+                    matchesViewModel.current_recommended_user!!.userId,
+                    onSuccess = {
+                        // Handle success, e.g., show a success message
+                        Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
+                        loadNextRecommendation()
+                    },
+                    onError = { exception ->
+                        // Handle error, e.g., show an error message
+                        Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                )
             }
 
             override fun onRightCardExit(dataObject: Any?) {
-                Toast.makeText(requireContext(), "Right!", Toast.LENGTH_SHORT).show()
+                matchesViewModel.addSwipeRight(
+                    matchesViewModel.current_recommended_user!!,
+                    onSuccess = {
+                        // Handle success, e.g., show a success message
+                        Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
+                        loadNextRecommendation()
+                    }
+                ) { exception ->
+                    // Handle error, e.g., show an error message
+                    Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
 
             override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
