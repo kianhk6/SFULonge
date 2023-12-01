@@ -14,16 +14,16 @@ import com.example.sfulounge.data.model.User
 import com.example.sfulounge.ui.setup.UnitResult
 
 class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
-    lateinit var current_recommended_user: User
+    var current_recommended_user: User? = null
     var isInitialUserFetched = false
-    var msgRepository = MessageRepository()
-
+    private var msgRepository = MessageRepository()
+    var mainPageCancelled = false
     private val _currentUsers = MutableLiveData<List<User>>()
     val currentUsers: LiveData<List<User>> = _currentUsers
-    lateinit var loggedInUser: User
+    private lateinit var loggedInUser: User
     private val _operationState = MutableLiveData<UnitResult>()
     val operationState: LiveData<UnitResult> = _operationState
-    val iceBreakerQuestions: Map<String, String> = mapOf(
+    private val iceBreakerQuestions: Map<String, String> = mapOf(
         "social_impact_and_volunteering" to "What's the most rewarding volunteer experience you've ever had?",
         "philosophy" to "If you could have dinner with any philosopher, who would it be and why?",
         "science_fiction_and_fantasy" to "Which sci-fi or fantasy world would you love to live in for a day?",
@@ -67,7 +67,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
     fun getAllUsers() {
-        println("hi this is getting called again!")
+        println("get all user is called!")
         viewModelScope.launch {
             try {
                 repository.getAllUsers(
@@ -175,6 +175,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
 
+    // update this so if user is null we handle it
     fun getTheFirstUser(onResult: (User?) -> Unit) {
 
         val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
@@ -182,7 +183,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             val userToReturn = currentList.first()
             _currentUsers.postValue(currentList)
             current_recommended_user = userToReturn
-            println("get the first user: " + current_recommended_user.firstName)
+            println("get the first user: " + current_recommended_user!!.firstName)
 
             isInitialUserFetched = true
             onResult(userToReturn)
