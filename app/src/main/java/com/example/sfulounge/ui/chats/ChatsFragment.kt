@@ -40,6 +40,7 @@ class ChatsFragment : Fragment(), ChatsListAdapter.ItemClickListener {
         )
 
         chatsViewModel.preCachedUrls.observe(requireActivity()) {
+            it ?: return@observe
             if (it.isEmpty()) {
                 showNoChatRooms()
             } else {
