@@ -1,6 +1,7 @@
 package com.example.sfulounge.ui.explore
 
 import android.annotation.SuppressLint
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -142,7 +143,9 @@ class ExploreFragment : Fragment() {
 //            R.id.user_image,
 //            arrayOfImages
 //        )
-        adapter = ImageAdapter(requireContext(), arrayOfImages)
+        val userInfoView = view?.findViewById<LinearLayout>(R.id.view_user_info)
+        userInfoView!!.visibility = View.GONE
+        adapter = ImageAdapter(requireContext(), arrayOfImages, userInfoView!!)
 
 
         frame.adapter = adapter

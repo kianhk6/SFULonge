@@ -23,6 +23,24 @@
         android:scaleType="fitXY"
         android:gravity="center"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="8dp"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:background="#74FFFFFF"
+        android:text="Loading"/>
+
+    <Button
+        android:id="@+id/btn_expand"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="4dp"
+        android:background="@drawable/baseline_expand_more_24"/>
+
     <View
         android:id="@+id/item_swipe_left_indicator"
         android:layout_width="20dp"
