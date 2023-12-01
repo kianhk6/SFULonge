@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -16,9 +14,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.example.sfulounge.MatchesViewModel
-import com.example.sfulounge.MatchesViewModelFactory
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.model.User
@@ -382,8 +377,10 @@ class ExploreFragment : Fragment() {
                     loadUserInfo()
                 }
                 println("waitForUsersToPropagate is done")
-                isObserverDone.value = true
-
+                if(isInitialLoad){
+                    isObserverDone.value = true
+                    isInitialLoad = false
+                }
             } else {
                 view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.GONE
                 matchesViewModel.mainPageCancelled = true

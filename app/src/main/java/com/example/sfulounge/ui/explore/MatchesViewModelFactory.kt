@@ -1,4 +1,4 @@
-package com.example.sfulounge
+package com.example.sfulounge.ui.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

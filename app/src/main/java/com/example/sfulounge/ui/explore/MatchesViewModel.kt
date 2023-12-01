@@ -1,4 +1,4 @@
-package com.example.sfulounge
+package com.example.sfulounge.ui.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -203,8 +203,8 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
                 repository.addSwipeRight(swipeRight, onSuccess, onError)
 
                 // testing the matching mechanism:
-                 val swipeRight1 = SwipeRight(userThatGotSwipedOn.userId, user.userId)
-                 repository.addSwipeRight(swipeRight1, onSuccess, onError)
+//                 val swipeRight1 = SwipeRight(userThatGotSwipedOn.userId, user.userId)
+//                 repository.addSwipeRight(swipeRight1, onSuccess, onError)
 
                 // Query if our liked user has already liked us, if yes create a chatroom (match)
                 println(userThatGotSwipedOn.userId + "," + user.userId)
