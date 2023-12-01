@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -30,12 +31,13 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView
 class ExploreFragment : Fragment() {
 
     private lateinit var matchesViewModel: MatchesViewModel
-    private lateinit var userImage: ImageView
+//    private lateinit var userImage: ImageView
     private lateinit var imageFrame: FrameLayout
     private lateinit var onSwipeTouchListener: OnSwipeTouchListener
     private var initialX: Float = 0F
     private var initialY: Float = 0F
     private lateinit var frame: SwipeFlingAdapterView
+    private val usersArray = ArrayList<User>()
     private lateinit var arrayOfImages: ArrayList<String>
     private lateinit var exploreUsers : List<User>
     @SuppressLint("ClickableViewAccessibility")
@@ -53,15 +55,17 @@ class ExploreFragment : Fragment() {
         ).get(MatchesViewModel::class.java)
 
         exploreUsers = listOf<User>()
+        frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
+        arrayOfImages = ArrayList()
         waitForUsersToPropagate()
 
         matchesViewModel.printList()
-        userImage = view.findViewById<ImageView>(R.id.imageUser)
-        imageFrame = view.findViewById<FrameLayout>(R.id.imageFrame)
+//        userImage = view.findViewById<ImageView>(R.id.imageUser)
+//        imageFrame = view.findViewById<FrameLayout>(R.id.imageFrame)
         //implement swipe action for userImage
         // Create an instance of OnSwipeTouchListener
-        frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
-        arrayOfImages = ArrayList()
+//        frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
+//        arrayOfImages = ArrayList()
 //        setUpSwipeAction()
         val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
@@ -107,14 +111,108 @@ class ExploreFragment : Fragment() {
     }
 
 
-    private fun loadUserImage(imageUrl: String?) {
-        imageUrl?.let {
-            Glide.with(requireContext())
-                .load(it)
-                .error(R.drawable.baseline_close_24) // Error image if loading fails
-                .into(userImage)
-        }
+    private fun setUpSwipeAction() {
+        println("SWIPE FUNCTION STARTED")
+//        val currentList = matchesViewModel.currentUsers
+//        currentList.observe(owner, Observer { data ->
+//            // Clear the existing data in the ArrayList
+//            arrayList.clear()
+//
+//            // Add the new data to the ArrayList
+//            if (data != null) {
+//                arrayList.addAll(data)
+//            }
+//
+//            // Now, the 'arrayList' contains the updated data from the LiveData
+//            // You can use 'arrayList' as needed
+//        })
+//        arrayOfImages.clear()
+//        val usersArray = ArrayList<User>()
+//        matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
+//            usersArray.clear()
+////            arrayOfImages.clear()
+//            usersArray.addAll(users)
+////            users.forEach { user ->
+////                if (user.photos.isNotEmpty()) {
+//////                        println("ADD IMAGE")
+////                    arrayOfImages.add(user.photos[0])
+////                }
+////            }
+//            println("users Size: ${usersArray.size}")
+//            println("images Size: ${arrayOfImages.size}")
+//
+////            val adapter = ImageAdapter(requireContext(), arrayOfImages)
+////            println("users Size: ${usersArray.size}")
+//
+//        }
+        arrayOfImages.add("php")
+        arrayOfImages.add("c")
+        arrayOfImages.add("python")
+        arrayOfImages.add("java")
+        val adapter = ArrayAdapter(requireContext(), R.layout.swipe_image_item, R.id.helloText, arrayOfImages)
+        frame.adapter = adapter
+
+        frame.setFlingListener(object: SwipeFlingAdapterView.onFlingListener {
+            override fun removeFirstObjectInAdapter() {
+                // this is the simplest way to delete an object from the Adapter (/AdapterView)
+//                Log.d("LIST", "removed object!")
+                arrayOfImages.removeAt(0)
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onLeftCardExit(dataObject: Any?) {
+                //Do something on the left!
+                //You also have access to the original object.
+                //If you want to use it just cast it (String) dataObject
+                Toast.makeText(requireContext(), "Left!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onRightCardExit(dataObject: Any?) {
+                Toast.makeText(requireContext(), "Right!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
+//                // Ask for more data here
+//                arrayOfImages.add("XML " + java.lang.String.valueOf(i))
+//                arrayAdapter.notifyDataSetChanged()
+//                Log.d("LIST", "notified")
+//                i++
+            }
+
+            override fun onScroll(p0: Float) {
+
+            }
+        })
+//        println("users Size 2: ${usersArray.size}")
+//        println("name: ${usersArray[0].firstName}")
+//        println("users Size: ${currentList.size}")
+//        usersArray.forEach { user ->
+//            if (user.photos.isNotEmpty()) {
+//                println("IMAGES NOT EMPTY")
+//                arrayOfImages.add(user.photos[0])
+//            }
+//        }
+//        println("Size: ${arrayOfImages.size}")
+//        for (item in arrayOfImages) println("url: $item")
+//        arrayOfImages.add("php");
+//        arrayOfImages.add("c");
+//        arrayOfImages.add("python");
+//        arrayOfImages.add("java");
+//        val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.swipe_image_item, R.id.user_image, arrayOfImages)
+//        val adapter = ImageAdapter(requireContext(), arrayOfImages)
+//        frame.adapter = adapter
+
+
     }
+
+//    private fun loadUserImage(imageUrl: String?) {
+//        imageUrl?.let {
+//            Glide.with(requireContext())
+//                .load(it)
+//                .error(R.drawable.baseline_close_24) // Error image if loading fails
+//                .into(userImage)
+//        }
+//    }
 
     private fun loadUserInfo() {
         val user = matchesViewModel.current_recommended_user
@@ -136,7 +234,7 @@ class ExploreFragment : Fragment() {
                 View.VISIBLE
 
             // fill info
-            if (user.photos.isNotEmpty()) loadUserImage(user.photos[0])
+//            if (user.photos.isNotEmpty()) loadUserImage(user.photos[0])
             val tvName = view?.findViewById<TextView>(R.id.tv_name)
             tvName?.setText(user.firstName)
             val tvGender = view?.findViewById<TextView>(R.id.tv_gender)
@@ -266,9 +364,11 @@ class ExploreFragment : Fragment() {
                                 view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.VISIBLE
                             }
                             loadUserInfo()
+                            setUpSwipeAction()
                         }
                     }
                 }
+//                setUpSwipeAction()
             }
             else{
                 view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.GONE
