@@ -1,19 +1,15 @@
 package com.example.sfulounge.ui.explore
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.drawable.Drawable
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,6 +19,7 @@ import com.example.sfulounge.MatchesViewModel
 import com.example.sfulounge.MatchesViewModelFactory
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
+import com.example.sfulounge.data.model.User
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 
 
@@ -40,6 +37,7 @@ class ExploreFragment : Fragment() {
     private var initialY: Float = 0F
     private lateinit var frame: SwipeFlingAdapterView
     private lateinit var arrayOfImages: ArrayList<String>
+    private lateinit var exploreUsers : List<User>
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -54,6 +52,7 @@ class ExploreFragment : Fragment() {
             MatchesViewModelFactory(MainRepository())
         ).get(MatchesViewModel::class.java)
 
+        exploreUsers = listOf<User>()
         waitForUsersToPropagate()
 
         matchesViewModel.printList()
@@ -67,12 +66,8 @@ class ExploreFragment : Fragment() {
         val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
         buttonSwipeRight.setOnClickListener {
             // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
-            println(
-                "this is from fragment: current user that got swiped on is: "
-                        + matchesViewModel.current_recommended_user.firstName
-            )
             matchesViewModel.addSwipeRight(
-                matchesViewModel.current_recommended_user,
+                matchesViewModel.current_recommended_user!!,
                 onSuccess = {
                     // Handle success, e.g., show a success message
                     Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
@@ -91,7 +86,7 @@ class ExploreFragment : Fragment() {
             val swipedOnUser = matchesViewModel.current_recommended_user
             println("this is from fragment: current user that got swiped on is: $swipedOnUser")
             matchesViewModel.addSwipeLeft(
-                matchesViewModel.current_recommended_user.userId,
+                matchesViewModel.current_recommended_user!!.userId,
                 onSuccess = {
                     // Handle success, e.g., show a success message
                     Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
@@ -105,126 +100,12 @@ class ExploreFragment : Fragment() {
             )
         }
 
-        val onSwipeTouchListener = object : OnSwipeTouchListener(requireContext()) {
-//            override fun onTouch(view: View, event: MotionEvent): Boolean {
-//                when (event.action) {
-//                    MotionEvent.ACTION_DOWN -> {
-//                        // Save initial touch position
-//                        initialX = event.x
-//                        initialY = event.y
-//                    }
-//                    MotionEvent.ACTION_MOVE -> {
-//                        // Calculate the distance moved by the user's finger
-//                        val offsetX = event.x - initialX
-//                        val offsetY = event.y - initialY
-//
-//                        // Update the position of the image based on the finger movement
-//                        imageFrame.translationX = offsetX
-//                        imageFrame.translationY = offsetY
-//
-////                        // Check if the horizontal movement exceeds the threshold for swipe
-////                        if (Math.abs(offsetX) > 50) {
-////                            // If it does, treat it as a swipe and reset initialX to avoid rapid accumulation
-////                            initialX = event.x
-////                        }
-//                    }
-//                    MotionEvent.ACTION_UP -> {
-//                        // Reset initialX and initialY to avoid accumulation when not touching
-//                        initialX = 0F
-//                        initialY = 0F
-//                    }
-//                }
-//                return true
-////                return super.onTouch(view, motionEvent)
-//            }
-            override fun onSwipeLeft() {
-                // Handle swipe left action (e.g., load the next recommendation)
-                // Assuming 'current_recommended_user' holds the user object that got swiped on
-                val swipedOnUser = matchesViewModel.current_recommended_user
-                println("this is from fragment: current user that got swiped on is: $swipedOnUser")
-                matchesViewModel.addSwipeLeft(
-                    matchesViewModel.current_recommended_user.userId,
-                    onSuccess = {
-                        // Handle success, e.g., show a success message
-                        Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
-                        loadNextRecommendation()
-                        loadUserInfo()
-                    },
-                    onError = { exception ->
-                        // Handle error, e.g., show an error message
-                        Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                )
-            }
 
-            override fun onSwipeRight() {
-                // Handle swipe right action (e.g., load the next recommendation)
-                // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
-                matchesViewModel.addSwipeRight(
-                    matchesViewModel.current_recommended_user,
-                    onSuccess = {
-                        // Handle success, e.g., show a success message
-                        Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
-                        loadNextRecommendation()
-                        loadUserInfo()
-                    }
-                ) { exception ->
-                    // Handle error, e.g., show an error message
-                    Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            }
-        }
-
-        // Set OnTouchListener on userImage
-        userImage.setOnTouchListener(onSwipeTouchListener)
 
 
         return view
     }
 
-
-//    private fun setUpSwipeAction() {
-//        val currentList = matchesViewModel.currentUsers.value?.toMutableList() ?: mutableListOf()
-//        currentList.forEach { user ->
-//            arrayOfImages.add(user.photos[0])
-//        }
-//        val arrayAdapter = ArrayAdapter<String>(requireContext(), R.layout.swipe_image_item, R.id.swipeImage, arrayOfImages)
-//        frame.adapter = arrayAdapter
-//
-//        frame.setFlingListener(object: SwipeFlingAdapterView.onFlingListener {
-//            override fun removeFirstObjectInAdapter() {
-//                // this is the simplest way to delete an object from the Adapter (/AdapterView)
-//                Log.d("LIST", "removed object!")
-//                arrayOfImages.removeAt(0)
-//                arrayAdapter.notifyDataSetChanged()
-//            }
-//
-//            override fun onLeftCardExit(dataObject: Any?) {
-//                //Do something on the left!
-//                //You also have access to the original object.
-//                //If you want to use it just cast it (String) dataObject
-//                Toast.makeText(requireContext(), "Left!", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun onRightCardExit(dataObject: Any?) {
-//                Toast.makeText(requireContext(), "Right!", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
-////                // Ask for more data here
-////                arrayOfImages.add("XML " + java.lang.String.valueOf(i))
-////                arrayAdapter.notifyDataSetChanged()
-////                Log.d("LIST", "notified")
-////                i++
-//            }
-//
-//            override fun onScroll(p0: Float) {
-//
-//            }
-//        })
-//    }
 
     private fun loadUserImage(imageUrl: String?) {
         imageUrl?.let {
@@ -262,7 +143,6 @@ class ExploreFragment : Fragment() {
             tvGender?.setText(resources.getStringArray(R.array.gender_array)[user.gender])
             when (user.interests.size) {
                 0 -> {
-//                    println("Empty Interests")
                     view?.findViewById<LinearLayout>(R.id.interestsLinearLayout2)?.visibility =
                         View.GONE
                     view?.findViewById<TextView>(R.id.interest2)?.visibility = View.GONE
@@ -299,7 +179,6 @@ class ExploreFragment : Fragment() {
             }
             when (user.depthQuestions.size) {
                 0 -> {
-//                    println("Empty Depth Questions")
                     view?.findViewById<LinearLayout>(R.id.layout_depth_question_1)?.visibility =
                         View.GONE
                     view?.findViewById<LinearLayout>(R.id.layout_depth_question_2)?.visibility =
@@ -356,12 +235,12 @@ class ExploreFragment : Fragment() {
                 // Display the user's details
                 println("User ID: ${user.userId}, Name: ${user.firstName}")
                 loadUserInfo()
-//                loadUserImage(user.photos[0])
             } else {
+                println("no more users to show")
                 // as all current users have been swiped on:
                 // reload all users to see if we have  any new users to show
+                matchesViewModel.current_recommended_user = null
                 matchesViewModel.getAllUsers()
-                matchesViewModel.isInitialUserFetched = false
                 // must wait for the query to be done before updating the variable
                 waitForUsersToPropagate()
             }
@@ -369,19 +248,47 @@ class ExploreFragment : Fragment() {
     }
 
     private fun waitForUsersToPropagate() {
+
         matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
-            if (users.isNotEmpty() && !matchesViewModel.isInitialUserFetched) {
-                matchesViewModel.getTheFirstUser { user ->
-                    user?.let {
-                        println("User ID: ${it.userId}, Name: ${it.firstName}")
-//                        loadUserImage(user.photos[0])
-                        loadUserInfo()
+            if (users.isNotEmpty()) {
+                // as there can be a case where users are fetched and already set to current users
+                // this would result on infinite checks
+                // only propagate if there are no other users
+                exploreUsers = users
+                println(exploreUsers.size)
+                if(matchesViewModel.current_recommended_user == null){
+                    matchesViewModel.getTheFirstUser { user ->
+                        user?.let {
+                            println("User ID: ${it.userId}, Name: ${it.firstName}")
+                            if(matchesViewModel.mainPageCancelled){
+                                val noMoreUsersView = view?.findViewById<View>(R.id.noMoreUsersLayout)
+                                noMoreUsersView?.visibility = View.GONE
+                                view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.VISIBLE
+                            }
+                            loadUserInfo()
+                        }
                     }
                 }
             }
             else{
-                loadUserInfo()
+                view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.GONE
+                matchesViewModel.mainPageCancelled = true
+                val noMoreUsersView = view?.findViewById<View>(R.id.noMoreUsersLayout)
+                noMoreUsersView?.visibility = View.VISIBLE
+                Toast.makeText(context, "No new user found", Toast.LENGTH_SHORT).show()
+                matchesViewModel.current_recommended_user = null
+                // Set OnClickListener for the Refresh Button
+                noMoreUsersView?.findViewById<Button>(R.id.button)?.setOnClickListener {
+                    // Refresh logic here
+                    refreshData()
+                }
             }
         }
+    }
+
+    private fun refreshData() {
+        Toast.makeText(context, "Finding new added users...", Toast.LENGTH_SHORT).show()
+        matchesViewModel.getAllUsers()
+        waitForUsersToPropagate()
     }
 }

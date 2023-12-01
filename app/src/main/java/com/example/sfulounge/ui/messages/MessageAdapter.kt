@@ -62,14 +62,12 @@ class MessageAdapter(
             onImageClicked: () -> Unit
         ) {
 
-            nameView.text = name
-            if (!isSender){
+            if (name == null){
                 nameView.text = "SFU Lounge Prompt"
             }
-
-//            if (isSender) {
-//                messageView.setBackgroundColor(Color.BLUE)
-//            }
+            else{
+                nameView.text = name
+            }
 
             messageView.text = message?.text
             if (message != null) {
