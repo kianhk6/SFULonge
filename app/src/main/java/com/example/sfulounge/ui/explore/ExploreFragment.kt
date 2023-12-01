@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -16,7 +14,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.sfulounge.MatchesViewModel
 import com.example.sfulounge.MatchesViewModelFactory
 import com.example.sfulounge.R
@@ -192,6 +189,7 @@ class ExploreFragment : Fragment() {
             }
 
             override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
+                println("items left: $itemsInAdapter")
 //                // Ask for more data here
 //                waitForUsersToPropagate()
 //                arrayOfImages.add("XML " + java.lang.String.valueOf(i))
@@ -201,7 +199,20 @@ class ExploreFragment : Fragment() {
             }
 
             override fun onScroll(p0: Float) {
-
+                println("Scroll")
+                val view = frame.getSelectedView();
+                val rightIndicator = view.findViewById<View>(R.id.item_swipe_right_indicator)
+                val leftIndicator = view.findViewById<View>(R.id.item_swipe_left_indicator)
+                if (p0 < 0) {
+                    rightIndicator.alpha = -p0
+                    leftIndicator.alpha = 0f
+                } else if (p0 > 0) {
+                    rightIndicator.alpha = 0f
+                    leftIndicator.alpha = p0
+                } else {
+                    rightIndicator.alpha = 0f
+                    leftIndicator.alpha = 0f
+                }
             }
         })
     }

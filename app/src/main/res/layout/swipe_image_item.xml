@@ -19,24 +19,25 @@
         android:id="@+id/user_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@drawable/announcement"
         android:scaleType="fitXY"
         android:gravity="center"/>
 
     <View
         android:id="@+id/item_swipe_left_indicator"
-        android:alpha="0"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="10dp"
-        android:background="#A5F" />
+        android:alpha="0"
+        android:background="#4CAF50" />
 
     <View
         android:id="@+id/item_swipe_right_indicator"
-        android:alpha="0"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:layout_gravity="end"
         android:layout_margin="10dp"
-        android:layout_gravity="right"
-        android:background="#5AF" />
+        android:alpha="0"
+        android:background="#F44336" />
 
 </FrameLayout>
