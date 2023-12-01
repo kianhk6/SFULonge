@@ -164,7 +164,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
 
             // Remove the popped user from the original list and update LiveData
             currentList.remove(userToReturn)
-            _currentUsers.postValue(currentList)
+//            _currentUsers.postValue(currentList)
 
             // Update current recommended user and return the result
             current_recommended_user = userToReturn
