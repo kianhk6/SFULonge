@@ -182,9 +182,11 @@ class MessagesActivity : AppCompatActivity(), UploadDialog.UploadDialogListener,
         attachmentsAdapter.notifyItemRemoved(position)
     }
 
-    override fun onProfileImageClicked(user: User) {
-        val intent = Intent(this, UserProfileActivity::class.java)
-        intent.putExtra(UserProfileActivity.INTENT_USER_ID, user.userId)
-        startActivity(intent)
+    override fun onProfileImageClicked(user: User?) {
+        if (user != null) {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra(UserProfileActivity.INTENT_USER_ID, user.userId)
+            startActivity(intent)
+        }
     }
 }

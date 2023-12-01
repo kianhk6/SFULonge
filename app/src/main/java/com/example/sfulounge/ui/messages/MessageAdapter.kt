@@ -17,11 +17,11 @@ import com.example.sfulounge.ui.MessageFormatter
 class MessageAdapter(
     private val usersMap: Map<String, User>,
     private val userId: String,
-    private val listener: Listener)
-    : ListAdapter<Message, MessageAdapter.MessageViewHolder>(MessageComparator)
+    private val listener: Listener
+) : ListAdapter<Message, MessageAdapter.MessageViewHolder>(MessageComparator)
 {
     interface Listener {
-        fun onProfileImageClicked(user: User)
+        fun onProfileImageClicked(user: User?)
     }
 
     override fun onCreateViewHolder(
@@ -34,11 +34,10 @@ class MessageAdapter(
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val item = getItem(position)!!
         val user = usersMap[item.senderId]
-            ?: throw IllegalStateException("User not loaded in usersMap!")
 
-        val imageUrl = user.photos.firstOrNull()
+        val imageUrl = user?.photos?.firstOrNull()
         holder.bind(
-            user.firstName,
+            user?.firstName,
             imageUrl,
             item,
             userId == item.senderId,
