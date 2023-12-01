@@ -31,7 +31,7 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView
 
 class ExploreFragment : Fragment() {
 
-    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var adapter: ImageAdapter
 
     private lateinit var matchesViewModel: MatchesViewModel
 
@@ -122,28 +122,37 @@ class ExploreFragment : Fragment() {
 
     private fun setUpSwipeAction() {
         frame = requireView().findViewById<SwipeFlingAdapterView>(R.id.frame)
+        arrayOfImages.clear()
+        for (item in exploreUsers) {
+            if (item.photos.isNotEmpty()) {
+                arrayOfImages.add(item.photos[0])
+            }
+        }
 
 
-        println("set swipe is called")
-        arrayOfImages.add("php")
-        arrayOfImages.add("c")
-        arrayOfImages.add("python")
-        arrayOfImages.add("java")
-        adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.swipe_image_item,
-            R.id.helloText,
-            arrayOfImages
-        )
+//        println("set swipe is called")
+//        arrayOfImages.add("php")
+//        arrayOfImages.add("c")
+//        arrayOfImages.add("python")
+//        arrayOfImages.add("java")
+//        adapter = ArrayAdapter(
+//            requireContext(),
+//            R.layout.swipe_image_item,
+//            R.id.user_image,
+//            arrayOfImages
+//        )
+        adapter = ImageAdapter(requireContext(), arrayOfImages)
 
 
         frame.adapter = adapter
+        adapter.notifyDataSetChanged()
 
         frame.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
             override fun removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 arrayOfImages.removeAt(0)
                 adapter.notifyDataSetChanged()
+                println("adapter count: ${adapter.count}")
             }
 
             override fun onLeftCardExit(dataObject: Any?) {
@@ -159,6 +168,7 @@ class ExploreFragment : Fragment() {
 
             override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
 //                // Ask for more data here
+//                waitForUsersToPropagate()
 //                arrayOfImages.add("XML " + java.lang.String.valueOf(i))
 //                arrayAdapter.notifyDataSetChanged()
 //                Log.d("LIST", "notified")

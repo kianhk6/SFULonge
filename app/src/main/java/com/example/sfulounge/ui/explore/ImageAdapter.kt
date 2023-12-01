@@ -26,9 +26,9 @@ class ImageAdapter(private val context: Context, private val imageUrls: ArrayLis
         val view = convertView ?: LayoutInflater.from(context)
             .inflate(R.layout.swipe_image_item, parent, false)
 
-        val imageView = convertView!!.findViewById<ImageView>(R.id.helloText)
+        val imageView = view.findViewById<ImageView>(R.id.user_image)
         Picasso.get().load(imageUrls[position]).into(imageView)
 
-        return convertView
+        return view
     }
 }

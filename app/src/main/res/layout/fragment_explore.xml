@@ -64,8 +64,8 @@
             <!--            </FrameLayout>-->
             <com.lorentzos.flingswipe.SwipeFlingAdapterView
                 android:id="@+id/frame"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
                 android:layout_gravity="center"
                 app:rotation_degrees="16"
                 app:max_visible="4"
