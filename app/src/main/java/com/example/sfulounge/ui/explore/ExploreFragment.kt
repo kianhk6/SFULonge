@@ -58,6 +58,7 @@ class ExploreFragment : Fragment() {
         frame = view.findViewById<SwipeFlingAdapterView>(R.id.frame)
         arrayOfImages = ArrayList()
         waitForUsersToPropagate()
+//        setUpSwipeAction()
 
         matchesViewModel.printList()
 //        userImage = view.findViewById<ImageView>(R.id.imageUser)
@@ -367,6 +368,8 @@ class ExploreFragment : Fragment() {
                             setUpSwipeAction()
                         }
                     }
+                } else {
+                    loadUserInfo()
                 }
 //                setUpSwipeAction()
             }
