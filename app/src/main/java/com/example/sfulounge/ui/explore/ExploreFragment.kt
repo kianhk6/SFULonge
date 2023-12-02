@@ -38,9 +38,6 @@ class ExploreFragment : Fragment() {
     private var _isInitialLoadOrRefresh = true
 
 
-    interface ObserverCompletionCallback {
-        fun onObserverCompleted()
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -65,7 +62,7 @@ class ExploreFragment : Fragment() {
 
         isObserverDone.observe(viewLifecycleOwner) { isDone ->
             if (isDone) {
-                println("set swipe is called")
+                println("set swipe is called after observer being done")
                 setUpSwipeAction()
             }
         }
@@ -83,7 +80,6 @@ class ExploreFragment : Fragment() {
         val userInfoView = view?.findViewById<LinearLayout>(R.id.view_user_info)
         userInfoView!!.visibility = View.GONE
         adapter = SwipeViewAdapter(requireContext(), arrayOfUsers, userInfoView!!)
-        println("adapter count: ${adapter.count}")
 
 
         frame.adapter = adapter
@@ -109,7 +105,6 @@ class ExploreFragment : Fragment() {
                     onSuccess = {
                         // Handle success, e.g., show a success message
                         println("current user swiped right: " + matchesViewModel.current_recommended_user!!.firstName)
-                        Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
                         loadNextRecommendation()
                     },
                     onError = { exception ->
@@ -127,7 +122,6 @@ class ExploreFragment : Fragment() {
                     onSuccess = {
                         // Handle success, e.g., show a success message
                         println("current user swiped left: " + matchesViewModel.current_recommended_user!!.firstName)
-                        Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
                         loadNextRecommendation()
                     }
                 ) { exception ->
@@ -138,13 +132,7 @@ class ExploreFragment : Fragment() {
             }
 
             override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
-                println("items left: $itemsInAdapter")
-//                // Ask for more data here
-//                waitForUsersToPropagate()
-//                arrayOfImages.add("XML " + java.lang.String.valueOf(i))
-//                arrayAdapter.notifyDataSetChanged()
-//                Log.d("LIST", "notified")
-//                i++
+
             }
 
             override fun onScroll(p0: Float) {
@@ -317,7 +305,6 @@ class ExploreFragment : Fragment() {
 
     // this should be only called initially (onCreateView) or on refresh
     private fun waitForUsersToPropagate() {
-        var isInitialLoad = true
 
         matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
             if (users.isNotEmpty()) {
@@ -328,9 +315,8 @@ class ExploreFragment : Fragment() {
                 // as there can be a case where users are fetched and already set to current users
                 // this would result on infinite checks
                 // only propagate if there are no other users
-                exploreUsers = ArrayList(users)
-                println("HI: ${exploreUsers.size}")
                 // user loaded for the first time
+                exploreUsers = ArrayList(users)
                 if (matchesViewModel.current_recommended_user == null) {
                     matchesViewModel.getTheFirstUser { user ->
                         user?.let {
@@ -343,7 +329,6 @@ class ExploreFragment : Fragment() {
                                     View.VISIBLE
                             }
                             loadUserInfo()
-//                            setUpSwipeAction()
                         }
                     }
                 }
@@ -351,11 +336,7 @@ class ExploreFragment : Fragment() {
                 else {
                     loadUserInfo()
                 }
-                println("waitForUsersToPropagate is done")
-                if(isInitialLoad){
-                    isObserverDone.value = true
-                    isInitialLoad = false
-                }
+                isObserverDone.value = true
             } else {
                 view?.findViewById<ScrollView>(R.id.mainContent)?.visibility = View.GONE
                 matchesViewModel.mainPageCancelled = true

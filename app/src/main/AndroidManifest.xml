@@ -68,9 +68,6 @@
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".ui.explore.EmptyRecommendationActivity"
-            android:exported="false" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.sfulounge"
