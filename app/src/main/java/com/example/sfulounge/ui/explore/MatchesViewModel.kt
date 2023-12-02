@@ -1,5 +1,6 @@
 package com.example.sfulounge.ui.explore
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -160,15 +161,17 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
 
         if (currentList.isNotEmpty()) {
             // Pop the first user from the sorted list
-            val userToReturn = currentList.first()
+            val userToPop = currentList.first()
+
+            Log.d("debug", "user: $userToPop, size: ${currentList.size}")
 
             // Remove the popped user from the original list and update LiveData
-            currentList.remove(userToReturn)
+            currentList.remove(userToPop)
             _currentUsers.postValue(currentList)
 
             // Update current recommended user and return the result
-            current_recommended_user = userToReturn
-            onResult(userToReturn)
+            current_recommended_user = currentList.firstOrNull()
+            onResult(userToPop)
         } else {
             onResult(null)
         }

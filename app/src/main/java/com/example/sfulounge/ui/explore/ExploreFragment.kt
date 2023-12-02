@@ -41,6 +41,9 @@ class ExploreFragment : Fragment() {
     private lateinit var exploreUsers: ArrayList<User>
     val isObserverDone = MutableLiveData<Boolean>()
 
+    private var _isInitialLoadOrRefresh = true
+
+
     interface ObserverCompletionCallback {
         fun onObserverCompleted()
     }
@@ -62,6 +65,8 @@ class ExploreFragment : Fragment() {
         exploreUsers = ArrayList()
         arrayOfUsers = ArrayList()
         isObserverDone.value = false
+
+        _isInitialLoadOrRefresh = true
         waitForUsersToPropagate()
 
         isObserverDone.observe(viewLifecycleOwner) { isDone ->
@@ -214,6 +219,7 @@ class ExploreFragment : Fragment() {
 
     private fun loadUserInfo() {
         val user = matchesViewModel.current_recommended_user
+        println("loading user: $user")
         if (user != null) {
             //refresh visibility
             view?.findViewById<LinearLayout>(R.id.interestsLinearLayout1)?.visibility =
@@ -340,18 +346,23 @@ class ExploreFragment : Fragment() {
                 // as all current users have been swiped on:
                 // reload all users to see if we have  any new users to show
                 matchesViewModel.current_recommended_user = null
-                matchesViewModel.getAllUsers()
+
                 // must wait for the query to be done before updating the variable
-                waitForUsersToPropagate()
+                refreshData()
             }
         }
     }
 
+    // this should be only called initially (onCreateView) or on refresh
     private fun waitForUsersToPropagate() {
         var isInitialLoad = true
 
         matchesViewModel.currentUsers.observe(viewLifecycleOwner) { users ->
             if (users.isNotEmpty()) {
+                if (!_isInitialLoadOrRefresh) {
+                    return@observe
+                }
+                _isInitialLoadOrRefresh = false
                 // as there can be a case where users are fetched and already set to current users
                 // this would result on infinite checks
                 // only propagate if there are no other users
@@ -402,6 +413,7 @@ class ExploreFragment : Fragment() {
     private fun refreshData() {
         Toast.makeText(context, "Finding new added users...", Toast.LENGTH_SHORT).show()
         matchesViewModel.getAllUsers()
+        _isInitialLoadOrRefresh = true
         waitForUsersToPropagate()
     }
 }
