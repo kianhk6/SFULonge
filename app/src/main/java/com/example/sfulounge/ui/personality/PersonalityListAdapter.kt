@@ -55,12 +55,37 @@ class PersonalityListAdapter(private val context: Context, private val questions
         radioButton4.text = PersonalityOptions.values()[3].displayText
         radioButton5.text = PersonalityOptions.values()[4].displayText
 
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
-            scores[position] = getScoreFromOption(selectedRadioButton.text.toString())
+        radioGroup.clearCheck()
+
+        val radioButtons = listOf<RadioButton>(radioButton1, radioButton2, radioButton3, radioButton4, radioButton5)
+
+        // check the selected (if any) radio button for that specific group
+        setCheckedRadioButton(radioButtons, position)
+
+        radioButtons.forEach { radioButton ->
+            radioButton.setOnClickListener {
+
+                scores[position] = getScoreFromOption(radioButton.text.toString())
+
+                radioButtons.forEach { otherRadioButton ->
+                    if (otherRadioButton != radioButton) {
+                        otherRadioButton.isChecked = false
+                    }
+                }
+            }
         }
 
         return rowView
+    }
+
+    private fun setCheckedRadioButton(radioButtons: List<RadioButton>, position: Int) {
+        val score = scores[position]
+        for (button in radioButtons) {
+            button.isChecked = false
+        }
+        if (score != 0) {
+            radioButtons[score-1].isChecked = true
+        }
     }
 
     fun getScores(): IntArray {

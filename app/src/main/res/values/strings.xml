@@ -172,11 +172,18 @@
     <string name="profile_logout">Logout</string>
 
     <!--  personality types  -->
-    <string name="personality_social_butterfly">Social Butterfly</string>
-    <string name="personality_lone_wolf">Lone Wolf</string>
-    <string name="personality_organizer">Organizer</string>
-    <string name="personality_adventurer">Adventurer</string>
-    <string name="personality_analyzer">Analyzer</string>
+    <string name="personality_free_spirited_dreamer">Free-Spirited Dreamer</string>
+    <string name="personality_compassionate_helper">Compassionate Helper</string>
+    <string name="personality_organized_helper">Organized Helper</string>
+    <string name="personality_adventurous_explorer">Adventurous Explorer</string>
+    <string name="personality_reserved_thinker">Reserved Thinker</string>
     <string name="swipe_left">Swipe Left</string>
     <string name="swipe_right">Swipe Right</string>
+    <string name="action_finish">Finish</string>
+    <string name="depth_questions_title">Depth Questions</string>
+    <string name="user_profile_interests_label">Interests</string>
+    <string name="user_profile_more_about_me_label">More about me</string>
+
+    <!--  chats fragment  -->
+    <string name="chats_fragment_no_chats">No chats</string>
 </resources>

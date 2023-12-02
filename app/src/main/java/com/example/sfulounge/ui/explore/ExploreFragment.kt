@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
+import com.example.sfulounge.data.model.Personality
 import com.example.sfulounge.data.model.User
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 
@@ -181,10 +182,27 @@ class ExploreFragment : Fragment() {
                 View.VISIBLE
             view?.findViewById<LinearLayout>(R.id.layout_depth_question_3)?.visibility =
                 View.VISIBLE
+            view?.findViewById<TextView>(R.id.tv_personality)?.visibility = View.VISIBLE
 
             // fill info
             val tvGender = view?.findViewById<TextView>(R.id.tv_gender)
             tvGender?.setText(resources.getStringArray(R.array.gender_array)[user.gender])
+            if (user.personality == -1) {
+                view?.findViewById<TextView>(R.id.tv_personality)?.visibility = View.GONE
+            } else {
+                val colorArray = intArrayOf(
+                    resources.getColor(R.color.social_butterfly),
+                    resources.getColor(R.color.long_wolf),
+                    resources.getColor(R.color.organizer),
+                    resources.getColor(R.color.adventurer),
+                    resources.getColor(R.color.analyzer)
+                )
+                val personality = user.personality
+                view?.findViewById<TextView>(R.id.tv_personality)?.setText(
+                    resources.getStringArray(R.array.personality_array)[personality!!])
+                view?.findViewById<TextView>(R.id.tv_personality)?.setBackgroundColor(
+                    colorArray[personality!!])
+            }
             when (user.interests.size) {
                 0 -> {
                     view?.findViewById<LinearLayout>(R.id.interestsLinearLayout2)?.visibility =
