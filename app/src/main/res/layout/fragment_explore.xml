@@ -51,9 +51,20 @@
                     android:padding="6dp"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:text="Loading"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_personality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:textColor="@color/white"
+                    android:text=""
+                    android:textSize="22sp"
+                    android:layout_marginBottom="16dp"
+                    android:padding="6dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -63,29 +74,6 @@
                     android:textColor="@color/black"
                     android:textSize="24sp"
                     android:textStyle="bold" />
-            <TextView
-                android:id="@+id/tv_personality"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:textColor="@color/white"
-                android:text="Loading"
-                android:textSize="22sp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
-                android:layout_marginBottom="16dp"
-                android:padding="6dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp"
-                android:layout_marginBottom="6dp"
-                android:text="Interests:"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/interestsLinearLayout1"
@@ -101,7 +89,7 @@
                         android:background="@drawable/detail_white_outline"
                         android:maxWidth="120dp"
                         android:padding="8dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -113,7 +101,7 @@
                         android:background="@drawable/detail_white_outline"
                         android:maxWidth="120dp"
                         android:padding="8dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -132,7 +120,7 @@
                         android:background="@drawable/detail_white_outline"
                         android:maxWidth="120dp"
                         android:padding="8dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -144,7 +132,7 @@
                         android:background="@drawable/detail_white_outline"
                         android:maxWidth="120dp"
                         android:padding="8dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -173,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -201,7 +189,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -229,7 +217,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
-                        android:text="Loading"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
