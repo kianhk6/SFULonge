@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
 import com.squareup.picasso.Picasso
@@ -37,7 +38,7 @@ class SwipeViewAdapter(private val context: Context, private val usersArray: Arr
             imageView.setBackgroundColor(Color.WHITE)
             imageView.setImageResource(R.drawable.baseline_person_24)
         } else {
-            Picasso.get()
+            Glide.with(context)
                 .load(usersArray[position].photos[0])
                 .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
                 .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
