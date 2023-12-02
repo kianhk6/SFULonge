@@ -1,15 +1,12 @@
 package com.example.sfulounge.ui.explore
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -17,8 +14,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.sfulounge.ui.explore.MatchesViewModel
-import com.example.sfulounge.ui.explore.MatchesViewModelFactory
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.model.User
@@ -42,8 +37,8 @@ class ExploreFragment : Fragment() {
     private var initialY: Float = 0F
     private lateinit var frame: SwipeFlingAdapterView
     private val usersArray = ArrayList<User>()
-    private lateinit var arrayOfImages: ArrayList<String?>
-    private lateinit var exploreUsers: List<User>
+    private lateinit var arrayOfUsers: ArrayList<User>
+    private lateinit var exploreUsers: ArrayList<User>
     val isObserverDone = MutableLiveData<Boolean>()
 
     interface ObserverCompletionCallback {
@@ -64,8 +59,8 @@ class ExploreFragment : Fragment() {
             MatchesViewModelFactory(MainRepository())
         ).get(MatchesViewModel::class.java)
 
-        exploreUsers = listOf<User>()
-        arrayOfImages = ArrayList()
+        exploreUsers = ArrayList()
+        arrayOfUsers = ArrayList()
         isObserverDone.value = false
         waitForUsersToPropagate()
 
@@ -122,30 +117,14 @@ class ExploreFragment : Fragment() {
 
     private fun setUpSwipeAction() {
         frame = requireView().findViewById<SwipeFlingAdapterView>(R.id.frame)
-        arrayOfImages.clear()
-        for (item in exploreUsers) {
-            if (item.photos.isNotEmpty()) {
-                arrayOfImages.add(item.photos[0])
-            } else {
-                arrayOfImages.add(null)
-            }
-        }
 
+        arrayOfUsers = exploreUsers
+        println("Array of users in setup swipes: ${arrayOfUsers.size}")
 
-//        println("set swipe is called")
-//        arrayOfImages.add("php")
-//        arrayOfImages.add("c")
-//        arrayOfImages.add("python")
-//        arrayOfImages.add("java")
-//        adapter = ArrayAdapter(
-//            requireContext(),
-//            R.layout.swipe_image_item,
-//            R.id.user_image,
-//            arrayOfImages
-//        )
         val userInfoView = view?.findViewById<LinearLayout>(R.id.view_user_info)
         userInfoView!!.visibility = View.GONE
-        adapter = ImageAdapter(requireContext(), arrayOfImages, userInfoView!!)
+        adapter = ImageAdapter(requireContext(), arrayOfUsers, userInfoView!!)
+        println("adapter count: ${adapter.count}")
 
 
         frame.adapter = adapter
@@ -154,7 +133,7 @@ class ExploreFragment : Fragment() {
         frame.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
             override fun removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
-                arrayOfImages.removeAt(0)
+                arrayOfUsers.removeAt(0)
                 adapter.notifyDataSetChanged()
                 println("adapter count: ${adapter.count}")
             }
@@ -376,8 +355,8 @@ class ExploreFragment : Fragment() {
                 // as there can be a case where users are fetched and already set to current users
                 // this would result on infinite checks
                 // only propagate if there are no other users
-                exploreUsers = users
-                println(exploreUsers.size)
+                exploreUsers = ArrayList(users)
+                println("HI: ${exploreUsers.size}")
                 // user loaded for the first time
                 if (matchesViewModel.current_recommended_user == null) {
                     matchesViewModel.getTheFirstUser { user ->

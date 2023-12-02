@@ -1,5 +1,6 @@
 package com.example.sfulounge.ui.explore
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,18 +8,21 @@ import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.toColor
 import com.example.sfulounge.R
+import com.example.sfulounge.data.model.User
 import com.squareup.picasso.Picasso
 
-class ImageAdapter(private val context: Context, private val imageUrls: ArrayList<String?>
+class ImageAdapter(private val context: Context, private val usersArray: ArrayList<User>
 , private val userInfoView: LinearLayout) : BaseAdapter() {
 
     override fun getCount(): Int {
-        return imageUrls.size
+        return usersArray.size
     }
 
-    override fun getItem(position: Int): String? {
-        return imageUrls[position]
+    override fun getItem(position: Int): User? {
+        return usersArray[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -30,10 +34,12 @@ class ImageAdapter(private val context: Context, private val imageUrls: ArrayLis
             .inflate(R.layout.swipe_image_item, parent, false)
 
         val imageView = view.findViewById<ImageView>(R.id.user_image)
-        if (imageUrls[position] == null) {
-            Picasso.get().load(R.drawable.baseline_person_24)
+        if (usersArray[position].photos.isEmpty()) {
+            imageView.setBackgroundColor(Color.WHITE)
+            imageView.setImageResource(R.drawable.baseline_person_24)
+        } else {
+            Picasso.get().load(usersArray[position].photos[0]).into(imageView)
         }
-        Picasso.get().load(imageUrls[position]).into(imageView)
 
         val buttonExpand = view.findViewById<Button>(R.id.btn_expand)
         buttonExpand.setOnClickListener {
