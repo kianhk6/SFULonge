@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -26,17 +25,11 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView
 
 class ExploreFragment : Fragment() {
 
-    private lateinit var adapter: ImageAdapter
+    private lateinit var adapter: SwipeViewAdapter
 
     private lateinit var matchesViewModel: MatchesViewModel
 
-    //    private lateinit var userImage: ImageView
-    private lateinit var imageFrame: FrameLayout
-    private lateinit var onSwipeTouchListener: OnSwipeTouchListener
-    private var initialX: Float = 0F
-    private var initialY: Float = 0F
     private lateinit var frame: SwipeFlingAdapterView
-    private val usersArray = ArrayList<User>()
     private lateinit var arrayOfUsers: ArrayList<User>
     private lateinit var exploreUsers: ArrayList<User>
     val isObserverDone = MutableLiveData<Boolean>()
@@ -76,46 +69,6 @@ class ExploreFragment : Fragment() {
             }
         }
 
-        val buttonSwipeRight = view.findViewById<Button>(R.id.buttonSwipeRight)
-        buttonSwipeRight.setOnClickListener {
-            // Assuming 'userThatGotSwipedOnId' is the ID of the user that got swiped on
-            matchesViewModel.addSwipeRight(
-                matchesViewModel.current_recommended_user!!,
-                onSuccess = {
-                    // Handle success, e.g., show a success message
-                    Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
-                    loadNextRecommendation()
-                }
-            ) { exception ->
-                // Handle error, e.g., show an error message
-                Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        val buttonSwipeLeft = view.findViewById<Button>(R.id.buttonSwipeLeft)
-        buttonSwipeLeft.setOnClickListener {
-            // Assuming 'current_recommended_user' holds the user object that got swiped on
-            val swipedOnUser = matchesViewModel.current_recommended_user
-            println("this is from fragment: current user that got swiped on is: $swipedOnUser")
-            matchesViewModel.addSwipeLeft(
-                matchesViewModel.current_recommended_user!!.userId,
-                onSuccess = {
-                    // Handle success, e.g., show a success message
-                    Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
-                    loadNextRecommendation()
-                },
-                onError = { exception ->
-                    // Handle error, e.g., show an error message
-                    Toast.makeText(context, "Error: ${exception.message}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            )
-        }
-
-
-
-
         return view
     }
 
@@ -128,7 +81,7 @@ class ExploreFragment : Fragment() {
 
         val userInfoView = view?.findViewById<LinearLayout>(R.id.view_user_info)
         userInfoView!!.visibility = View.GONE
-        adapter = ImageAdapter(requireContext(), arrayOfUsers, userInfoView!!)
+        adapter = SwipeViewAdapter(requireContext(), arrayOfUsers, userInfoView!!)
         println("adapter count: ${adapter.count}")
 
 
@@ -147,6 +100,7 @@ class ExploreFragment : Fragment() {
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
                 // Assuming 'current_recommended_user' holds the user object that got swiped on
+                userInfoView.visibility = View.GONE
                 val swipedOnUser = matchesViewModel.current_recommended_user
                 println("this is from fragment: current user that got swiped on is: $swipedOnUser")
                 matchesViewModel.addSwipeLeft(
@@ -165,6 +119,7 @@ class ExploreFragment : Fragment() {
             }
 
             override fun onRightCardExit(dataObject: Any?) {
+                userInfoView.visibility = View.GONE
                 matchesViewModel.addSwipeRight(
                     matchesViewModel.current_recommended_user!!,
                     onSuccess = {
@@ -190,7 +145,6 @@ class ExploreFragment : Fragment() {
             }
 
             override fun onScroll(p0: Float) {
-                println("Scroll")
                 val view = frame.getSelectedView();
                 val rightIndicator = view.findViewById<View>(R.id.item_swipe_right_indicator)
                 val leftIndicator = view.findViewById<View>(R.id.item_swipe_left_indicator)
@@ -207,15 +161,6 @@ class ExploreFragment : Fragment() {
             }
         })
     }
-
-//    private fun loadUserImage(imageUrl: String?) {
-//        imageUrl?.let {
-//            Glide.with(requireContext())
-//                .load(it)
-//                .error(R.drawable.baseline_close_24) // Error image if loading fails
-//                .into(userImage)
-//        }
-//    }
 
     private fun loadUserInfo() {
         val user = matchesViewModel.current_recommended_user
@@ -238,9 +183,6 @@ class ExploreFragment : Fragment() {
                 View.VISIBLE
 
             // fill info
-//            if (user.photos.isNotEmpty()) loadUserImage(user.photos[0])
-            val tvName = view?.findViewById<TextView>(R.id.tv_name)
-            tvName?.setText(user.firstName)
             val tvGender = view?.findViewById<TextView>(R.id.tv_gender)
             tvGender?.setText(resources.getStringArray(R.array.gender_array)[user.gender])
             when (user.interests.size) {

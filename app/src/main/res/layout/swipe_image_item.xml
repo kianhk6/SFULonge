@@ -2,43 +2,46 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:layout_width="350dp"
-    android:layout_height="350dp">
-
-<!--    <TextView-->
-<!--        android:id="@+id/helloText"-->
-<!--        android:textSize="40sp"-->
-<!--        android:textColor="@android:color/white"-->
-<!--        android:background="#E339"-->
-<!--        android:gravity="center"-->
-<!--        tools:text="hello_world"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent" />-->
-
-    <ImageView
-        android:id="@+id/user_image"
+    android:layout_width="match_parent"
+    android:layout_height="500dp">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:gravity="center"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:padding="8dp"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:background="#74FFFFFF"
-        android:text="Loading"/>
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerInside"
+            android:background="@color/white"
+            android:layout_weight="1"
+            android:gravity="center"/>
 
-    <Button
-        android:id="@+id/btn_expand"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="4dp"
-        android:background="@drawable/baseline_expand_more_24"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#ffffff">
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_margin="4dp"
+                android:textSize="28sp"
+                android:textColor="@color/black"
+                android:text=""/>
+
+            <Button
+                android:id="@+id/btn_expand"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="4dp"
+                android:background="@drawable/baseline_expand_more_24"/>
+        </FrameLayout>
+    </LinearLayout>
 
     <View
         android:id="@+id/item_swipe_left_indicator"

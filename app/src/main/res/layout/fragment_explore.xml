@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_swipe"
+        android:background="@drawable/bg_swipe2"
         android:backgroundTint="#1D9E9E9E"
         android:backgroundTintMode="src_atop"
         android:id="@+id/mainContent"
@@ -20,91 +20,33 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="SFU Lounge "
-                android:textColor="#000000"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <!--        <LinearLayout-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_gravity="center_horizontal"-->
-            <!--            android:background="#FBF5F5"-->
-            <!--            android:orientation="horizontal">-->
-
-            <!--            <ImageView-->
-            <!--                android:id="@+id/buttonSwipeLeft"-->
-            <!--                android:layout_width="40dp"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:background="#9ACA382D"-->
-            <!--                android:minWidth="40dp"-->
-            <!--                android:scaleType="fitCenter"-->
-            <!--                android:src="@drawable/baseline_close_24_red" />-->
-
-            <!--            <FrameLayout-->
-
-            <!--                android:id="@+id/imageFrame"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="460dp"-->
-            <!--                android:layout_gravity="center_horizontal"-->
-            <!--                android:layout_weight="1"-->
-            <!--                android:background="#FBF5F5">-->
-
-            <!--                <ImageView-->
-            <!--                    android:id="@+id/imageUser"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="match_parent"-->
-            <!--                    android:scaleType="fitCenter"-->
-            <!--                    android:src="@drawable/baseline_person_24" />-->
-            <!--            </FrameLayout>-->
             <com.lorentzos.flingswipe.SwipeFlingAdapterView
                 android:id="@+id/frame"
-                android:layout_width="350dp"
-                android:layout_height="350dp"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginTop="50dp"
                 android:layout_gravity="center"
                 app:rotation_degrees="16"
-                app:max_visible="2"
+                app:max_visible="4"
                 app:min_adapter_stack="6"
                 android:background="#ffeee9e2" />
 
-            <!--            <ImageView-->
-            <!--                android:id="@+id/buttonSwipeRight"-->
-            <!--                android:layout_width="40dp"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:background="#8838DD3F"-->
-            <!--                android:minWidth="40dp"-->
-            <!--                android:scaleType="fitCenter"-->
-            <!--                android:src="@drawable/baseline_check_24" />-->
-            <!--        </LinearLayout>-->
-
             <LinearLayout
+                android:id="@+id/view_user_info"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp"
                 android:layout_marginStart="45dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="45dp"
-                android:layout_marginBottom="24dp">
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Loading"
-                    android:textColor="@color/black"
-                    android:textSize="30sp" />
+                android:layout_marginEnd="45dp">
 
                 <TextView
                     android:id="@+id/tv_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="14dp"
                     android:background="@drawable/detail_white_outline"
                     android:padding="6dp"
                     android:paddingStart="8dp"
@@ -112,18 +54,10 @@
                     android:text="Loading"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/view_user_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginEnd="45dp"
                     android:layout_marginBottom="6dp"
                     android:text="Interests:"
                     android:textColor="@color/black"
@@ -134,8 +68,6 @@
                     android:id="@+id/interestsLinearLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginEnd="45dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -167,8 +99,6 @@
                     android:id="@+id/interestsLinearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginEnd="45dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -199,9 +129,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
                     android:layout_marginTop="18dp"
-                    android:layout_marginEnd="45dp"
                     android:layout_marginBottom="8dp"
                     android:text="More about me:"
                     android:textColor="@color/black"
@@ -212,8 +140,6 @@
                     android:id="@+id/layout_depth_question_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginEnd="45dp"
                     android:layout_marginBottom="18dp"
                     android:background="#FBF5F5"
                     android:orientation="vertical"
@@ -242,8 +168,6 @@
                     android:id="@+id/layout_depth_question_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginEnd="45dp"
                     android:layout_marginBottom="18dp"
                     android:background="#FBF5F5"
                     android:orientation="vertical"
@@ -272,8 +196,6 @@
                     android:id="@+id/layout_depth_question_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginEnd="45dp"
                     android:layout_marginBottom="14dp"
                     android:background="#FBF5F5"
                     android:orientation="vertical"
@@ -299,38 +221,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonSwipeLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="48dp"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/button_orange"
-                    android:minHeight="48dp"
-                    android:text="@string/swipe_left" />
-
-                <Button
-                    android:id="@+id/buttonSwipeRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/button_orange"
-                    android:minHeight="48dp"
-                    android:text="@string/swipe_right" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <!-- No More Users Layout -->

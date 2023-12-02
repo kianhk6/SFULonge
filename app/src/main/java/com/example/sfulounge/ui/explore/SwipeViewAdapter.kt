@@ -8,14 +8,13 @@ import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.toColor
+import android.widget.TextView
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
 import com.squareup.picasso.Picasso
 
-class ImageAdapter(private val context: Context, private val usersArray: ArrayList<User>
-, private val userInfoView: LinearLayout) : BaseAdapter() {
+class SwipeViewAdapter(private val context: Context, private val usersArray: ArrayList<User>
+                       , private val userInfoView: LinearLayout) : BaseAdapter() {
 
     override fun getCount(): Int {
         return usersArray.size
@@ -38,8 +37,15 @@ class ImageAdapter(private val context: Context, private val usersArray: ArrayLi
             imageView.setBackgroundColor(Color.WHITE)
             imageView.setImageResource(R.drawable.baseline_person_24)
         } else {
-            Picasso.get().load(usersArray[position].photos[0]).into(imageView)
+            Picasso.get()
+                .load(usersArray[position].photos[0])
+                .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                .into(imageView)
         }
+
+        val tvName = view.findViewById<TextView>(R.id.tv_name)
+        tvName.setText(usersArray[position].firstName)
 
         val buttonExpand = view.findViewById<Button>(R.id.btn_expand)
         buttonExpand.setOnClickListener {
