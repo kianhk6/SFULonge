@@ -108,6 +108,7 @@ class ExploreFragment : Fragment() {
                     matchesViewModel.current_recommended_user!!.userId,
                     onSuccess = {
                         // Handle success, e.g., show a success message
+                        println("current user swiped right: " + matchesViewModel.current_recommended_user!!.firstName)
                         Toast.makeText(context, "Swipe left successful", Toast.LENGTH_SHORT).show()
                         loadNextRecommendation()
                     },
@@ -125,6 +126,7 @@ class ExploreFragment : Fragment() {
                     matchesViewModel.current_recommended_user!!,
                     onSuccess = {
                         // Handle success, e.g., show a success message
+                        println("current user swiped left: " + matchesViewModel.current_recommended_user!!.firstName)
                         Toast.makeText(context, "Swipe right successful", Toast.LENGTH_SHORT).show()
                         loadNextRecommendation()
                     }
