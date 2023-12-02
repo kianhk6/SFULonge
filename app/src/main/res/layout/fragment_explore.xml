@@ -66,6 +66,23 @@
                     android:layout_marginBottom="16dp"
                     android:padding="6dp"/>
 
+                <FrameLayout
+                    android:id="@+id/imageFrame1"
+                    android:layout_width="match_parent"
+                    android:layout_height="460dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#FBF5F5"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageUser1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_person_24" />
+                </FrameLayout>
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,6 +153,23 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/imageFrame2"
+                    android:layout_width="match_parent"
+                    android:layout_height="460dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#FBF5F5"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageUser2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_person_24" />
+                </FrameLayout>
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -230,6 +264,23 @@
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/imageFrame3"
+                    android:layout_width="match_parent"
+                    android:layout_height="460dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#FBF5F5"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageUser3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_person_24" />
+                </FrameLayout>
+
             </LinearLayout>
 
         </LinearLayout>

@@ -91,7 +91,6 @@ class PersonalityTest : AppCompatActivity() {
     }
 
     private fun categorizePersonality(personalityScoreSum: Int): Int {
-
         return if (personalityScoreSum >= 55) {
             Personality.FREE_SPIRITED_DOMAIN
         } else if (personalityScoreSum >= 40) {

@@ -12,7 +12,6 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.sfulounge.R
 import com.example.sfulounge.data.model.User
-import com.squareup.picasso.Picasso
 
 class SwipeViewAdapter(private val context: Context, private val usersArray: ArrayList<User>
                        , private val userInfoView: LinearLayout) : BaseAdapter() {

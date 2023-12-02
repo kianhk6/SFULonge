@@ -20,10 +20,6 @@ import com.example.sfulounge.data.model.User
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 
 
-// to do:
-// 1) what if all users swiped then new users added but there are no actions
-// to propagate get all users
-
 class ExploreFragment : Fragment() {
 
     private lateinit var adapter: SwipeViewAdapter
@@ -166,6 +162,7 @@ class ExploreFragment : Fragment() {
             view?.findViewById<TextView>(R.id.interest2)?.visibility = View.VISIBLE
             view?.findViewById<TextView>(R.id.interest3)?.visibility = View.VISIBLE
             view?.findViewById<TextView>(R.id.interest4)?.visibility = View.VISIBLE
+
             view?.findViewById<LinearLayout>(R.id.layout_depth_question_1)?.visibility =
                 View.VISIBLE
             view?.findViewById<LinearLayout>(R.id.layout_depth_question_2)?.visibility =
