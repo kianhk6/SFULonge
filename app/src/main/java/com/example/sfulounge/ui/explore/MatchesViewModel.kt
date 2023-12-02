@@ -85,6 +85,17 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
             }
         }
     }
+    fun printList() {
+        val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
+
+
+        // Iterate over the current list of users and print their names and interests
+        currentList.forEach { user ->
+            println("User Name: ${user.firstName}, User ID: ${user.userId}")
+            println("personality type: ${user.personality}")
+            println("Interests: ${user.interests.joinToString(", ")}")
+        }
+    }
 
     private fun populateCurrentUserList(allUsers: List<User>) {
         repository.getUser(
@@ -105,7 +116,9 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
 
                                 val currentUserInterests = loggedInUser.interests.toSet()
 
-                                val sortedUsers: List<User> = if(currentUser.personality != null){
+
+                                println("current user personality: ${currentUser.personality}, name ${currentUser.firstName}")
+                                val sortedUsers: List<User> = if(currentUser.personality != -1){
                                     filteredUsers.sortedWith(compareByDescending<User> { user ->
                                         // First criteria: Check if the user has a personality field and if it matches the currentUser's
                                         (user.personality != null && user.personality == currentUser.personality)
@@ -120,8 +133,13 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
                                     }
                                 }
 
+                                sortedUsers.forEach { user ->
+                                    println("User Name: ${user.firstName}, User ID: ${user.userId}")
+                                    println("personality type: ${user.personality}")
+                                    println("Interests: ${user.interests.joinToString(", ")}")
+                                }
 
-                                // Update _currentUsers with the filtered list
+                                    // Update _currentUsers with the filtered list
                                 _currentUsers.postValue(sortedUsers)
                             },
                             onError = { swipeLeftError ->
@@ -135,6 +153,7 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
                         _operationState.postValue(UnitResult(error = swipeRightError.exception))
                     }
                 )
+                println("hello this is getting printed")
             },
             onError = { userError ->
                 // Handle user fetch error
@@ -144,16 +163,6 @@ class MatchesViewModel(private val repository: MainRepository) : ViewModel() {
     }
 
 
-    fun printList() {
-        val currentList = _currentUsers.value?.toMutableList() ?: mutableListOf()
-
-
-        // Iterate over the current list of users and print their names and interests
-        currentList.forEach { user ->
-            println("User Name: ${user.firstName}, User ID: ${user.userId}")
-            println("Interests: ${user.interests.joinToString(", ")}")
-        }
-    }
 
     // This function tries to pop a user from the current list or fetch new ones if the list is empty
     fun popAndGetNextUser(onResult: (User?) -> Unit) {
