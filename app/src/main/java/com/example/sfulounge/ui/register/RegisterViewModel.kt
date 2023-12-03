@@ -7,6 +7,7 @@ import android.util.Patterns
 import com.example.sfulounge.data.LoginRepository
 
 import com.example.sfulounge.R
+import com.example.sfulounge.ui.setup.UnitResult
 
 class RegisterViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -18,17 +19,14 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : ViewMode
     val registerResult: LiveData<RegisterResult> = _registerResult
     val retryEmailResult: LiveData<VerificationResult> = _retryEmailResult
 
-    private val _verificationResult = MutableLiveData<Unit>()
-    val verificationResult: LiveData<Unit> = _verificationResult
+    private val _verificationResult = MutableLiveData<UnitResult>()
+    val verificationResult: LiveData<UnitResult> = _verificationResult
 
-    fun addListenerForEmailVerification() {
-        loginRepository.addListenerForEmailVerification {
-            _verificationResult.value = Unit
-        }
-    }
-
-    fun removeListenerForEmailVerification() {
-        loginRepository.removeListenerForEmailVerification()
+    fun verifyUser() {
+        loginRepository.verifyUser(
+            onIsVerified = { _verificationResult.value = UnitResult() },
+            onError = { _verificationResult.value = UnitResult(error = it.exception) }
+        )
     }
 
     fun register(email: String, password: String) {
@@ -44,9 +42,7 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : ViewMode
                 _registerResult.value =
                     RegisterResult(success = RegisteredUserView(email = result.data.email))
             },
-            onError = { _ ->
-                _registerResult.value = RegisterResult(error = R.string.register_failed)
-            }
+            onError = { _registerResult.value = RegisterResult(error = it.exception) }
         )
     }
 

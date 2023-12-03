@@ -77,12 +77,11 @@ class LoginRepository(val dataSource: LoginDataSource) {
         )
     }
 
-    fun addListenerForEmailVerification(onEmailIsVerified: () -> Unit) {
-        dataSource.addListenerForEmailVerification(onEmailIsVerified)
-    }
-
-    fun removeListenerForEmailVerification() {
-        dataSource.removeListenerForEmailVerification()
+    fun verifyUser(
+        onIsVerified: () -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        dataSource.verifyUser(onIsVerified, onError)
     }
 
     fun retrySendVerificationEmail(
