@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -13,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.sfulounge.R
 import com.example.sfulounge.data.MainRepository
 import com.example.sfulounge.data.model.Personality
@@ -138,9 +141,11 @@ class ExploreFragment : Fragment() {
                 if (p0 < 0) {
                     rightIndicator.alpha = -p0
                     leftIndicator.alpha = 0f
+                        userInfoView.visibility = View.GONE
                 } else if (p0 > 0) {
                     rightIndicator.alpha = 0f
                     leftIndicator.alpha = p0
+                    userInfoView.visibility = View.GONE
                 } else {
                     rightIndicator.alpha = 0f
                     leftIndicator.alpha = 0f
@@ -170,6 +175,11 @@ class ExploreFragment : Fragment() {
             view?.findViewById<LinearLayout>(R.id.layout_depth_question_3)?.visibility =
                 View.VISIBLE
             view?.findViewById<TextView>(R.id.tv_personality)?.visibility = View.VISIBLE
+            view?.findViewById<FrameLayout>(R.id.imageFrame1)?.visibility = View.VISIBLE
+            view?.findViewById<FrameLayout>(R.id.imageFrame2)?.visibility = View.VISIBLE
+            view?.findViewById<FrameLayout>(R.id.imageFrame3)?.visibility = View.VISIBLE
+
+            populateImages()
 
             // fill info
             val tvGender = view?.findViewById<TextView>(R.id.tv_gender)
@@ -279,6 +289,72 @@ class ExploreFragment : Fragment() {
 
                 else -> println("More than 3 questions")
             }
+        }
+    }
+
+    private fun populateImages() {
+        val user = matchesViewModel.current_recommended_user
+
+        if (user != null) {
+            when (user.photos.size) {
+                1 -> {
+                    view?.findViewById<FrameLayout>(R.id.imageFrame1)?.visibility = View.GONE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame2)?.visibility = View.GONE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame3)?.visibility = View.GONE
+                }
+                2 -> {
+                    view?.findViewById<FrameLayout>(R.id.imageFrame1)?.visibility = View.VISIBLE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame2)?.visibility = View.GONE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame3)?.visibility = View.GONE
+                    val imageView = view?.findViewById<ImageView>(R.id.imageUser1)
+                    Glide.with(requireContext())
+                        .load(user.photos[1])
+                        .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                        .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                        .into(imageView!!)
+                }
+                3 -> {
+                    view?.findViewById<FrameLayout>(R.id.imageFrame1)?.visibility = View.VISIBLE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame2)?.visibility = View.VISIBLE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame3)?.visibility = View.GONE
+                    val imageView = view?.findViewById<ImageView>(R.id.imageUser1)
+                    val imageView2 = view?.findViewById<ImageView>(R.id.imageUser2)
+                    Glide.with(requireContext())
+                        .load(user.photos[1])
+                        .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                        .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                        .into(imageView!!)
+                    Glide.with(requireContext())
+                        .load(user.photos[2])
+                        .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                        .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                        .into(imageView2!!)
+                }
+                4 -> {
+                    view?.findViewById<FrameLayout>(R.id.imageFrame1)?.visibility = View.VISIBLE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame2)?.visibility = View.VISIBLE
+                    view?.findViewById<FrameLayout>(R.id.imageFrame3)?.visibility = View.VISIBLE
+                    val imageView = view?.findViewById<ImageView>(R.id.imageUser1)
+                    val imageView2 = view?.findViewById<ImageView>(R.id.imageUser2)
+                    val imageView3 = view?.findViewById<ImageView>(R.id.imageUser3)
+                    Glide.with(requireContext())
+                        .load(user.photos[1])
+                        .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                        .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                        .into(imageView!!)
+                    Glide.with(requireContext())
+                        .load(user.photos[2])
+                        .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                        .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                        .into(imageView2!!)
+                    Glide.with(requireContext())
+                        .load(user.photos[3])
+                        .placeholder(R.drawable.baseline_person_24) // Replace with the ID of your placeholder drawable
+                        .error(R.drawable.baseline_close_24) // Optional: Specify an error image if the loading fails
+                        .into(imageView3!!)
+                }
+            }
+
         }
     }
 

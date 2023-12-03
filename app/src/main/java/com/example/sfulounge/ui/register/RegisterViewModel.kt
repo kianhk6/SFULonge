@@ -32,6 +32,11 @@ class RegisterViewModel(private val loginRepository: LoginRepository) : ViewMode
     }
 
     fun register(email: String, password: String) {
+        // enforcing sfu emails
+//        if (!email.endsWith("@sfu.ca", ignoreCase = true)) {
+//            _registerResult.value = RegisterResult(error = R.string.email_not_sfu_error_msg)
+//            return
+//        }
         loginRepository.register(
             email,
             password,

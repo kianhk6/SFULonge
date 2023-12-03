@@ -109,6 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_gender_male"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <RadioButton
@@ -116,6 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_gender_female"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <RadioButton
@@ -123,6 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_gender_other"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <RadioButton
@@ -130,6 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_gender_unspecified"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </RadioGroup>
 
