@@ -141,9 +141,11 @@ class ExploreFragment : Fragment() {
                 if (p0 < 0) {
                     rightIndicator.alpha = -p0
                     leftIndicator.alpha = 0f
+                        userInfoView.visibility = View.GONE
                 } else if (p0 > 0) {
                     rightIndicator.alpha = 0f
                     leftIndicator.alpha = p0
+                    userInfoView.visibility = View.GONE
                 } else {
                     rightIndicator.alpha = 0f
                     leftIndicator.alpha = 0f
