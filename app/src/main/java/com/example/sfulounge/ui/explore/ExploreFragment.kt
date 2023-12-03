@@ -1,7 +1,13 @@
 package com.example.sfulounge.ui.explore
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextUtils
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +62,12 @@ class ExploreFragment : Fragment() {
         arrayOfUsers = ArrayList()
         isObserverDone.value = false
 
+        val helpButton = view.findViewById<ImageView>(R.id.btn_help)
+
+        helpButton.setOnClickListener {
+            showAlertDialog()
+        }
+
         _isInitialLoadOrRefresh = true
         waitForUsersToPropagate()
 
@@ -67,6 +79,39 @@ class ExploreFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun showAlertDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+
+        val makeNewFriendsMessage = requireContext().resources.getString(R.string.message_make_new_friends)
+        val expandInfoMessage = requireContext().resources.getString(R.string.message_expand_info)
+        val editInfoMessage = requireContext().resources.getString(R.string.message_edit_info)
+
+        // Create a SpannableString for each message
+        val spannableMakeNewFriends = SpannableString(makeNewFriendsMessage)
+        val spannableExpandInfo = SpannableString(expandInfoMessage)
+        val spannableEditInfo = SpannableString(editInfoMessage)
+
+        // Apply bold style to the headings
+        spannableMakeNewFriends.setSpan(StyleSpan(Typeface.BOLD), 0, 18, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableExpandInfo.setSpan(StyleSpan(Typeface.BOLD), 0, 12, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableEditInfo.setSpan(StyleSpan(Typeface.BOLD), 0, 23, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val combinedMessage = TextUtils.concat(spannableMakeNewFriends, "\n\n", spannableExpandInfo, "\n\n", spannableEditInfo)
+
+        alertDialogBuilder.setTitle("Don't know where to start?")
+        alertDialogBuilder.setMessage(combinedMessage)
+
+        // Set a positive button and its click listener
+        alertDialogBuilder.setPositiveButton("OK") { dialog, _ ->
+            // Do something when the OK button is clicked
+            dialog.dismiss()
+        }
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+
+        // Show the AlertDialog
+        alertDialog.show()
     }
 
 
