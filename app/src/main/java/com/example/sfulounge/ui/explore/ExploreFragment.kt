@@ -95,7 +95,7 @@ class ExploreFragment : Fragment() {
 
         // Apply bold style to the headings
         spannableMakeNewFriends.setSpan(StyleSpan(Typeface.BOLD), 0, 18, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableExpandInfo.setSpan(StyleSpan(Typeface.BOLD), 0, 12, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableExpandInfo.setSpan(StyleSpan(Typeface.BOLD), 0, 16, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableEditInfo.setSpan(StyleSpan(Typeface.BOLD), 0, 23, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val combinedMessage = TextUtils.concat(spannableMakeNewFriends, "\n\n", spannableExpandInfo, "\n\n", spannableEditInfo)
