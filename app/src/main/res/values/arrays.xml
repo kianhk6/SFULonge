@@ -7,10 +7,10 @@
         <item>Unspecified</item>
     </string-array>
     <string-array name="personality_array">
-        <item>Social Butterfly</item>
-        <item>Long Wolf</item>
-        <item>Organizer</item>
-        <item>Adventurer</item>
-        <item>Analyzer</item>
+        <item>Free Spirited Domain</item>
+        <item>Compassionate Helper</item>
+        <item>Organized Achiever</item>
+        <item>Adventurous Explorer</item>
+        <item>Reserved Thinker</item>
     </string-array>
 </resources>
