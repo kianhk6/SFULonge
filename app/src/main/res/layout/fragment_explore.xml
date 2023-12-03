@@ -19,14 +19,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.lorentzos.flingswipe.SwipeFlingAdapterView
-                android:id="@+id/frame"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:layout_gravity="center"
-                app:rotation_degrees="16"
-                app:max_visible="4"
-                app:min_adapter_stack="6" />
+                android:layout_height="wrap_content">
+
+                <com.lorentzos.flingswipe.SwipeFlingAdapterView
+                    android:id="@+id/frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_gravity="center"
+                    app:rotation_degrees="16"
+                    app:max_visible="4"
+                    app:min_adapter_stack="6" />
+
+                <ImageView
+                    android:id="@+id/btn_help"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/outline_circle_24"
+                    android:src="@drawable/baseline_question_mark_24"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="end"
+                    android:layout_margin="20dp"
+                    android:clickable="true"
+                    android:focusable="true"/>
+            </FrameLayout>
 
             <LinearLayout
                 android:id="@+id/view_user_info"

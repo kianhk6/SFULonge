@@ -156,4 +156,7 @@
     <string name="email_verification_prompt">Follow the link in your email to verify your account.</string>
     <string name="email_verification_title">Verify your account!</string>
     <string name="email_verification_retry_prompt">Did not receive email?</string>
+    <string name="message_make_new_friends"><b>Make new friends:</b> Swipe right if you wish to get to know the displayed user, or left if you\'re not interested.</string>
+    <string name="message_expand_info"><b>Next steps:</b> If you get a match, a chat room will automatically be created between you and the person you matched with, so you can get to know each other more!</string>
+    <string name="message_edit_info"><b>Want to edit your info?</b> Hover to the settings page on the left to edit your profile!</string>
 </resources>
