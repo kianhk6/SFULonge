@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/black"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="30sp" />
 
             <TextView
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:text="@string/user_profile_interests_label"
-            android:textColor="@color/black"
+            android:textColor="?android:textColorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -73,7 +73,7 @@
             android:layout_marginTop="18dp"
             android:layout_marginBottom="8dp"
             android:text="@string/user_profile_more_about_me_label"
-            android:textColor="@color/black"
+            android:textColor="?android:textColorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
