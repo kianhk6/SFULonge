@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    android:layout_width="match_parent"
+    android:layout_width="380dp"
     android:layout_height="500dp">
     <LinearLayout
+        android:id="@+id/layout_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
         <ImageView
@@ -48,6 +50,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="10dp"
+        android:layout_alignTop="@id/layout_user"
         android:alpha="0"
         android:background="#4CAF50" />
 
@@ -55,9 +58,10 @@
         android:id="@+id/item_swipe_right_indicator"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_gravity="end"
         android:layout_margin="10dp"
+        android:layout_alignTop="@id/layout_user"
+        android:layout_alignEnd="@id/layout_user"
         android:alpha="0"
         android:background="#F44336" />
 
-</FrameLayout>
+</RelativeLayout>
