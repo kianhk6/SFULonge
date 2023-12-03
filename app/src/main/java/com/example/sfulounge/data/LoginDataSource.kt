@@ -5,7 +5,7 @@ import com.example.sfulounge.R
 import com.example.sfulounge.data.model.LoggedInUser
 import com.example.sfulounge.data.model.User
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth.AuthStateListener
+import com.google.firebase.auth.FirebaseAuth.IdTokenListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -18,7 +18,7 @@ class LoginDataSource {
     private val auth = Firebase.auth
     private val db = Firebase.firestore
 
-    private var _listener: AuthStateListener? = null
+    private var _listener: IdTokenListener? = null
 
     val isLoggedIn: Boolean
         get() = auth.currentUser != null && auth.currentUser!!.isEmailVerified
@@ -96,19 +96,24 @@ class LoginDataSource {
             }
     }
 
-    fun addListenerForEmailVerification(onEmailIsVerified: () -> Unit) {
-        val listener = AuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
-            if (user != null && user.isEmailVerified) {
-                onEmailIsVerified()
+    fun verifyUser(
+        onSuccess: () -> Unit,
+        onError: (Result.Error) -> Unit
+    ) {
+        val user = auth.currentUser ?: throw IllegalStateException("User cannot be null")
+        user.reload()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val updatedUser = auth.currentUser ?: return@addOnCompleteListener
+                    if (updatedUser.isEmailVerified) {
+                        onSuccess()
+                    } else {
+                        onError(Result.Error(R.string.error_message_account_unverified))
+                    }
+                } else {
+                    onError(Result.Error(R.string.error_message_reload))
+                }
             }
-        }
-        _listener = listener
-        auth.addAuthStateListener(listener)
-    }
-
-    fun removeListenerForEmailVerification() {
-        _listener?.let { auth.removeAuthStateListener(it) }
     }
 
     fun retrySendVerificationEmail(

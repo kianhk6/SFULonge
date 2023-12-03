@@ -33,16 +33,23 @@ class EmailVerificationActivity : AppCompatActivity() {
             }
         })
         registerViewModel.verificationResult.observe(this) {
-            onEmailVerificationSuccessful()
+            val result = it ?: return@observe
+            if (result.error != null) {
+                showVerificationFailed(result.error)
+            } else {
+                onEmailVerificationSuccessful()
+            }
         }
 
         val resend = binding.resendEmail
+        val nextBtn = binding.next
 
+        nextBtn.setOnClickListener {
+            registerViewModel.verifyUser()
+        }
         resend.setOnClickListener {
             registerViewModel.retrySendVerificationEmail()
         }
-
-        registerViewModel.addListenerForEmailVerification()
     }
 
     /**
@@ -57,16 +64,11 @@ class EmailVerificationActivity : AppCompatActivity() {
      * UI
      */
     private fun showVerificationFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, getString(errorString), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(errorString), Toast.LENGTH_SHORT).show()
     }
 
     private fun showVerificationEmailSent() {
         Toast.makeText(this, "Verification email sent!", Toast.LENGTH_SHORT)
             .show()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        registerViewModel.removeListenerForEmailVerification()
     }
 }

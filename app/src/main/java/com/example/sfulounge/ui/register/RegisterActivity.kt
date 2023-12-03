@@ -64,11 +64,9 @@ class RegisterActivity : AppCompatActivity() {
             }
             if (regResult.success != null) {
                 updateUiWithUser(regResult.success)
-//                onRegistrationSuccessful() //add it here instead
+                onRegistrationSuccessful()
             }
             setResult(Activity.RESULT_OK)
-
-            onRegistrationSuccessful() //this gets called even when there's an error
         })
 
         email.afterTextChanged {
