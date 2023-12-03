@@ -12,6 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/button_orange</item>
         <!-- Customize your theme here. -->
-        <item name="android:screenOrientation">portrait</item>
+        <item name="drawableTint">@color/white</item>
     </style>
 </resources>

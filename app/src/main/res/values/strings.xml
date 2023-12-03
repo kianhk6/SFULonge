@@ -186,4 +186,5 @@
 
     <!--  chats fragment  -->
     <string name="chats_fragment_no_chats">No chats</string>
+    <string name="email_not_sfu_error_msg">Email must end with @sfu.ca</string>
 </resources>

@@ -17,19 +17,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <com.lorentzos.flingswipe.SwipeFlingAdapterView
                 android:id="@+id/frame"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                android:layout_marginTop="50dp"
                 android:layout_gravity="center"
                 app:rotation_degrees="16"
                 app:max_visible="4"
-                app:min_adapter_stack="6"
-                android:background="#ffeee9e2" />
+                app:min_adapter_stack="6" />
 
             <LinearLayout
                 android:id="@+id/view_user_info"
@@ -37,39 +34,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="24dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginEnd="45dp">
+                android:padding="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
 
                 <TextView
                     android:id="@+id/tv_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="14dp"
                     android:background="@drawable/detail_white_outline"
                     android:padding="6dp"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/tv_personality"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/black"
+                    android:layout_marginStart="8dp"
                     android:textColor="@color/white"
                     android:text=""
-                    android:textSize="22sp"
-                    android:layout_marginBottom="16dp"
-                    android:padding="6dp"/>
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"/>
+                </LinearLayout>
 
                 <FrameLayout
                     android:id="@+id/imageFrame1"
                     android:layout_width="match_parent"
-                    android:layout_height="460dp"
+                    android:layout_height="420dp"
+                    android:layout_marginBottom="28dp"
+                    android:padding="6dp"
                     android:layout_gravity="center_horizontal"
                     android:background="#FBF5F5"
                     android:layout_weight="1">
@@ -78,11 +84,15 @@
                         android:id="@+id/imageUser1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/baseline_person_24" />
+                        android:scaleType="centerInside" />
                 </FrameLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,11 +163,14 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                 </LinearLayout>
+                </LinearLayout>
 
                 <FrameLayout
                     android:id="@+id/imageFrame2"
                     android:layout_width="match_parent"
-                    android:layout_height="460dp"
+                    android:layout_height="420dp"
+                    android:layout_marginBottom="28dp"
+                    android:padding="6dp"
                     android:layout_gravity="center_horizontal"
                     android:background="#FBF5F5"
                     android:layout_weight="1">
@@ -166,15 +179,13 @@
                         android:id="@+id/imageUser2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/baseline_person_24" />
+                        android:scaleType="centerInside" />
                 </FrameLayout>
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="8dp"
                     android:text="More about me:"
                     android:textColor="@color/black"
@@ -268,7 +279,8 @@
                 <FrameLayout
                     android:id="@+id/imageFrame3"
                     android:layout_width="match_parent"
-                    android:layout_height="460dp"
+                    android:layout_height="420dp"
+                    android:padding="6dp"
                     android:layout_gravity="center_horizontal"
                     android:background="#FBF5F5"
                     android:layout_weight="1">
@@ -277,8 +289,7 @@
                         android:id="@+id/imageUser3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/baseline_person_24" />
+                        android:scaleType="centerInside" />
                 </FrameLayout>
 
             </LinearLayout>
