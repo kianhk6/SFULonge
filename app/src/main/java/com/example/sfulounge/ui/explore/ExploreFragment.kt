@@ -233,11 +233,11 @@ class ExploreFragment : Fragment() {
                 view?.findViewById<TextView>(R.id.tv_personality)?.visibility = View.GONE
             } else {
                 val colorArray = intArrayOf(
-                    resources.getColor(R.color.social_butterfly),
-                    resources.getColor(R.color.long_wolf),
-                    resources.getColor(R.color.organizer),
-                    resources.getColor(R.color.adventurer),
-                    resources.getColor(R.color.analyzer)
+                    resources.getColor(R.color.free_spirited_dreamer),
+                    resources.getColor(R.color.compassionate_helper),
+                    resources.getColor(R.color.organized_achiever),
+                    resources.getColor(R.color.adventurous_explorer),
+                    resources.getColor(R.color.reserved_thinker)
                 )
                 val personality = user.personality
                 view?.findViewById<TextView>(R.id.tv_personality)?.setText(

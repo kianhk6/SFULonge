@@ -82,7 +82,7 @@ class PersonalityTest : AppCompatActivity() {
     }
 
     private fun getPersonality(personalityType: Int) = when(personalityType) {
-        Personality.FREE_SPIRITED_DOMAIN -> getString(R.string.personality_free_spirited_dreamer)
+        Personality.FREE_SPIRITED_DREAMER -> getString(R.string.personality_free_spirited_dreamer)
         Personality.COMPASSIONATE_HELPER -> getString(R.string.personality_compassionate_helper)
         Personality.ORGANIZED_ACHIEVER -> getString(R.string.personality_organized_achiever)
         Personality.ADVENTUROUS_EXPLORER -> getString(R.string.personality_adventurous_explorer)
@@ -92,7 +92,7 @@ class PersonalityTest : AppCompatActivity() {
 
     private fun categorizePersonality(personalityScoreSum: Int): Int {
         return if (personalityScoreSum >= 55) {
-            Personality.FREE_SPIRITED_DOMAIN
+            Personality.FREE_SPIRITED_DREAMER
         } else if (personalityScoreSum >= 40) {
             Personality.COMPASSIONATE_HELPER
         } else if (personalityScoreSum >= 30) {
