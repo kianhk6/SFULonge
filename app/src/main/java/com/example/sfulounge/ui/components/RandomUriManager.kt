@@ -28,13 +28,6 @@ class RandomUriManager(private val context: Context) : AutoCloseable {
         _lastUri = make()
     }
 
-    private fun delete(uri: Uri) {
-        if (uriPool.contains(uri)) {
-            context.contentResolver.delete(uri, null, null)
-            uriPool.remove(uri)
-        }
-    }
-
     private fun make(): Uri {
         val file = File.createTempFile("img", null, context.cacheDir)
         val uri = FileProvider.getUriForFile(context, context.packageName, file)
@@ -44,7 +37,9 @@ class RandomUriManager(private val context: Context) : AutoCloseable {
 
     override fun close() {
         for (uri in uriPool) {
-            delete(uri)
+            context.contentResolver.delete(uri, null, null)
         }
+        uriPool.clear()
+        _lastUri = null
     }
 }
