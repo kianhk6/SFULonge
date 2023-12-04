@@ -17,10 +17,10 @@
 
 <!--    <color name="chat_name">#1F84F3</color>-->
     <color name="chat_background">#FFC099</color>-->
-    <color name="social_butterfly">#17317C</color>
-    <color name="long_wolf">#BF530F</color>
-    <color name="organizer">#9E9122</color>
-    <color name="adventurer">#2E7C31</color>
-    <color name="analyzer">#9F2020</color>
+    <color name="free_spirited_dreamer">#17317C</color>
+    <color name="compassionate_helper">#BF530F</color>
+    <color name="organized_achiever">#9E9122</color>
+    <color name="adventurous_explorer">#2E7C31</color>
+    <color name="reserved_thinker">#9F2020</color>
 
 </resources>
