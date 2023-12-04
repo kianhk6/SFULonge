@@ -7,7 +7,7 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 ## App demo 
 Click on the thumbnail below to watch the video:
 
-[![SFU lounge Demo](https://img.youtube.com/vi/7PUvE_8b7w8/0.jpg)](https://youtu.be/7PUvE_8b7w8)
+[![SFU lounge Demo](https://img.youtube.com/vi/7PUvE_8b7w8/0.jpg)](https://youtu.be/9_zn5c5CQzg)
 
 ## Features
 
