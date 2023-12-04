@@ -1,4 +1,4 @@
-# SFULounge
+# SFU Lounge
 With SFU Lounge, you can discover like-minded students who share your interests and academic goals, fostering meaningful connections within the SFU community. Stay informed about the most exciting events on campus, ensuring you never miss out on opportunities. Initiate conversations and meet new friends directly through the in-app chat feature.   
 
 ## Introduction
