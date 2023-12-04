@@ -82,6 +82,7 @@
                     android:textColor="@color/white"
                     android:text=""
                     android:textSize="18sp"
+                    android:textAlignment="center"
                     android:padding="6dp"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"/>
