@@ -34,6 +34,9 @@ SFU Lounge is an innovative Android application designed specifically for Simon 
 ### The Thread Diagram
 [thread_diagram](https://github.com/kianhk6/SFULounge/files/13471130/thread_diagram_3.4.pdf)
 
+### The mvm model 
+<img width="799" alt="image" src="https://github.com/kianhk6/SFULounge/assets/96752380/180317c1-84f1-45c3-8253-6a0b12197de7">
+
 ## Implementation Details
 
 ### User Profile
