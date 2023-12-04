@@ -1,8 +1,7 @@
 ### App demo 
 Click on the thumbnail below to watch the video:
 
-[![SFU lounge Demo](<img width="799" alt="image" src="https://github.com/kianhk6/SFULounge/assets/96752380/6c8a3005-8650-42f7-a7f5-385a7f0931c6">
-)](https://youtu.be/Wpi2w2JjpzU)
+[![SFU lounge Demo](https://img.youtube.com/vi/7PUvE_8b7w8.jpg)](https://youtu.be/7PUvE_8b7w8)
 
 # SFULounge
 With SFU Lounge, you can discover like-minded students who share your interests and academic goals, fostering meaningful connections within the SFU community. Stay informed about the most exciting events on campus, ensuring you never miss out on opportunities. Initiate conversations and meet new friends directly through the in-app chat feature.   
