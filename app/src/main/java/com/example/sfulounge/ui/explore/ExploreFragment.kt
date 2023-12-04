@@ -460,7 +460,6 @@ class ExploreFragment : Fragment() {
                 matchesViewModel.mainPageCancelled = true
                 val noMoreUsersView = view?.findViewById<View>(R.id.noMoreUsersLayout)
                 noMoreUsersView?.visibility = View.VISIBLE
-                Toast.makeText(context, "No new user found", Toast.LENGTH_SHORT).show()
                 matchesViewModel.current_recommended_user = null
                 // Set OnClickListener for the Refresh Button
                 noMoreUsersView?.findViewById<Button>(R.id.button)?.setOnClickListener {
@@ -472,7 +471,7 @@ class ExploreFragment : Fragment() {
     }
 
     private fun refreshData() {
-        Toast.makeText(context, "Finding new added users...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "retrying", Toast.LENGTH_SHORT).show()
         matchesViewModel.getAllUsers()
         _isInitialLoadOrRefresh = true
         waitForUsersToPropagate()
