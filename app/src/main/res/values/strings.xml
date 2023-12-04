@@ -139,7 +139,7 @@
     <!--  personality types  -->
     <string name="personality_free_spirited_dreamer">Free-Spirited Dreamer</string>
     <string name="personality_compassionate_helper">Compassionate Helper</string>
-    <string name="personality_organized_helper">Organized Helper</string>
+    <string name="personality_organized_achiever">Organized Achiever</string>
     <string name="personality_adventurous_explorer">Adventurous Explorer</string>
     <string name="personality_reserved_thinker">Reserved Thinker</string>
     <string name="swipe_left">Swipe Left</string>

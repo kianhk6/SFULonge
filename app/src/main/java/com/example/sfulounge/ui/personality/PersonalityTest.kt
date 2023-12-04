@@ -84,7 +84,7 @@ class PersonalityTest : AppCompatActivity() {
     private fun getPersonality(personalityType: Int) = when(personalityType) {
         Personality.FREE_SPIRITED_DOMAIN -> getString(R.string.personality_free_spirited_dreamer)
         Personality.COMPASSIONATE_HELPER -> getString(R.string.personality_compassionate_helper)
-        Personality.ORGANIZED_ACHIEVER -> getString(R.string.personality_organized_helper)
+        Personality.ORGANIZED_ACHIEVER -> getString(R.string.personality_organized_achiever)
         Personality.ADVENTUROUS_EXPLORER -> getString(R.string.personality_adventurous_explorer)
         Personality.RESERVED_THINKER -> getString(R.string.personality_reserved_thinker)
         else -> null
