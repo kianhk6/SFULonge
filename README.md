@@ -32,7 +32,7 @@ Click on the thumbnail below to watch the video:
 - **ChatViewModel**: Queries chat rooms and messages, handles chat functionalities.
 
 ### The Thread Diagram
-[thread_diagram](https://github.com/kianhk6/SFULounge/files/13471130/thread_diagram_3.4.pdf)
+[thread diagram](https://github.com/kianhk6/SFULounge/files/13471130/thread_diagram_3.4.pdf)
 
 ### The mvmm model 
 <img width="799" alt="image" src="https://github.com/kianhk6/SFULounge/assets/96752380/180317c1-84f1-45c3-8253-6a0b12197de7">
@@ -64,7 +64,7 @@ Click on the thumbnail below to watch the video:
 
 ## Support and Contact
 For support, contact sfuLounge@gmail.com. Join our community and make your SFU experience unforgettable!
-https://m-max-cell.github.io/sfu-lounge/
+- The app website: [SFU lounge](https://m-max-cell.github.io/sfu-lounge/)
 
 ## Some of the highlights of mechanisms used
 <img width="485" alt="image" src="https://github.com/kianhk6/SFULounge/assets/96752380/7dd0646e-a38f-4020-a39b-3fb5d1416cd5">
